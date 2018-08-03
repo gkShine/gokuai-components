@@ -1,0 +1,42 @@
+@import "./common/var.scss";
+
+.gk-breadcrumb {
+  position: relative;
+  overflow: hidden;
+  font-size: $--font-size;
+
+  .gk-breadcrumb-ops {
+    float: left;
+    margin-right: 15px;
+
+    button {
+      outline: 0;
+      width: $--breadcrumb-button-size;
+      height: $--breadcrumb-button-size;
+      font-size: 18px;
+    }
+  }
+
+  .gk-breadcrumb-list {
+    float: left;
+    line-height: $--breadcrumb-button-size;
+
+    .gk-breadcrumb-item {
+      float: left;
+
+      a {
+        color: $--link-font-color;
+        text-decoration: none;
+      }
+
+      i {
+        margin: 0 5px;
+        font-weight: bold;
+      }
+
+      span {
+        color: #9B9B9B;
+      }
+    }
+  }
+}

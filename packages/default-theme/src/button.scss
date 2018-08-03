@@ -1,0 +1,12 @@
+@import "./common/var.scss";
+
+.gk-button {
+  background: #ffffff;
+  border: 1px solid $--button-border-color;
+  color: $--font-color;
+
+  &.gk-button-active {
+    background-color: $--primary-color;
+    color: $--font-reverse-color;
+  }
+}

@@ -1,0 +1,91 @@
+@import "./common/var.scss";
+@import "./mixins/utils.scss";
+
+.gk-table {
+  @include fit-window;
+  overflow: hidden;
+
+  .gk-table-header {
+    border-spacing: 0;
+    width: 100%;
+    background: #f0f0f0;
+
+    thead {
+      tr {
+        border-radius: 2px 2px 0 0;
+
+        th {
+          height: 34px;
+          color: #8C95A4;
+          font-size: 14px;
+          font-weight: normal;
+          text-align: left;
+        }
+
+        th.gk-table-header-last {
+          width: 15px;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio:0) {
+          th.gk-table-header-last {
+            width: 6px;
+          }
+        }
+      }
+    }
+  }
+
+  .gk-table-virtual {
+    @include fit-window;
+
+    .gk-table-body {
+      color: $--font-color;
+      font-size: $--font-size;
+      border-spacing: 0;
+      border: 0;
+
+      tr.gk-table-item {
+        td {
+          border-bottom: 1px solid #f0f0f0;
+        }
+
+        &:hover {
+          td {
+            background-color: $--table-hover-color;
+          }
+
+          .gk-checkbox {
+            display: inline;
+          }
+        }
+
+        &.gk-table-item-active {
+          td {
+            color: $--font-reverse-color;
+            background-color: $--table-active-color;
+          }
+        }
+      }
+    }
+  }
+
+  &.gk-table-with-header {
+    .gk-table-virtual {
+      top: 36px;
+    }
+  }
+
+  .gk-checkbox {
+    display: none;
+
+    &.gk-checkbox-checked {
+      display: inline;
+    }
+  }
+
+  &.gk-table-show-checkbox {
+    .gk-checkbox {
+      display: inline;
+    }
+  }
+}

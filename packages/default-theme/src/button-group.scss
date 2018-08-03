@@ -1,0 +1,13 @@
+.gk-button-group {
+  & > .gk-button {
+    margin-left: -1px;
+  }
+
+  &[plain] > .gk-button {
+    border-radius: 0;
+  }
+
+  & > .gk-button:first-child {
+    margin-left: 0;
+  }
+}

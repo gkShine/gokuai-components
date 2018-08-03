@@ -1,0 +1,43 @@
+@import "./common/var.scss";
+@import "./mixins/utils.scss";
+
+.gk-finder-list {
+  @include fit-dom;
+
+  .gk-finder-toolbar {
+    .gk-breadcrumb {
+      padding-right: 200px;
+    }
+
+    .gk-finder-show-ops {
+      float: right;
+      text-align: right;
+      width: 200px;
+      margin-top: -$--breadcrumb-button-size;
+
+      .gk-finder-sort-button {
+        font-size: 16px;
+        height: $--breadcrumb-button-size;
+        width: $--breadcrumb-button-size;
+        margin-right: 10px;
+      }
+
+      .gk-finder-view-mode {
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: -2px;
+
+        button {
+          font-size: 18px;
+          height: $--breadcrumb-button-size;
+          width: $--breadcrumb-button-size;
+        }
+      }
+    }
+  }
+
+  .gk-table {
+    top: $--breadcrumb-button-size;
+    margin-top: 16px;
+  }
+}
