@@ -1,1 +1,12 @@
 @import "./icon.scss";
+@import "font-awesome/css/font-awesome.css";
+
+[class^="gk-"], [class*=" gk-"] {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}

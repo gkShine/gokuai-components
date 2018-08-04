@@ -8,23 +8,28 @@
                 <gk-button-group plain class="gk-finder-view-mode">
                     <gk-button
                             :class="{'gk-button-active' : viewMode === 'default'}"
-                            @click="handleViewMode('default')" icon="gk-icon-listdetail"></gk-button>
+                            @click.native="handleViewMode('default')" icon="gk-icon-listdetail"></gk-button>
                     <gk-button
                             :class="{'gk-button-active' : viewMode === 'list'}"
-                            @click="handleViewMode('list')" icon="gk-icon-list"></gk-button>
+                            @click.native="handleViewMode('list')" icon="gk-icon-list"></gk-button>
                     <gk-button
                             :class="{'gk-button-active' : viewMode === 'thumbnail'}"
-                            @click="handleViewMode('thumbnail')" icon="gk-icon-listgrid"></gk-button>
+                            @click.native="handleViewMode('thumbnail')" icon="gk-icon-listgrid"></gk-button>
                 </gk-button-group>
             </div>
         </div>
 
-        <gk-table show-header :data="jsonData" :itemHeight="itemHeight">
+        <gk-table show-header :data="jsonData" :itemHeight="itemHeight" v-if="viewMode === 'list'">
             <gk-table-column checkbox :width="40" align="center"></gk-table-column>
             <gk-table-column property="filename" label="文件名" sortable></gk-table-column>
             <gk-table-column property="last_dateline" label="最后修改" :formatter="formatDate" sortable
                              :width="180"></gk-table-column>
             <gk-table-column property="filesize" label="大小" :formatter="formatSize" sortable :width="100"></gk-table-column>
+            <gk-table-column :width="200"></gk-table-column>
+        </gk-table>
+        <gk-table :data="jsonData" :itemHeight="itemHeight + 40" v-else >
+            <gk-table-column checkbox :width="40" align="center"></gk-table-column>
+            <gk-table-column property="filename" label="文件名" sortable></gk-table-column>
             <gk-table-column :width="200"></gk-table-column>
         </gk-table>
     </div>
@@ -43,12 +48,12 @@
     components: {GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
     props: {
       jsonData: {
-        type: Object,
+        type: Array,
         required: true
       },
       itemHeight: {
         type: Number,
-        default: 36
+        default: 42
       }
     },
     data() {
@@ -79,8 +84,8 @@
       formatDate(value) {
         return timeToDate(value * 1000);
       },
-      formatSize(value){
-        return bitSize(value);
+      formatSize(value, item){
+        return item.dir ? '-' : bitSize(value);
       },
       handleViewMode(mode) {
         this.viewMode = mode;

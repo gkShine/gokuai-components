@@ -1,6 +1,10 @@
 @import "./common/var.scss";
 
 .gk-button {
+  outline: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
   background: #ffffff;
   border: 1px solid $--button-border-color;
   color: $--font-color;

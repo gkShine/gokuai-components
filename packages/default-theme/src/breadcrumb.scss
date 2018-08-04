@@ -19,10 +19,13 @@
 
   .gk-breadcrumb-list {
     float: left;
+    padding: 0;
+    margin: 0;
     line-height: $--breadcrumb-button-size;
 
     .gk-breadcrumb-item {
       float: left;
+      list-style: none;
 
       a {
         color: $--link-font-color;
@@ -32,6 +35,7 @@
       i {
         margin: 0 5px;
         font-weight: bold;
+        color: $--font-color;
       }
 
       span {

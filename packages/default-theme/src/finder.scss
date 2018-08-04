@@ -6,7 +6,7 @@
 
   .gk-finder-toolbar {
     .gk-breadcrumb {
-      padding-right: 200px;
+      margin-right: 200px;
     }
 
     .gk-finder-show-ops {
@@ -25,10 +25,10 @@
       .gk-finder-view-mode {
         display: inline-block;
         vertical-align: middle;
-        margin-top: -2px;
+        margin-top: -4px;
 
         button {
-          font-size: 18px;
+          font-size: 16px;
           height: $--breadcrumb-button-size;
           width: $--breadcrumb-button-size;
         }

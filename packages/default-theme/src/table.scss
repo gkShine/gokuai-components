@@ -15,8 +15,8 @@
         border-radius: 2px 2px 0 0;
 
         th {
-          height: 34px;
-          color: #8C95A4;
+          height: $--table-head-height;
+          color: $--table-head-background-color;
           font-size: 14px;
           font-weight: normal;
           text-align: left;
@@ -46,7 +46,7 @@
 
       tr.gk-table-item {
         td {
-          border-bottom: 1px solid #f0f0f0;
+          border-top: 1px solid #f0f0f0;
         }
 
         &:hover {
@@ -71,7 +71,7 @@
 
   &.gk-table-with-header {
     .gk-table-virtual {
-      top: 36px;
+      top: $--table-head-height;
     }
   }
 

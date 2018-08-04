@@ -4,21 +4,23 @@
             <thead>
             <tr>
                 <slot></slot>
-                <th class="gk-table-header-last"></th>
+                <th v-if="hasScrollbar" class="gk-table-header-last"></th>
             </tr>
             </thead>
         </table>
-        <virtual-scroller class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data" content-tag="table" :item-height="itemHeight">
+        <virtual-scroller ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
+                          content-tag="table" :item-height="itemHeight">
             <template slot-scope="props">
                 <tr
-                    class="gk-table-item"
-                    :class="{'gk-table-item-active':selectedIndex === props.itemIndex}"
-                    @click="handleItem(props.item, props.itemIndex)" >
+                        class="gk-table-item"
+                        :class="{'gk-table-item-active':selectedIndex === props.itemIndex}"
+                        @click="handleItem(props.item, props.itemIndex)">
                     <td
-                        :style="Object.assign(column.columnStyle, {height: (itemHeight - 3) + 'px'})"
-                        v-for="(column, idx) in columns" :key="idx" >
-                        <gk-checkbox v-if="column.checkbox" @click.native="checkItem(props.item, props.itemIndex, $event.target)"></gk-checkbox>
-                        <span v-else-if="column.property" >{{getLabel(props.item, column)}}</span>
+                            :style="Object.assign(column.columnStyle, {height: itemHeight + 'px'})"
+                            v-for="(column, idx) in columns" :key="idx">
+                        <gk-checkbox v-if="column.checkbox"
+                                     @click.native="checkItem(props.item, props.itemIndex, $event.target)"></gk-checkbox>
+                        <span v-else-if="column.property">{{getLabel(props.item, column)}}</span>
                     </td>
                 </tr>
             </template>
@@ -27,7 +29,8 @@
 </template>
 
 <script>
-  import { VirtualScroller } from 'vue-virtual-scroller';
+  import {VirtualScroller} from 'vue-virtual-scroller';
+  import _ from 'lodash';
   import GkCheckbox from "../../checkbox/src/checkbox";
 
   export default {
@@ -44,7 +47,7 @@
       },
       itemHeight: {
         type: Number,
-        default: 36
+        default: 42
       }
     },
     data() {
@@ -53,7 +56,20 @@
         checkedItems: {},
         selectedIndex: -1,
         showAllCheckbox: false,
-        columns: []
+        hasScrollbar: false
+      }
+    },
+    computed: {
+      columns() {
+        let columns = [];
+        this.$children.forEach((column) => {
+          if (column.isTableColumn) {
+            columns.push(Object.assign({
+              columnStyle: column.columnStyle
+            }, column.$props));
+          }
+        });
+        return columns;
       }
     },
     methods: {
@@ -70,23 +86,23 @@
         this.showAllCheckbox = Object.keys(this.checkedItems).length > 0;
       },
       getLabel(item, column) {
-        let label = item[column.property];
+        let value = item[column.property];
         if (column.formatter) {
-          return column.formatter(label);
+          return column.formatter(value, item);
         }
-        return label;
+        return value;
+      },
+      setScrollbar() {
+        let el = this.$refs.table.$el;
+        this.hasScrollbar = this.itemHeight * this.data.length > el.clientHeight;
+      },
+      watchScrollbar() {
+        this.setScrollbar();
+        window.onresize = _.debounce(() => { this.setScrollbar(); }, 5);
       }
     },
     mounted() {
-      let columns = [];
-      this.$children.forEach((column) => {
-        if (column.isTableColumn) {
-          columns.push(Object.assign({
-            columnStyle: column.columnStyle
-          }, column.$props));
-        }
-      });
-      this.columns = columns;
+      this.watchScrollbar();
     }
   }
 </script>
