@@ -15,13 +15,7 @@
                         class="gk-table-item"
                         :class="{'gk-table-item-active':selectedIndex === props.itemIndex}"
                         @click="handleItem(props.item, props.itemIndex)">
-                    <td
-                            :style="Object.assign(column.columnStyle, {height: itemHeight + 'px'})"
-                            v-for="(column, idx) in columns" :key="idx">
-                        <gk-checkbox v-if="column.checkbox"
-                                     @click.native="checkItem(props.item, props.itemIndex, $event.target)"></gk-checkbox>
-                        <span v-else-if="column.property">{{getLabel(props.item, column)}}</span>
-                    </td>
+                    <gk-table-cell :check="checkItem" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
                 </tr>
             </template>
         </virtual-scroller>
@@ -31,12 +25,12 @@
 <script>
   import {VirtualScroller} from 'vue-virtual-scroller';
   import _ from 'lodash';
-  import GkCheckbox from "../../checkbox/src/checkbox";
+  import GkTableCell from "./table-cell.js";
 
   export default {
     name: "GkTable",
     components: {
-      GkCheckbox,
+      GkTableCell,
       VirtualScroller
     },
     props: {
@@ -48,14 +42,15 @@
       itemHeight: {
         type: Number,
         default: 42
-      }
+      },
+      'show-checkbox': Boolean
     },
     data() {
       return {
         selectedItem: {},
         checkedItems: {},
         selectedIndex: -1,
-        showAllCheckbox: false,
+        showAllCheckbox: this.showCheckbox,
         hasScrollbar: false
       }
     },
@@ -65,7 +60,8 @@
         this.$children.forEach((column) => {
           if (column.isTableColumn) {
             columns.push(Object.assign({
-              columnStyle: column.columnStyle
+              columnStyle: Object.assign({height: this.itemHeight + 'px'}, column.columnStyle),
+              render: column.$scopedSlots.default || false
             }, column.$props));
           }
         });
@@ -77,20 +73,16 @@
         this.selectedItem = item;
         this.selectedIndex = index;
       },
-      checkItem(item, index, target) {
+      checkItem(item, index, {target}) {
         if (target.checked) {
           this.checkedItems[index] = item;
         } else {
           delete this.checkedItems[index];
         }
-        this.showAllCheckbox = Object.keys(this.checkedItems).length > 0;
+        !this.showCheckbox && (this.showAllCheckbox = Object.keys(this.checkedItems).length > 0);
       },
-      getLabel(item, column) {
-        let value = item[column.property];
-        if (column.formatter) {
-          return column.formatter(value, item);
-        }
-        return value;
+      checkAllItems() {
+
       },
       setScrollbar() {
         let el = this.$refs.table.$el;

@@ -39,5 +39,10 @@
   .gk-table {
     top: $--breadcrumb-button-size;
     margin-top: 16px;
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
   }
 }
