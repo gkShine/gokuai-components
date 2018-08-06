@@ -1,12 +1,13 @@
 @import "./common/var.scss";
 @import "./mixins/utils.scss";
 
-.gk-finder-list {
+.gk-finder {
   @include fit-dom;
 
   .gk-finder-toolbar {
     .gk-breadcrumb {
       margin-right: 200px;
+      height: 28px;
     }
 
     .gk-finder-show-ops {
@@ -36,13 +37,53 @@
     }
   }
 
-  .gk-table {
+  .gk-finder-content {
+    @include fit-window;
     top: $--breadcrumb-button-size;
     margin-top: 16px;
 
-    * {
+    p {
       margin: 0;
       padding: 0;
+    }
+
+    .gk-thumbnail {
+      @include fit-window;
+    }
+
+    &.gk-finder-view-default {
+      .gk-finder-filename {
+        display: flex;
+
+        img {
+          margin-right: 10px;
+        }
+
+        span {
+          color: #999999;
+          font-size: 12px;
+          margin-right: 10px;
+        }
+      }
+
+      .gk-table-item-active {
+        .gk-finder-filename {
+          span {
+            color: #FFFFFF;
+          }
+        }
+      }
+    }
+
+    &.gk-finder-view-list {
+      .gk-finder-filename {
+        img {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 10px;
+          margin-top: -2px;
+        }
+      }
     }
   }
 }

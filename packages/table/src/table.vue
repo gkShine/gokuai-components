@@ -1,5 +1,5 @@
 <template>
-    <section class="gk-table" :class="{'gk-table-with-header':showHeader, 'gk-table-show-checkbox':showAllCheckbox}">
+    <section class="gk-table" :class="{'gk-table-with-header':showHeader, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
         <table class="gk-table-header" v-show="showHeader">
             <thead>
             <tr>
@@ -13,8 +13,10 @@
             <template slot-scope="props">
                 <tr
                         class="gk-table-item"
-                        :class="{'gk-table-item-active':selectedIndex === props.itemIndex}"
-                        @click="handleItem(props.item, props.itemIndex)">
+                        :class="{'gk-table-item-active':selectedInx === props.itemIndex}"
+                        @click="selectItem(props.item, props.itemIndex, $event)"
+                        @dblclick="dblclickItem(props.item, props.itemIndex, $event)"
+                >
                     <gk-table-cell :check="checkItem" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
                 </tr>
             </template>
@@ -35,6 +37,8 @@
     },
     props: {
       'show-header': Boolean,
+      'show-checkbox': Boolean,
+      'selected-index': Number,
       data: {
         type: Array,
         required: true
@@ -42,16 +46,16 @@
       itemHeight: {
         type: Number,
         default: 42
-      },
-      'show-checkbox': Boolean
+      }
     },
     data() {
       return {
-        selectedItem: {},
+        selected: {},
         checkedItems: {},
-        selectedIndex: -1,
-        showAllCheckbox: this.showCheckbox,
-        hasScrollbar: false
+        selectedInx: this.selectedIndex,
+        showAllCheckbox: false,
+        hasScrollbar: false,
+        clickTimer: false
       }
     },
     computed: {
@@ -61,7 +65,7 @@
           if (column.isTableColumn) {
             columns.push(Object.assign({
               columnStyle: Object.assign({height: this.itemHeight + 'px'}, column.columnStyle),
-              render: column.$scopedSlots.default || false
+              render: column.$scopedSlots.default
             }, column.$props));
           }
         });
@@ -69,9 +73,17 @@
       }
     },
     methods: {
-      handleItem(item, index) {
-        this.selectedItem = item;
-        this.selectedIndex = index;
+      selectItem(item, index, event) {
+        clearTimeout(this.clickTimer);
+        this.clickTimer = setTimeout(() => {
+          this.selected = item;
+          this.selectedInx = index;
+          this.$emit('select', item, index, event);
+        }, 20);
+      },
+      dblclickItem(item, index, event) {
+        clearTimeout(this.clickTimer);
+        this.$emit('dblclick', item, index, event);
       },
       checkItem(item, index, {target}) {
         if (target.checked) {

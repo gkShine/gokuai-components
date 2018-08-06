@@ -1,13 +1,13 @@
 export default {
   name: "GkThumbnailItem",
   props: {
-    render: Object,
+    render: Function,
     data: Object|String,
     property: String,
     size: {
       type: Object,
       default: () => {
-        return {w: 120, h: 150};
+        return {w: 120, h: 160};
       }
     }
   },
@@ -29,11 +29,12 @@ export default {
       });
     }
     return h('li', {
-      class: 'gk-thumbnail-item',
+      class: {
+        'gk-thumbnail-item': true
+      },
       style: {
         width: this.size.w + 'px',
-        height: this.size.h + 'px',
-        'line-height': (this.size.h - 20 - 2) + 'px'
+        height: this.size.h + 'px'
       }
     }, [
       content

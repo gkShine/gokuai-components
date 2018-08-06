@@ -1,7 +1,7 @@
 <template>
-    <div class="gk-finder-list">
+    <div class="gk-finder">
         <div class="gk-finder-toolbar">
-            <gk-breadcrumb :show-nav="true" :data="breadcrumbs"></gk-breadcrumb>
+            <gk-breadcrumb :show-nav="false" :data="navData" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops">
                 <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
@@ -19,89 +19,111 @@
             </div>
         </div>
 
-        <gk-thumbnail v-if="viewMode == 'thumbnail'" :data="['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533485046201&di=3536931d29080ffd6dcbcb2283041bd2&imgtype=0&src=http%3A%2F%2Fh.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F267f9e2f07082838304837cfb499a9014d08f1a0.jpg','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533485046201&di=bc8ade2c036820c5a1c93ed8e02b4ed2&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fd52a2834349b033bda94010519ce36d3d439bdd5.jpg']"></gk-thumbnail>
-        <gk-table show-checkbox show-header :data="jsonData" :itemHeight="itemHeight" v-else-if="viewMode === 'list'">
-            <gk-table-column checkbox :width="30" align="center"></gk-table-column>
-            <gk-table-column property="filename" label="文件名" sortable></gk-table-column>
-            <gk-table-column property="last_dateline" label="最后修改" :formatter="formatDate" sortable
-                             :width="180"></gk-table-column>
-            <gk-table-column property="filesize" label="大小" :formatter="formatSize" sortable
-                             :width="100"></gk-table-column>
-            <gk-table-column :width="200"></gk-table-column>
-        </gk-table>
-        <gk-table :data="jsonData" :itemHeight="itemHeight + 20" v-else>
-            <gk-table-column :width="30" ></gk-table-column>
-            <gk-table-column property="filename" label="文件名" sortable>
+        <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
+            <gk-thumbnail v-if="viewMode == 'thumbnail'" :data="jsonData" :border="0" :selectedIndex="selectedIdx"
+                          @select="selectItem" @dblclick="dblclickItem">
                 <template slot-scope="props">
-                    <p>{{props.filename}}</p>
                     <p>
-                        <span>{{props.last_member_name}}</span>
-                        <span>{{formatDate(props.last_dateline)}}</span>
-                        <span>{{formatSize(props.filesize, props)}}</span>
+                        <img :src="props.thumb + '&size=128'"/>
                     </p>
+                    <p>{{props.filename}}</p>
                 </template>
-            </gk-table-column>
-            <gk-table-column :width="200"></gk-table-column>
-        </gk-table>
+            </gk-thumbnail>
+            <gk-table show-checkbox show-header :data="jsonData" :selectedIndex="selectedIdx" :itemHeight="itemHeight"
+                      @select="selectItem" @dblclick="dblclickItem" v-else-if="viewMode === 'list'">
+                <gk-table-column checkbox :width="30" align="center"></gk-table-column>
+                <gk-table-column property="filename" label="文件名" sortable>
+                    <template slot-scope="props">
+                        <div class="gk-finder-filename">
+                            <img :src="props.thumb + '&size=32'" height="16"/>{{props.filename}}
+                        </div>
+                    </template>
+                </gk-table-column>
+                <gk-table-column property="last_dateline" label="最后修改" :formatter="formatDate" sortable
+                                 :width="180"></gk-table-column>
+                <gk-table-column property="filesize" label="大小" :formatter="formatSize" sortable
+                                 :width="100"></gk-table-column>
+                <gk-table-column :width="200"></gk-table-column>
+            </gk-table>
+            <gk-table :data="jsonData" :itemHeight="itemHeight + 20" :selectedIndex="selectedIdx" @select="selectItem"
+                      @dblclick="dblclickItem" v-else>
+                <gk-table-column :width="30"></gk-table-column>
+                <gk-table-column property="filename" label="文件名" sortable>
+                    <template slot-scope="props">
+                        <div class="gk-finder-filename">
+                            <img :src="props.thumb + '&size=32'"/>
+                            <div>
+                                <p>{{props.filename}}</p>
+                                <p>
+                                    <span>{{props.last_member_name}}</span>
+                                    <span>{{formatDate(props.last_dateline)}}</span>
+                                    <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                </gk-table-column>
+                <gk-table-column :width="200"></gk-table-column>
+            </gk-table>
+        </div>
     </div>
 </template>
 
 <script>
-    import GkBreadcrumb from "../../breadcrumb/src/breadcrumb";
-    import GkButton from "../../button/src/button";
-    import GkButtonGroup from "../../button/src/button-group";
-    import GkTable from "../../table/src/table";
-    import GkTableColumn from "../../table/src/table-column";
-    import {timeToDate, bitSize} from "../../../src/common/util";
-    import GkThumbnail from "../../thumbnail/src/thumbnail";
+  import GkBreadcrumb from "../../breadcrumb/src/breadcrumb";
+  import GkButton from "../../button/src/button";
+  import GkButtonGroup from "../../button/src/button-group";
+  import GkTable from "../../table/src/table";
+  import GkTableColumn from "../../table/src/table-column";
+  import {timeToDate, bitSize} from "../../../src/common/util";
+  import GkThumbnail from "../../thumbnail/src/thumbnail";
 
-    export default {
-        name: 'GkFinder',
-        components: {GkThumbnail, GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
-        props: {
-            'json-data': {
-                type: Array,
-                required: true
-            },
-            'item-height': {
-                type: Number,
-                default: 42
-            }
-        },
-        data() {
-            return {
-                viewMode: 'default',
-                selectItem: [],
-                breadcrumbs: [
-                    {
-                        label: '库成员列表',
-                        path: ''
-                    },
-                    {
-                        label: '深圳腾讯科技部',
-                        path: ''
-                    },
-                    {
-                        label: '科技研发部门一',
-                        path: ''
-                    },
-                    {
-                        label: '张小丰的个人信息',
-                        path: ''
-                    }
-                ]
-            };
-        },
-        methods: {
-            formatDate(value) {
-                return timeToDate(value * 1000);
-            },
-            formatSize(value, item) {
-                return item.dir ? '-' : bitSize(value);
-            },
-            handleViewMode(mode) {
-                this.viewMode = mode;
-            }
-        }
+  export default {
+    name: 'GkFinder',
+    components: {GkThumbnail, GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
+    props: {
+      'json-data': {
+        type: Array,
+        required: true
+      },
+      'item-height': {
+        type: Number,
+        default: 42
+      },
+      'nav-data': {
+        type: Array
+      }
+    },
+    data() {
+      return {
+        viewMode: 'default',
+        selected: {},
+        selectedIdx: -1
+      };
+    },
+    methods: {
+      formatDate(value) {
+        return timeToDate(value * 1000);
+      },
+      formatSize(value, item) {
+        return item.dir ? '-' : bitSize(value);
+      },
+      handleViewMode(mode) {
+        this.viewMode = mode;
+      },
+      selectItem(data, index) {
+        this.selected = data;
+        this.selectedIdx = index;
+        this.$emit('select', data, index);
+      },
+      dblclickItem(data, index) {
+        this.selected = data;
+        this.selectedIdx = index;
+        this.$emit('dblclick', data, index);
+      },
+      clickBreadcrumb(value, data, index) {
+        this.$emit('navigator', value, data, index);
+      }
     }
+  }
 </script>

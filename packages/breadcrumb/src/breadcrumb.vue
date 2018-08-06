@@ -6,12 +6,12 @@
         </gk-button-group>
 
         <ul class="gk-breadcrumb-list">
-            <li :key="idx" class="gk-breadcrumb-item" v-for="(bc, idx) in data">
+            <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in data">
                 <template v-if="idx < data.length - 1">
-                    <a href="javascript:void(0)">{{bc.label}}</a>
+                    <a href="javascript:void(0)" @click="clickItem(item, idx, $event)">{{item[label]}}</a>
                     <i class="fa fa-angle-right"></i>
                 </template>
-                <span v-else>{{bc.label}}</span>
+                <span v-else>{{item[label]}}</span>
             </li>
         </ul>
     </div>
@@ -28,7 +28,20 @@
         type: Array,
         required: true
       },
+      label: {
+        type: String,
+        default: 'label'
+      },
+      value: {
+        type: String,
+        default: 'value'
+      },
       'show-nav': Boolean
+    },
+    methods: {
+      clickItem(item, index, event) {
+        this.$emit('navigator', item[this.value], item, index, event);
+      }
     }
   }
 </script>

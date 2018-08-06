@@ -39,6 +39,7 @@
     @include fit-window;
 
     .gk-table-body {
+      background-color: $--table-body-background-color;
       color: $--font-color;
       font-size: $--font-size;
       border-spacing: 0;

@@ -23,7 +23,8 @@ export default {
         }
       });
     } else if (column.property) {
-      content = this.data[column.property];
+      let label = this.data[column.property];
+      content = this.column.formatter ? this.column.formatter(label, this.data) : label ;
     }
     return h('td', {style: column.columnStyle}, [
       content
