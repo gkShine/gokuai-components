@@ -20,7 +20,7 @@
         </div>
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
-            <gk-thumbnail v-if="viewMode == 'thumbnail'" :data="jsonData" :border="0" :selectedIndex="selectedIdx"
+            <gk-thumbnail fit v-if="viewMode == 'thumbnail'" :loading="loading" :data="jsonData" :border="0" :selectedIndex="selectedIdx"
                           @select="selectItem" @dblclick="dblclickItem">
                 <template slot-scope="props">
                     <p>
@@ -29,7 +29,7 @@
                     <p>{{props.filename}}</p>
                 </template>
             </gk-thumbnail>
-            <gk-table show-checkbox show-header :data="jsonData" :selectedIndex="selectedIdx" :itemHeight="itemHeight"
+            <gk-table fit :loading="loading" show-checkbox show-header :data="jsonData" :selectedIndex="selectedIdx" :itemHeight="itemHeight"
                       @select="selectItem" @dblclick="dblclickItem" v-else-if="viewMode === 'list'">
                 <gk-table-column checkbox :width="30" align="center"></gk-table-column>
                 <gk-table-column property="filename" label="文件名" sortable>
@@ -45,7 +45,7 @@
                                  :width="100"></gk-table-column>
                 <gk-table-column :width="200"></gk-table-column>
             </gk-table>
-            <gk-table :data="jsonData" :itemHeight="itemHeight + 20" :selectedIndex="selectedIdx" @select="selectItem"
+            <gk-table fit :loading="loading" :data="jsonData" :itemHeight="itemHeight + 20" :selectedIndex="selectedIdx" @select="selectItem"
                       @dblclick="dblclickItem" v-else>
                 <gk-table-column :width="30"></gk-table-column>
                 <gk-table-column property="filename" label="文件名" sortable>
@@ -92,7 +92,8 @@
       },
       'nav-data': {
         type: Array
-      }
+      },
+      loading: Boolean
     },
     data() {
       return {

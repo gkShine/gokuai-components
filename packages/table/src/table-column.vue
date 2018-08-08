@@ -1,6 +1,6 @@
 <template>
     <th :style="columnStyle" >
-        <gk-checkbox type="checkbox" v-if="checkbox" ></gk-checkbox>
+        <gk-checkbox type="checkbox" v-if="checkbox" @click.native="checkAll($event)" ></gk-checkbox>
         <span v-else>{{label}}</span>
     </th>
 </template>
@@ -32,6 +32,11 @@
           width: this.width + 'px',
           'text-align': this.align
         }
+      }
+    },
+    methods: {
+      checkAll({target}) {
+        this.$parent.checkAllItems(target.checked);
       }
     }
   }

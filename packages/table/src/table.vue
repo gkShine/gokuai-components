@@ -1,6 +1,6 @@
 <template>
-    <section class="gk-table" :class="{'gk-table-with-header':showHeader, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
-        <table class="gk-table-header" v-show="showHeader">
+    <section class="gk-table" :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
+        <table ref="thead" class="gk-table-header" v-show="showHeader">
             <thead>
             <tr>
                 <slot></slot>
@@ -8,7 +8,7 @@
             </tr>
             </thead>
         </table>
-        <virtual-scroller ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
+        <virtual-scroller :style="computedStyle" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
                           content-tag="table" :item-height="itemHeight">
             <template slot-scope="props">
                 <tr
@@ -17,7 +17,7 @@
                         @click="selectItem(props.item, props.itemIndex, $event)"
                         @dblclick="dblclickItem(props.item, props.itemIndex, $event)"
                 >
-                    <gk-table-cell :check="checkItem" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
+                    <gk-table-cell @check="checkItem" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
                 </tr>
             </template>
         </virtual-scroller>
@@ -27,18 +27,20 @@
 <script>
   import {VirtualScroller} from 'vue-virtual-scroller';
   import _ from 'lodash';
-  import GkTableCell from "./table-cell.js";
+  import GkTableCell from "./table-cell";
+  import loading from '../../loading/src/loading';
 
   export default {
     name: "GkTable",
-    components: {
-      GkTableCell,
-      VirtualScroller
-    },
+    directives: {loading},
+    components: {GkTableCell, VirtualScroller},
     props: {
       'show-header': Boolean,
       'show-checkbox': Boolean,
       'selected-index': Number,
+      height: Number,
+      loading: Boolean,
+      fit: Boolean,
       data: {
         type: Array,
         required: true
@@ -59,6 +61,18 @@
       }
     },
     computed: {
+      computedStyle() {
+        let style = {};
+        if (!this.fit && this.height) {
+          let height = this.height;
+          if (this.showHeader) {
+            let headHeight = window.getComputedStyle(this.$refs.thead.getElementsByTagName('th')[0]).height;
+            height = height - parseInt(headHeight);
+          }
+          style.height = height + 'px';
+        }
+        return style;
+      },
       columns() {
         let columns = [];
         this.$children.forEach((column) => {
@@ -93,8 +107,21 @@
         }
         !this.showCheckbox && (this.showAllCheckbox = Object.keys(this.checkedItems).length > 0);
       },
-      checkAllItems() {
-
+      checkAllItems(checked) {
+        let checkboxs = this.$refs.table.$el.getElementsByClassName('gk-checkbox');
+        for (let i = 0; i < checkboxs.length; i++) {
+          checkboxs[i].checked = checked;
+          if (checked) {
+            checkboxs[i].classList.add('gk-checkbox-checked');
+          } else {
+            checkboxs[i].classList.remove('gk-checkbox-checked');
+          }
+        }
+        if (checked) {
+          this.checkedItems = this.data;
+        } else {
+          this.checkedItems = [];
+        }
       },
       setScrollbar() {
         let el = this.$refs.table.$el;

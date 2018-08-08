@@ -6,7 +6,6 @@ export default {
   props: {
     column: Object,
     data: Object,
-    check: Function,
     index: Number
   },
   render(h) {
@@ -18,7 +17,11 @@ export default {
       content = h('gk-checkbox', {
         nativeOn: {
           click: (event) => {
-            this.check(this.data, this.index, event);
+            this.$emit('check', this.data, this.index, event);
+            // event.stopPropagation();
+          },
+          dblclick: (event) => {
+            event.stopPropagation();
           }
         }
       });

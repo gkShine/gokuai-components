@@ -1,10 +1,15 @@
 @import "./common/var.scss";
+@import "./mixins/utils.scss";
 
 .gk-thumbnail {
   padding: 10px;
   margin: 0;
   overflow: hidden;
   background-color: $--thumbnail-background-color;
+
+  &.gk-thumbnail-fit {
+    @include fit-window;
+  }
 
   & > .gk-thumbnail-item {
     list-style: none;

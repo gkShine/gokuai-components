@@ -1,5 +1,5 @@
 <template>
-    <ul class="gk-thumbnail">
+    <ul class="gk-thumbnail" :class="{'gk-thumbnail-fit': fit}" v-loading="loading">
         <gk-thumbnail-item
                 @click.native="selectItem(dat, idx, $event)"
                 @dblclick.native="dblclickItem(dat, idx, $event)"
@@ -17,16 +17,20 @@
 
 <script>
   import GkThumbnailItem from "./thumbnail-item.js";
+  import loading from '../../loading/src/loading';
 
   export default {
     name: "GkThumbnail",
+    directives: {loading},
     components: {GkThumbnailItem},
     props: {
       data: Array,
       property: String,
       size: Object,
       border: Number,
-      'selected-index': Number
+      'selected-index': Number,
+      loading: Boolean,
+      fit: Boolean
     },
     data() {
       return {

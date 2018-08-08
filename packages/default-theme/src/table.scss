@@ -2,7 +2,6 @@
 @import "./mixins/utils.scss";
 
 .gk-table {
-  @include fit-window;
   overflow: hidden;
 
   .gk-table-header {
@@ -36,7 +35,7 @@
   }
 
   .gk-table-virtual {
-    @include fit-window;
+    background-color: $--table-body-background-color;
 
     .gk-table-body {
       background-color: $--table-body-background-color;
@@ -67,6 +66,14 @@
           }
         }
       }
+    }
+  }
+
+  &.gk-table-fit {
+    @include fit-window;
+
+    .gk-table-virtual {
+      @include fit-window;
     }
   }
 
