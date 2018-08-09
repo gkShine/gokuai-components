@@ -1,7 +1,10 @@
 <template>
     <section class="gk-slide" :class="{'gk-slide-fit': fit, 'gk-slide-with-toolbar': toolbar}">
         <div class="gk-slide-content">
-            <slot :item="selected"></slot>
+            <slot :item="selected" v-if="Object.keys($scopedSlots).length"></slot>
+            <div v-else class="gk-slide-images">
+                <img :src="selected" />
+            </div>
         </div>
         <div class="gk-slide-toolbar" v-if="toolbar">
             <div class="gk-slide-toolbar-left">
@@ -20,14 +23,23 @@
 </template>
 
 <script>
+  import tooltip from '../../tooltip/src/tooltip';
+
   export default {
     name: "gkSlide",
+    directives: {tooltip},
     props: {
       fit: Boolean,
-      toolbar: Object,
+      toolbar: Boolean,
       list: {
         type: Array,
         required: true
+      },
+      options: {
+        type: Object,
+        default() {
+          return {};
+        }
       },
       value: {
         type: Object
@@ -36,10 +48,10 @@
     },
     computed: {
       left() {
-        return this.toolbar && this.toolbar.left || [];
+        return this.toolbar && this.options.left || [];
       },
       center() {
-        if (!this.toolbar) {
+        if (!this.options) {
           return {
             prev: false,
             text: '',
@@ -50,15 +62,15 @@
           prev: 'prev',
           text: '[index] of [count]',
           next: 'next'
-        }, this.toolbar.center);
+        }, this.options.center);
       },
       right() {
-        return this.toolbar && this.toolbar.right || [];
+        return this.toolbar && this.options.right || [];
       }
     },
     data() {
       return {
-        selected: this.value,
+        selected: this.value || this.list[0],
         selectedIndex: this.getIndex()
       }
     },

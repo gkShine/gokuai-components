@@ -55,8 +55,8 @@ export default {
     self.box = null;
     self.exist = false;
     self.options = {
-      bg: el.attributes['gk-loading-background'] && el.attributes['gk-loading-background'].value || false,
-      text: el.attributes['gk-loading-text'] && el.attributes['gk-loading-text'].value || false
+      bg: el.getAttribute('gk-loading-background') || false,
+      text: el.getAttribute('gk-loading-text') || false
     };
   },
 

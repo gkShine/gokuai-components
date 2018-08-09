@@ -13,6 +13,20 @@
 
   .gk-slide-content {
     @include fit-dom;
+    overflow: hidden;
+
+    .gk-slide-images {
+      @include fit-dom;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
   }
 
   &.gk-slide-with-toolbar {

@@ -68,7 +68,7 @@
                 </gk-table>
             </template>
 
-            <gk-slide v-if="preview" fit :toolbar="previewToolbar" :list="fileList" v-model="selected" id="fullpath">
+            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="selected" id="fullpath">
                 <template slot-scope="props">
                     <iframe v-if="props.item.previewUrl" v-bind:src="props.item.previewUrl"></iframe>
                 </template>
