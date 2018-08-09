@@ -21,7 +21,7 @@
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
-                <gk-thumbnail fit v-if="viewMode == 'thumbnail'" :loading="loading" :data="list" :border="0" :selectedIndex="selectedIndex"
+                <gk-thumbnail fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list" :border="0" :selectedIndex="selectedIndex"
                               @select="selectItem" @dblclick="dblclickItem">
                     <template slot-scope="props">
                         <p>
@@ -68,8 +68,10 @@
                 </gk-table>
             </template>
 
-            <gk-slide v-if="preview" fit>
-                <iframe v-if="value && value.previewUrl" :src="value.previewUrl"></iframe>
+            <gk-slide v-if="preview" fit :toolbar="previewToolbar" :list="fileList" v-model="selected" id="fullpath">
+                <template slot-scope="props">
+                    <iframe v-if="props.item.previewUrl" v-bind:src="props.item.previewUrl"></iframe>
+                </template>
             </gk-slide>
         </div>
     </div>
@@ -103,7 +105,8 @@
         type: Number,
         default: 42
       },
-      loading: Boolean
+      loading: Boolean,
+      previewToolbar: Object
     },
     data() {
       return {
@@ -111,7 +114,8 @@
         selected: {},
         preview: false,
         navList: this.initNavs(),
-        selectedIndex: -1
+        selectedIndex: -1,
+        fileList: []
       };
     },
     watch: {
@@ -167,6 +171,12 @@
         this.preview = true;
       },
       loadSuccess() {
+        this.fileList = [];
+        this.list.forEach((file)=> {
+          if (!file.dir) {
+            this.fileList.push(file);
+          }
+        });
         this.preview = false;
       }
     }
