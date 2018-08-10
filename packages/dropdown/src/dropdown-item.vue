@@ -1,6 +1,6 @@
 <template>
-    <li class="gk-dropdown-item" @click="handleClick" >
-        <a href="javascript:;"><i v-if="icon" :class="icon"></i><slot></slot></a>
+    <li class="gk-dropdown-item">
+        <a href="javascript:;" @click="handleClick"><i v-if="icon" :class="icon"></i><slot></slot></a>
     </li>
 </template>
 
@@ -9,6 +9,7 @@
     name: "GkDropdownItem",
     props: {
       divided: Boolean,
+      disabled: Boolean,
       command: String|Object|Array|Number,
       icon: String
     },

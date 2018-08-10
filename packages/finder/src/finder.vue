@@ -4,11 +4,11 @@
             <gk-breadcrumb :show-nav="false" :data="navList" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
-                <gk-dropdown style="display: inline-block">
+                <gk-dropdown style="display: inline-block" >
                     <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
-                    <gk-dropdown-menu slot="dropdown">
+                    <gk-dropdown-menu slot="dropdown" show-arrow>
                         <gk-dropdown-item icon="fa fa-user">filename</gk-dropdown-item>
-                        <gk-dropdown-item divided>最后修改</gk-dropdown-item>
+                        <gk-dropdown-item disabled>最后修改</gk-dropdown-item>
                         <gk-dropdown-item>大小</gk-dropdown-item>
                     </gk-dropdown-menu>
                 </gk-dropdown>
