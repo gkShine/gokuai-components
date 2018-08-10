@@ -10,6 +10,7 @@
   line-height: 24px;
   transition-property: opacity;
   transition-duration: .3s;
+  margin: 8px;
 
   s.gk-tooltip-arrow {
     position: absolute;
@@ -31,13 +32,13 @@
     margin-top: -4px;
   }
 
-  s.gk-arrow-top {
+  s.gk-arrow-bottom {
     left: 50%;
     margin-left: -4px;
     top: -3px;
   }
 
-  s.gk-arrow-bottom {
+  s.gk-arrow-top {
     left: 50%;
     margin-left: -4px;
     bottom: -3px;

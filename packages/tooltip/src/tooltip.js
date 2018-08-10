@@ -7,6 +7,7 @@ export default {
     let tooltip = document.createElement('div');
     tooltip.className = 'gk-tooltip';
     tooltip.id = 'gk-tooltip-' + this.index;
+    tooltip.style.zIndex = this.index + '';
     tooltip.textContent = el.getAttribute('title') || el.getAttribute('content');
     el.setAttribute('content', tooltip.textContent);
     document.body.appendChild(tooltip);
@@ -21,23 +22,24 @@ export default {
 
   position(el, tooltip, placement) {
     let position = el.getBoundingClientRect();
-    let left, top, offset=10;
+    let tooltipStyle = window.getComputedStyle(tooltip);
+    let left, top;
     switch (placement) {
       case 'top':
-        left = position.left - tooltip.clientWidth / 2 + position.width / 2;
-        top = position.top + position.height + offset / 2 + 4;
+        left = position.left - (tooltip.clientWidth - position.width) / 2 - parseInt(tooltipStyle.marginLeft);
+        top = position.top - tooltip.clientHeight - parseInt(tooltipStyle.marginTop) - parseInt(tooltipStyle.marginBottom);
         break;
       case 'left':
-        left = position.left - tooltip.clientWidth - offset - 4;
-        top = position.top - (tooltip.clientHeight - position.height) / 2;
+        left = position.left - tooltip.clientWidth - parseInt(tooltipStyle.marginLeft) - parseInt(tooltipStyle.marginRight);
+        top = position.top - (tooltip.clientHeight - position.height) / 2 - parseInt(tooltipStyle.marginTop);
         break;
       case 'right':
-        left = position.left + position.width + offset + 4;
-        top = position.top - (tooltip.clientHeight - position.height) / 2;
+        left = position.left + position.width;
+        top = position.top - (tooltip.clientHeight - position.height) / 2 - parseInt(tooltipStyle.marginTop);
         break;
       default:
-        left = position.left - tooltip.clientWidth / 2 + position.width / 2;
-        top = position.top - position.height - offset - 4;
+        left = position.left - (tooltip.clientWidth - position.width) / 2 - parseInt(tooltipStyle.marginLeft);
+        top = position.top + position.height;
     }
     tooltip.style.left = left + 'px';
     tooltip.style.top = top + 'px';

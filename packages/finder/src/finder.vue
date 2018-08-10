@@ -4,7 +4,15 @@
             <gk-breadcrumb :show-nav="false" :data="navList" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
-                <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
+                <gk-dropdown style="display: inline-block">
+                    <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
+                    <gk-dropdown-menu slot="dropdown">
+                        <gk-dropdown-item icon="fa fa-user">filename</gk-dropdown-item>
+                        <gk-dropdown-item divided>最后修改</gk-dropdown-item>
+                        <gk-dropdown-item>大小</gk-dropdown-item>
+                    </gk-dropdown-menu>
+                </gk-dropdown>
+
                 <gk-button-group plain class="gk-finder-view-mode">
                     <gk-button
                             :class="{'gk-button-active' : viewMode === 'default'}"
@@ -86,10 +94,16 @@
   import {timeToDate, bitSize} from "../../../src/common/util";
   import GkThumbnail from "../../thumbnail/src/thumbnail";
   import GkSlide from "../../slide/src/slide";
+  import GkDropdown from "../../dropdown/src/dropdown";
+  import GkDropdownItem from "../../dropdown/src/dropdown-item";
+  import GkDropdownMenu from "../../dropdown/src/dropdown-menu.js";
 
   export default {
     name: 'GkFinder',
-    components: {GkSlide, GkThumbnail, GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
+    components: {
+      GkDropdownItem,
+      GkDropdownMenu,
+      GkDropdown, GkSlide, GkThumbnail, GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
     props: {
       list: { //当前文件列表
         type: Array,
@@ -119,7 +133,8 @@
       };
     },
     watch: {
-      list: 'loadSuccess'
+      list: 'loadSuccess',
+      current: 'changeFile'
     },
     methods: {
       initNavs() {
@@ -178,6 +193,11 @@
           }
         });
         this.preview = false;
+      },
+      changeFile() {
+        if (this.current.dir) {
+          this.preview = false;
+        }
       }
     }
   }

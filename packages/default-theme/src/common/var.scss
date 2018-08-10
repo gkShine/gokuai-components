@@ -1,4 +1,5 @@
 $--primary-color: #4B7FEF;
+$--primary-hover-color: #E6F2FF;
 
 $--font-size: 14px;
 $--font-color: #4A4A4A;
@@ -12,7 +13,7 @@ $--breadcrumb-button-size: 28px;
 /* Table
 --------------------------*/
 $--table-head-height: 36px;
-$--table-hover-color: #e6f2ff;
+$--table-hover-color: $--primary-hover-color;
 $--table-active-color: $--primary-color;
 $--table-head-background-color: #8C95A4;
 $--table-body-background-color: #FFFFFF;
@@ -31,3 +32,9 @@ $--thumbnail-active-color: $--primary-color;
 --------------------------*/
 $--slide-toolbar-height: 40px;
 $--slide-toolbar-background-color: #2b2d32;
+
+/* Dropdown
+--------------------------*/
+$--dropdown-hover-color: $--primary-hover-color;
+$--dropdown-active-color: $--primary-color;
+$--dropdown-item-height: 26px;

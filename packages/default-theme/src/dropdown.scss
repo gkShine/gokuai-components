@@ -1,0 +1,52 @@
+@import "./common/var.scss";
+
+.gk-dropdown {
+
+}
+
+.gk-dropdown-menu {
+  min-width: 160px;
+  background: #FFFFFF;
+  position: absolute;
+  border-radius: 2px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  margin: 5px 0;
+  padding: 9px 0;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: .25s;
+
+  .gk-dropdown-divided {
+    height: 1px;
+    background-color: #EEEEEE;
+    margin: 9px 0;
+  }
+
+  .gk-dropdown-item {
+    height: $--dropdown-item-height;
+
+    a {
+      color: $--font-color;
+      font-size: $--font-size;
+      line-height: $--dropdown-item-height;
+      display: block;
+      text-decoration: none;
+      padding-left: 25px;
+
+      i {
+        margin-left: -15px;
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    a:hover {
+      background-color: $--dropdown-hover-color;
+    }
+
+    &.gk-dropdown-active {
+      background-color: $--dropdown-active-color;
+    }
+  }
+}
