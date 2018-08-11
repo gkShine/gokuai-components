@@ -4,12 +4,12 @@
             <gk-breadcrumb :show-nav="false" :data="navList" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
-                <gk-dropdown style="display: inline-block" >
+                <gk-dropdown style="display: inline-block" @command="handleSort">
                     <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
                     <gk-dropdown-menu slot="dropdown" show-arrow>
-                        <gk-dropdown-item icon="fa fa-user">filename</gk-dropdown-item>
-                        <gk-dropdown-item disabled>最后修改</gk-dropdown-item>
-                        <gk-dropdown-item>大小</gk-dropdown-item>
+                        <gk-dropdown-item command="filename" icon="fa fa-user">filename</gk-dropdown-item>
+                        <gk-dropdown-item command="last_dateline" disabled>最后修改</gk-dropdown-item>
+                        <gk-dropdown-item command="filesize" >大小</gk-dropdown-item>
                     </gk-dropdown-menu>
                 </gk-dropdown>
 
@@ -30,7 +30,7 @@
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
                 <gk-thumbnail fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list" :border="0" :selectedIndex="selectedIndex"
-                              @select="selectItem" @dblclick="dblclickItem">
+                              @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" >
                     <template slot-scope="props">
                         <p>
                             <img :src="props.thumb + '&size=128'"/>
@@ -39,7 +39,7 @@
                     </template>
                 </gk-thumbnail>
                 <gk-table fit :loading="loading" show-checkbox show-header :data="list" :selectedIndex="selectedIndex" :itemHeight="itemHeight"
-                          @select="selectItem" @dblclick="dblclickItem" v-else-if="viewMode === 'list'">
+                          @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column checkbox :width="30" align="center"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
@@ -55,7 +55,7 @@
                     <gk-table-column :width="200"></gk-table-column>
                 </gk-table>
                 <gk-table fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" :selectedIndex="selectedIndex" @select="selectItem"
-                          @dblclick="dblclickItem" v-else>
+                          @dblclick="dblclickItem" @contextmenu="rightClickItem"  v-else>
                     <gk-table-column :width="30"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
@@ -82,6 +82,12 @@
                 </template>
             </gk-slide>
         </div>
+
+        <gk-menu ref="contextmenu">
+            <gk-menu-item icon="fa fa-user">filename</gk-menu-item>
+            <gk-menu-item disabled>最后修改</gk-menu-item>
+            <gk-menu-item>大小</gk-menu-item>
+        </gk-menu>
     </div>
 </template>
 
@@ -94,16 +100,16 @@
   import {timeToDate, bitSize} from "../../../src/common/util";
   import GkThumbnail from "../../thumbnail/src/thumbnail";
   import GkSlide from "../../slide/src/slide";
+  import GkMenu from "../../menu/src/menu";
+  import GkMenuItem from "../../menu/src/menu-item";
   import GkDropdown from "../../dropdown/src/dropdown";
-  import GkDropdownItem from "../../dropdown/src/dropdown-item";
+  import GkDropdownItem from "../../dropdown/src/dropdown-item.js";
   import GkDropdownMenu from "../../dropdown/src/dropdown-menu.js";
 
   export default {
     name: 'GkFinder',
-    components: {
-      GkDropdownItem,
-      GkDropdownMenu,
-      GkDropdown, GkSlide, GkThumbnail, GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
+    components: {GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSlide, GkThumbnail, GkTableColumn,
+      GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
     props: {
       list: { //当前文件列表
         type: Array,
@@ -177,6 +183,9 @@
           this.showPreview();
         }
       },
+      rightClickItem(file, index, event) {
+        this.$refs.contextmenu.show(event);
+      },
       clickBreadcrumb(value, file, index) {
         this.navList = this.navList.slice(0, index + 1);
         this.selectItem(null, -1);
@@ -193,6 +202,9 @@
           }
         });
         this.preview = false;
+      },
+      handleSort(command) {
+        console.log(command);
       },
       changeFile() {
         if (this.current.dir) {

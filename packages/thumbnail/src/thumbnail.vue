@@ -1,8 +1,9 @@
 <template>
-    <ul class="gk-thumbnail" :class="{'gk-thumbnail-fit': fit}" v-loading="loading">
+    <ul class="gk-thumbnail" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit}" v-loading="loading">
         <gk-thumbnail-item
                 @click.native="selectItem(dat, idx, $event)"
                 @dblclick.native="dblclickItem(dat, idx, $event)"
+                @contextmenu.native="handleContextmenu(dat, idx, $event)"
                 v-for="(dat, idx) in data"
                 :key="idx"
                 :data="dat"
@@ -58,6 +59,14 @@
       dblclickItem(data, index, event) {
         clearTimeout(this.clickTimer);
         this.$emit('dblclick', data, index, event);
+      },
+      handleContextmenu(item, index, event) {
+        if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
+          return;
+        }
+        this.$emit('contextmenu', item, index, event);
+        event.stopPropagation();
+        event.preventDefault();
       }
     }
   }

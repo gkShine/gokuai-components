@@ -8,7 +8,7 @@
             </tr>
             </thead>
         </table>
-        <virtual-scroller :style="computedStyle" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
+        <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
                           content-tag="table" :item-height="itemHeight">
             <template slot-scope="props">
                 <tr
@@ -16,6 +16,7 @@
                         :class="{'gk-table-item-active':selectedInx === props.itemIndex}"
                         @click="selectItem(props.item, props.itemIndex, $event)"
                         @dblclick="dblclickItem(props.item, props.itemIndex, $event)"
+                        @contextmenu="handleContextmenu(props.item, props.itemIndex, $event)"
                 >
                     <gk-table-cell @check="checkItem" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
                 </tr>
@@ -122,6 +123,14 @@
         } else {
           this.checkedItems = [];
         }
+      },
+      handleContextmenu(item, index, event) {
+        if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
+          return;
+        }
+        this.$emit('contextmenu', item, index, event);
+        event.stopPropagation();
+        event.preventDefault();
       },
       setScrollbar() {
         let el = this.$refs.table.$el;

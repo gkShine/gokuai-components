@@ -1,10 +1,7 @@
 @import "./common/var.scss";
 
-.gk-dropdown {
-
-}
-
-.gk-dropdown-menu {
+.gk-menu {
+  z-index: 9001;
   min-width: 160px;
   background: #FFFFFF;
   position: absolute;
@@ -13,22 +10,27 @@
   margin: 5px 0;
   padding: 9px 0;
   opacity: 0;
+  display: none;
   transition-property: opacity;
   transition-duration: .25s;
 
-  .gk-dropdown-divided {
+  li {
+    list-style: none;
+  }
+
+  .gk-menu-divided {
     height: 1px;
     background-color: #EEEEEE;
     margin: 9px 0;
   }
 
-  .gk-dropdown-item {
-    height: $--dropdown-item-height;
+  .gk-menu-item {
+    height: $--menu-item-height;
 
     a {
       color: $--font-color;
       font-size: $--font-size;
-      line-height: $--dropdown-item-height;
+      line-height: $--menu-item-height;
       display: block;
       text-decoration: none;
       padding-left: 25px;
@@ -42,11 +44,11 @@
     }
 
     a:hover {
-      background-color: $--dropdown-hover-color;
+      background-color: $--menu-hover-color;
     }
 
-    &.gk-dropdown-active {
-      background-color: $--dropdown-active-color;
+    &.gk-menu-active {
+      background-color: $--menu-active-color;
     }
   }
 }
