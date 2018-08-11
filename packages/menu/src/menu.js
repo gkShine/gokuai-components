@@ -162,11 +162,11 @@ export default {
           };
           break;
         case 'hover':
-          this.$el.onmouseenter = () => {
+          this.dom.onmouseenter = () => {
             clearTimeout(this.timer);
             this.showMenu();
           };
-          this.$el.onmouseleave = () => {
+          this.dom.onmouseleave = () => {
             this.timer = setTimeout(() => {
               this.hideMenu();
             }, 100);

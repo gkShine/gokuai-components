@@ -87,6 +87,15 @@
             <gk-menu-item icon="fa fa-user">filename</gk-menu-item>
             <gk-menu-item disabled>最后修改</gk-menu-item>
             <gk-menu-item>大小</gk-menu-item>
+            <gk-menu-item>
+                刺激菜单
+                <gk-submenu>
+                    <gk-menu-item>大小</gk-menu-item>
+                    <gk-menu-item>大小2</gk-menu-item>
+                    <gk-menu-item>大小2</gk-menu-item>
+                    <gk-menu-item>大小2</gk-menu-item>
+                </gk-submenu>
+            </gk-menu-item>
         </gk-menu>
     </div>
 </template>
@@ -105,10 +114,11 @@
   import GkDropdown from "../../dropdown/src/dropdown";
   import GkDropdownItem from "../../dropdown/src/dropdown-item.js";
   import GkDropdownMenu from "../../dropdown/src/dropdown-menu.js";
+  import GkSubmenu from "../../menu/src/submenu.js";
 
   export default {
     name: 'GkFinder',
-    components: {GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSlide, GkThumbnail, GkTableColumn,
+    components: {GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail, GkTableColumn,
       GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
     props: {
       list: { //当前文件列表
