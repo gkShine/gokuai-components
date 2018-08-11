@@ -33,7 +33,8 @@ export default {
     });
     if (this.showArrow) {
       list.push(h('div', {
-        'class': 'gk-menu-arrow'
+        'class': 'gk-menu-arrow',
+        ref: 'arrow'
       }));
     }
     return h('ul', {
@@ -68,13 +69,25 @@ export default {
       this.$emit('visible-change', false);
     },
     setPosition() {
+      if (this.dom) {
+        this.position = this.dom.getBoundingClientRect();
+      }
       let {left, top} = this.getPosition(this.placement);
       this.menu.style.left = left + 'px';
       this.menu.style.top = top + 'px';
+
+      if (this.$refs.arrow) {
+        if (this.position.top > top) {
+          //菜单在上面
+          this.$refs.arrow.classList.add('gk-menu-arrow-top');
+        }
+        let arrowStyle = window.getComputedStyle(this.$refs.arrow);
+        this.$refs.arrow.style.left = (this.position.left - left + this.position.width / 2 - parseInt(arrowStyle.borderWidth)) + 'px';
+      }
     },
     getPosition(placement) {
       let left, top;
-      let position = this.position || this.dom.getBoundingClientRect();
+      let position = this.position;
       let menuStyle = window.getComputedStyle(this.menu);
       let {topTop, bottomTop, startLeft, centerLeft, endLeft} = {
         topTop: position.top - this.menu.clientHeight - parseInt(menuStyle.marginTop) - parseInt(menuStyle.marginBottom),
@@ -187,7 +200,9 @@ export default {
     } else if (this.$parent.btn) {
       this.dom = this.$parent.btn;
     }
-    this.dom && this.bind();
+    if (this.dom) {
+      this.bind();
+    }
 
     this.menu.addEventListener('transitionend', () => {
       if (this.visible === false) {

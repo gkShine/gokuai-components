@@ -3,11 +3,11 @@
 .gk-menu {
   z-index: 9001;
   min-width: 160px;
-  background: #FFFFFF;
+  background: $--menu-background-color;
   position: absolute;
   border-radius: 2px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
-  margin: 5px 0;
+  margin: 8px 0;
   padding: 9px 0;
   opacity: 0;
   display: none;
@@ -24,31 +24,50 @@
     margin: 9px 0;
   }
 
+  .gk-menu-arrow {
+    position: absolute;
+    display: block;
+    border: 4px solid $--menu-background-color;
+    transform: rotate(45deg);
+    z-index: -1;
+    top: -4px;
+    box-shadow: 0 -6px 12px -2px rgba(0, 0, 0, .175);
+
+    &.gk-menu-arrow-top {
+      top: auto;
+      bottom: -4px;
+      box-shadow: 0 6px 12px 0px rgba(0, 0, 0, .175);
+    }
+  }
+
   .gk-menu-item {
     height: $--menu-item-height;
+    color: $--font-color;
+    font-size: $--font-size;
+    line-height: $--menu-item-height;
+    display: block;
+    text-decoration: none;
+    padding-left: 25px;
+    cursor: default;
 
-    a {
-      color: $--font-color;
-      font-size: $--font-size;
-      line-height: $--menu-item-height;
-      display: block;
-      text-decoration: none;
-      padding-left: 25px;
-
-      i {
-        margin-left: -15px;
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-      }
+    i {
+      margin-left: -15px;
+      display: inline-block;
+      width: 15px;
+      height: 15px;
     }
 
-    a:hover {
+    &:hover {
       background-color: $--menu-hover-color;
     }
 
-    &.gk-menu-active {
+    &.gk-menu-item-active {
       background-color: $--menu-active-color;
     }
+
+    &.gk-menu-item-disable {
+      background-color: $--menu-disable-color;
+    }
   }
+
 }

@@ -1,6 +1,8 @@
 $--primary-color: #4B7FEF;
 $--primary-hover-color: #E6F2FF;
 
+$--disable-color: #EEEEEE;
+
 $--font-size: 14px;
 $--font-color: #4A4A4A;
 $--font-reverse-color: #FFFFFF;
@@ -35,6 +37,8 @@ $--slide-toolbar-background-color: #2b2d32;
 
 /* Menu
 --------------------------*/
+$--menu-background-color: #FFFFFF;
 $--menu-hover-color: $--primary-hover-color;
 $--menu-active-color: $--primary-color;
+$--menu-disable-color: $--disable-color;
 $--menu-item-height: 26px;
