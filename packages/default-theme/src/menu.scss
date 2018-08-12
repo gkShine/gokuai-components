@@ -57,6 +57,18 @@
       height: 15px;
     }
 
+    .gk-menu-item-right {
+      float: right;
+
+      i {
+        margin-left: 0;
+      }
+
+      i.fa-caret-right {
+        width: 8px;
+      }
+    }
+
     &:hover {
       background-color: $--menu-hover-color;
     }

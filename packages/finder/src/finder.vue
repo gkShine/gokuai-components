@@ -88,12 +88,22 @@
             <gk-menu-item disabled>最后修改</gk-menu-item>
             <gk-menu-item>大小</gk-menu-item>
             <gk-menu-item>
-                刺激菜单
+                <gk-checkbox></gk-checkbox><span>刺激菜单</span>
                 <gk-submenu>
                     <gk-menu-item>大小</gk-menu-item>
                     <gk-menu-item>大小2</gk-menu-item>
                     <gk-menu-item>大小2</gk-menu-item>
-                    <gk-menu-item>大小2</gk-menu-item>
+                    <gk-menu-item>
+                        大小2
+                        <gk-submenu>
+                            <gk-menu-item>大小</gk-menu-item>
+                            <gk-menu-item>大小2</gk-menu-item>
+                            <gk-menu-item>大小2</gk-menu-item>
+                            <gk-menu-item>
+                                大小2
+                            </gk-menu-item>
+                        </gk-submenu>
+                    </gk-menu-item>
                 </gk-submenu>
             </gk-menu-item>
         </gk-menu>
@@ -115,10 +125,13 @@
   import GkDropdownItem from "../../dropdown/src/dropdown-item.js";
   import GkDropdownMenu from "../../dropdown/src/dropdown-menu.js";
   import GkSubmenu from "../../menu/src/submenu.js";
+  import GkCheckbox from "../../checkbox/src/checkbox";
 
   export default {
     name: 'GkFinder',
-    components: {GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail, GkTableColumn,
+    components: {
+      GkCheckbox,
+      GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail, GkTableColumn,
       GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
     props: {
       list: { //当前文件列表

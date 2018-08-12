@@ -1,6 +1,7 @@
 <template>
     <li class="gk-menu-item" :class="{'gk-menu-item-disable':disabled}" @click="handleClick">
         <i v-if="icon" :class="icon"></i><slot></slot>
+        <span class="gk-menu-item-right"><i v-if="hasSub" class="fa fa-caret-right"></i></span>
     </li>
 </template>
 
@@ -12,6 +13,11 @@
       disabled: Boolean,
       command: String|Object|Array|Number,
       icon: String
+    },
+    data() {
+      return {
+        hasSub: false
+      }
     },
     computed: {
       menu() {
@@ -26,12 +32,21 @@
       }
     },
     methods: {
-      handleClick() {
+      handleClick(event) {
         if (this.disabled) {
+          event.stopPropagation();
           return;
         }
         this.menu.$emit('command', this.command);
         this.dropdown && this.dropdown.$emit('command', this.command);
+      }
+    },
+    mounted() {
+      let children = this.$children;
+      for (let i = 0; i < children.length; i++) {
+        if (children[i].$el.className.indexOf('gk-menu') > -1) {
+          this.hasSub = true;
+        }
       }
     }
   }
