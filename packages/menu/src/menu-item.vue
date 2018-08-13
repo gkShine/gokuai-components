@@ -1,5 +1,5 @@
 <template>
-    <li class="gk-menu-item" :class="{'gk-menu-item-disable':disabled}" @click="handleClick">
+    <li class="gk-menu-item" :class="{'gk-menu-item-disabled':disabled}" @click="handleClick" :aria-disabled="disabled">
         <i v-if="icon" :class="icon"></i><slot></slot>
         <span class="gk-menu-item-right"><slot name="after"></slot><i v-if="hasSub" class="fa fa-caret-right"></i></span>
     </li>

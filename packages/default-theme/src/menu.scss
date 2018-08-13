@@ -78,8 +78,9 @@
       background-color: $--menu-active-color;
     }
 
-    &.gk-menu-item-disable {
-      background-color: $--menu-disable-color;
+    &.gk-menu-item-disabled {
+      color: $--menu-disabled-font-color;
+      background: none;
     }
   }
 

@@ -1,7 +1,6 @@
 $--primary-color: #4B7FEF;
 $--primary-hover-color: #E6F2FF;
-
-$--disable-color: #EEEEEE;
+$--disabled-color: #9F9F9F;
 
 $--font-size: 14px;
 $--font-color: #4A4A4A;
@@ -40,5 +39,5 @@ $--slide-toolbar-background-color: #2b2d32;
 $--menu-background-color: #FFFFFF;
 $--menu-hover-color: $--primary-hover-color;
 $--menu-active-color: $--primary-color;
-$--menu-disable-color: $--disable-color;
+$--menu-disabled-font-color: $--disabled-color;
 $--menu-item-height: 26px;

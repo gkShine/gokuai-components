@@ -38,7 +38,7 @@
                         <p>{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table fit :loading="loading" show-checkbox show-header :data="list" :selectedIndex="selectedIndex" :itemHeight="itemHeight"
+                <gk-table fit :loading="loading" show-checkbox show-header :data="list" :itemHeight="itemHeight"
                           @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column checkbox :width="30" align="center"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
@@ -54,7 +54,7 @@
                                      :width="100"></gk-table-column>
                     <gk-table-column :width="200"></gk-table-column>
                 </gk-table>
-                <gk-table fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" :selectedIndex="selectedIndex" @select="selectItem"
+                <gk-table fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem"  v-else>
                     <gk-table-column :width="30"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
@@ -193,9 +193,9 @@
         this.viewMode = mode;
       },
       selectItem(file, index) {
-        this.selected = file;
-        this.selectedIndex = index;
-        this.$emit('input', file);
+        // this.selected = file;
+        // this.selectedIndex = index;
+        // this.$emit('input', file);
       },
       dblclickItem(file, index) {
         this.selected = file;

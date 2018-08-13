@@ -1,16 +1,16 @@
 <template>
-    <ul class="gk-thumbnail" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit}" v-loading="loading">
+    <ul class="gk-thumbnail" @click="handleCancelSelect" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit}" v-loading="loading">
         <gk-thumbnail-item
-                @click.native="selectItem(dat, idx, $event)"
-                @dblclick.native="dblclickItem(dat, idx, $event)"
-                @contextmenu.native="handleContextmenu(dat, idx, $event)"
-                v-for="(dat, idx) in data"
-                :key="idx"
-                :data="dat"
+                @click.native="handleSelect(item, index, $event)"
+                @dblclick.native="handleDblclick(item, index, $event)"
+                @contextmenu.native="handleContextmenu(item, index, $event)"
+                v-for="(item, index) in data"
+                :key="index"
+                :data="item"
                 :render="$scopedSlots.default"
                 :property="property"
                 :size="size"
-                :class="{'gk-thumbnail-active-item':idx === selectedInx}"
+                :class="{'gk-thumbnail-active-item':selected[index] !== undefined}"
                 :style="style"
         ></gk-thumbnail-item>
     </ul>
@@ -29,14 +29,13 @@
       property: String,
       size: Object,
       border: Number,
-      'selected-index': Number,
+      'default-index': Number,
       loading: Boolean,
       fit: Boolean
     },
     data() {
       return {
         clickTimer: false,
-        selectedInx: this.selectedIndex,
         selected: {}
       };
     },
@@ -48,15 +47,52 @@
       }
     },
     methods: {
-      selectItem(item, index, event) {
+      handleSelect(item, index, event) {
         clearTimeout(this.clickTimer);
         this.clickTimer = setTimeout(() => {
-          this.selected = item;
-          this.selectedInx = index;
-          this.$emit('select', item, index, event);
+          if (event.ctrlKey || event.metaKey) {
+            let selected = this.selected;
+            this.selected = {};
+            if (selected[index] === undefined) {
+              selected[index] = item;
+              this.selected = selected;
+              this.lastSelectedIndex = index;
+              this.$emit('select', item, index, event);
+            } else {
+              delete selected[index];
+              this.selected = selected;
+              this.$emit('select', null, null, event);
+            }
+          } else  {
+            this.selected = {};
+            if (event.shiftKey && this.lastSelectedIndex > -1) {
+              for (let i = Math.min(index, this.lastSelectedIndex); i <= Math.max(index, this.lastSelectedIndex); i++) {
+                this.selected[i] = this.data[i];
+              }
+            } else {
+              if (this.selected[index] !== undefined) {
+                return;
+              }
+              this.selected[index] = item;
+              this.lastSelectedIndex = index;
+              this.$emit('select', item, index, event);
+            }
+          }
         }, 20);
+        event.stopPropagation();
       },
-      dblclickItem(data, index, event) {
+      handleCancelSelect() {
+        this.selected = {};
+        this.$emit('select', null, null, event);
+      },
+      handleSelectAll() {
+        let selected = {};
+        for (let i in this.data) {
+          selected[i] = this.data[i];
+        }
+        this.selected = selected;
+      },
+      handleDblclick(data, index, event) {
         clearTimeout(this.clickTimer);
         this.$emit('dblclick', data, index, event);
       },
@@ -67,6 +103,18 @@
         this.$emit('contextmenu', item, index, event);
         event.stopPropagation();
         event.preventDefault();
+      }
+    },
+    mounted() {
+      document.onkeydown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
+          this.handleSelectAll();
+          e.preventDefault();
+        }
+      };
+
+      if (this.data) {
+        this.selected[this.defaultIndex] = this.data[this.defaultIndex];
       }
     }
   }

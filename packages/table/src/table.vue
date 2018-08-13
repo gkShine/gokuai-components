@@ -8,17 +8,17 @@
             </tr>
             </thead>
         </table>
-        <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
+        <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data" @click.native="handleCancelSelect()"
                           content-tag="table" :item-height="itemHeight">
             <template slot-scope="props">
                 <tr
                         class="gk-table-item"
-                        :class="{'gk-table-item-active':selectedInx === props.itemIndex}"
-                        @click="selectItem(props.item, props.itemIndex, $event)"
-                        @dblclick="dblclickItem(props.item, props.itemIndex, $event)"
+                        :class="{'gk-table-item-active':selected[props.itemIndex] !== undefined}"
+                        @click="handleSelect(props.item, props.itemIndex, $event)"
+                        @dblclick="handleDbclick(props.item, props.itemIndex, $event)"
                         @contextmenu="handleContextmenu(props.item, props.itemIndex, $event)"
                 >
-                    <gk-table-cell @check="checkItem" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
+                    <gk-table-cell @check="handleCheck" :is-checked="checked[props.itemIndex] !== undefined" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
                 </tr>
             </template>
         </virtual-scroller>
@@ -38,7 +38,11 @@
     props: {
       'show-header': Boolean,
       'show-checkbox': Boolean,
-      'selected-index': Number,
+      'default-index': Number,
+      'default-checked-index': {
+        type: Array,
+        default: () => []
+      },
       height: Number,
       loading: Boolean,
       fit: Boolean,
@@ -54,8 +58,8 @@
     data() {
       return {
         selected: {},
-        checkedItems: {},
-        selectedInx: this.selectedIndex,
+        lastSelectedIndex: -1,
+        checked: {},
         showAllCheckbox: false,
         hasScrollbar: false,
         clickTimer: false
@@ -67,7 +71,7 @@
         if (!this.fit && this.height) {
           let height = this.height;
           if (this.showHeader) {
-            let headHeight = window.getComputedStyle(this.$refs.thead.getElementsByTagName('th')[0]).height;
+            let headHeight = window.getComputedStyle(this.$refs.thead.querySelector('th:first-child')).height;
             height = height - parseInt(headHeight);
           }
           style.height = height + 'px';
@@ -88,28 +92,65 @@
       }
     },
     methods: {
-      selectItem(item, index, event) {
+      handleSelect(item, index, event) {
         clearTimeout(this.clickTimer);
         this.clickTimer = setTimeout(() => {
-          this.selected = item;
-          this.selectedInx = index;
-          this.$emit('select', item, index, event);
+          if (event.ctrlKey || event.metaKey) {
+            let selected = this.selected;
+            this.selected = {};
+            if (selected[index] === undefined) {
+              selected[index] = item;
+              this.selected = selected;
+              this.lastSelectedIndex = index;
+              this.$emit('select', item, index, event);
+            } else {
+              delete selected[index];
+              this.selected = selected;
+              this.$emit('select', null, null, event);
+            }
+          } else  {
+            this.selected = {};
+            if (event.shiftKey && this.lastSelectedIndex > -1) {
+              for (let i = Math.min(index, this.lastSelectedIndex); i <= Math.max(index, this.lastSelectedIndex); i++) {
+                this.selected[i] = this.data[i];
+              }
+            } else {
+              if (this.selected[index] !== undefined) {
+                return;
+              }
+              this.selected[index] = item;
+              this.lastSelectedIndex = index;
+              this.$emit('select', item, index, event);
+            }
+          }
         }, 20);
+        event.stopPropagation();
       },
-      dblclickItem(item, index, event) {
+      handleCancelSelect() {
+        this.selected = {};
+        this.$emit('select', null, null, event);
+      },
+      handleSelectAll() {
+        let selected = {};
+        for (let i in this.data) {
+          selected[i] = this.data[i];
+        }
+        this.selected = selected;
+      },
+      handleDbclick(item, index, event) {
         clearTimeout(this.clickTimer);
         this.$emit('dblclick', item, index, event);
       },
-      checkItem(item, index, {target}) {
+      handleCheck(item, index, {target}) {
         if (target.checked) {
-          this.checkedItems[index] = item;
+          this.checked[index] = item;
         } else {
-          delete this.checkedItems[index];
+          delete this.checked[index];
         }
-        !this.showCheckbox && (this.showAllCheckbox = Object.keys(this.checkedItems).length > 0);
+        !this.showCheckbox && (this.showAllCheckbox = Object.keys(this.checked).length > 0);
       },
-      checkAllItems(checked) {
-        let checkboxs = this.$refs.table.$el.getElementsByClassName('gk-checkbox');
+      handleCheckAll(checked) {
+        let checkboxs = this.$refs.table.$el.querySelectorAll('.gk-table-checkbox > :first-child');
         for (let i = 0; i < checkboxs.length; i++) {
           checkboxs[i].checked = checked;
           if (checked) {
@@ -119,9 +160,9 @@
           }
         }
         if (checked) {
-          this.checkedItems = this.data;
+          this.checked = this.data;
         } else {
-          this.checkedItems = [];
+          this.checked = [];
         }
       },
       handleContextmenu(item, index, event) {
@@ -139,10 +180,29 @@
       watchScrollbar() {
         this.setScrollbar();
         window.onresize = _.debounce(() => { this.setScrollbar(); }, 5);
+      },
+      getSelected() {
+        return Object.values(this.selected);
+      },
+      getChecked() {
+        return Object.values(this.checked);
       }
     },
     mounted() {
       this.watchScrollbar();
+      document.onkeydown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
+          this.handleSelectAll();
+          e.preventDefault();
+        }
+      };
+
+      if (this.data) {
+        this.selected[this.defaultIndex] = this.data[this.defaultIndex];
+        this.defaultCheckedIndex.forEach((index) => {
+          this.checked[index] = this.data[index];
+        });
+      }
     }
   }
 </script>

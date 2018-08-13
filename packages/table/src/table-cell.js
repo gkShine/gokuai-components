@@ -6,7 +6,8 @@ export default {
   props: {
     column: Object,
     data: Object,
-    index: Number
+    index: Number,
+    isChecked: Boolean
   },
   render(h) {
     let column = this.column;
@@ -15,6 +16,9 @@ export default {
       content = this.column.render(this.data);
     } else if (column.checkbox) {
       content = h('gk-checkbox', {
+        props: {
+          'is-checked': this.isChecked,
+        },
         nativeOn: {
           click: (event) => {
             this.$emit('check', this.data, this.index, event);
@@ -29,7 +33,10 @@ export default {
       let label = this.data[column.property];
       content = this.column.formatter ? this.column.formatter(label, this.data) : label ;
     }
-    return h('td', {style: column.columnStyle}, [
+    return h('td', {
+      style: column.columnStyle,
+      'class': {'gk-table-checkbox': column.checkbox}
+    }, [
       content
     ]);
   },

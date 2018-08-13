@@ -1,13 +1,16 @@
 <template>
-    <input ref="checkbox" class="gk-checkbox" @change="changeValue" type="checkbox" :class="{'gk-checkbox-checked':checked}"/>
+    <input ref="checkbox" :aria-checked="checked" :checked="checked" class="gk-checkbox" @change="changeValue" type="checkbox" :class="{'gk-checkbox-checked':checked}"/>
 </template>
 
 <script>
   export default {
     name: "GkCheckbox",
+    props: {
+      'is-checked': Boolean
+    },
     data() {
       return {
-        checked: false
+        checked: this.isChecked
       };
     },
     methods: {
