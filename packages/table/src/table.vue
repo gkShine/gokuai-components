@@ -38,7 +38,7 @@
     props: {
       'show-header': Boolean,
       'show-checkbox': Boolean,
-      'default-index': Number,
+      'default-index': Number|Array,
       'default-checked-index': {
         type: Array,
         default: () => []
@@ -56,10 +56,21 @@
       }
     },
     data() {
+      let selected = {}, checked = {};
+      if (typeof this.defaultIndex === 'object') {
+        this.defaultIndex.forEach((index) => {
+          selected[index] = this.data[index];
+        });
+      } else {
+        selected[this.defaultIndex] = this.data[this.defaultIndex];
+      }
+      this.defaultCheckedIndex.forEach((index) => {
+        checked[index] = this.data[index];
+      });
       return {
-        selected: {},
+        selected: selected,
         lastSelectedIndex: -1,
-        checked: {},
+        checked: checked,
         showAllCheckbox: false,
         hasScrollbar: false,
         clickTimer: false
@@ -184,6 +195,9 @@
       getSelected() {
         return Object.values(this.selected);
       },
+      getSelectedIndex() {
+        return Object.keys(this.selected);
+      },
       getChecked() {
         return Object.values(this.checked);
       }
@@ -196,13 +210,6 @@
           e.preventDefault();
         }
       };
-
-      if (this.data) {
-        this.selected[this.defaultIndex] = this.data[this.defaultIndex];
-        this.defaultCheckedIndex.forEach((index) => {
-          this.checked[index] = this.data[index];
-        });
-      }
     }
   }
 </script>

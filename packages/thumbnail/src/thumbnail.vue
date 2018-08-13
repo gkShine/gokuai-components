@@ -29,14 +29,22 @@
       property: String,
       size: Object,
       border: Number,
-      'default-index': Number,
+      'default-index': Number|Array,
       loading: Boolean,
       fit: Boolean
     },
     data() {
+      let selected = {};
+      if (typeof this.defaultIndex === 'object') {
+        this.defaultIndex.forEach((index) => {
+          selected[index] = this.data[index];
+        });
+      } else {
+        selected[this.defaultIndex] = this.data[this.defaultIndex];
+      }
       return {
         clickTimer: false,
-        selected: {}
+        selected: selected
       };
     },
     computed: {
@@ -103,6 +111,12 @@
         this.$emit('contextmenu', item, index, event);
         event.stopPropagation();
         event.preventDefault();
+      },
+      getSelected() {
+        return Object.values(this.selected);
+      },
+      getSelectedIndex() {
+        return Object.keys(this.selected);
       }
     },
     mounted() {
@@ -112,10 +126,6 @@
           e.preventDefault();
         }
       };
-
-      if (this.data) {
-        this.selected[this.defaultIndex] = this.data[this.defaultIndex];
-      }
     }
   }
 </script>

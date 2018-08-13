@@ -29,7 +29,7 @@
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
-                <gk-thumbnail fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list" :border="0" :selectedIndex="selectedIndex"
+                <gk-thumbnail ref="table" fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list" :border="0" :default-index="selectedIndex"
                               @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" >
                     <template slot-scope="props">
                         <p>
@@ -38,8 +38,8 @@
                         <p>{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table fit :loading="loading" show-checkbox show-header :data="list" :itemHeight="itemHeight"
-                          @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
+                <gk-table ref="table" fit :loading="loading" show-checkbox show-header :data="list" :itemHeight="itemHeight"
+                          :default-index="selectedIndex" @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column checkbox :width="30" align="center"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
@@ -54,8 +54,8 @@
                                      :width="100"></gk-table-column>
                     <gk-table-column :width="200"></gk-table-column>
                 </gk-table>
-                <gk-table fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" @select="selectItem"
-                          @dblclick="dblclickItem" @contextmenu="rightClickItem"  v-else>
+                <gk-table ref="table" fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" @select="selectItem"
+                          @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex" v-else>
                     <gk-table-column :width="30"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
@@ -157,7 +157,7 @@
         selected: {},
         preview: false,
         navList: this.initNavs(),
-        selectedIndex: -1,
+        selectedIndex: [],
         fileList: []
       };
     },
@@ -190,16 +190,15 @@
         return item.dir ? '-' : bitSize(value);
       },
       handleViewMode(mode) {
+        this.selectedIndex = this.$refs.table.getSelectedIndex();
         this.viewMode = mode;
       },
       selectItem(file, index) {
-        // this.selected = file;
-        // this.selectedIndex = index;
-        // this.$emit('input', file);
+        this.selected = file;
+        this.$emit('input', file);
       },
       dblclickItem(file, index) {
         this.selected = file;
-        this.selectedIndex = index;
         this.navList.push(file);
         this.$emit('enter', file, index);
         if (!file.dir) {
