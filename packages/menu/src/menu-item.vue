@@ -1,7 +1,7 @@
 <template>
     <li class="gk-menu-item" :class="{'gk-menu-item-disabled':disabled}" @click="handleClick" :aria-disabled="disabled">
         <i v-if="icon" :class="icon"></i><slot></slot>
-        <span class="gk-menu-item-right"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><i v-if="hasSub" class="fa fa-caret-right"></i></span>
+        <span class="gk-menu-item-right" v-if="showRight"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><i v-if="hasSub" class="fa fa-caret-right"></i></span>
     </li>
 </template>
 
@@ -27,31 +27,33 @@
       menu() {
         return this.$parent;
       },
-      dropdown() {
-        let parent = this.$parent.$parent;
-        if (parent && parent.$el.className === 'gk-dropdown') {
-          return parent;
-        }
-        return null;
-      },
       special() {
         return {
           'SPACE': 'Space',
           'CAPSLOCK': 'CapsLock',
           'TAB': 'Tab',
           'BACKSPACE' : 'Backspace',
-          'DELETE': 'Delete'
+          'DELETE': 'Delete',
+          'ARROWUP': 'ArrowUp',
+          'ARROWDOWN': 'ArrowDown',
+          'ARROWLEFT': 'ArrowLeft',
+          'ARROWRIGHT': 'ArrowRight'
         }
+      },
+      showRight() {
+        return this.shortcut || this.hasSub || this.$slots.after;
       }
     },
     methods: {
       handleClick(event) {
-        if (this.disabled) {
-          event.stopPropagation();
+        if (!this.command) {
           return;
         }
-        this.menu.$emit('command', this.command);
-        this.dropdown && this.dropdown.$emit('command', this.command);
+        event.stopPropagation();
+        if (this.disabled) {
+          return;
+        }
+        this.menu.handleCommand(this.command);
       },
       initShortcut(code, help) {
         if (this.special[code] !== undefined) {

@@ -1,10 +1,14 @@
+import GkMenuItem from "./menu-item";
+
 export default {
-  name: "Gkmenu",
+  name: "GkSubmenu",
+  components: {GkMenuItem},
   props: {
     trigger: {
       type: String,
       default: 'hover'
-    }
+    },
+    data: Array
   },
   data() {
     return {
@@ -15,19 +19,51 @@ export default {
   },
   render(h) {
     let list = [];
-    this.$slots.default.forEach((vnode) => {
-      if (vnode.componentOptions.propsData.divided !== undefined) {
-        list.push(h('li', {
-          'class': 'gk-menu-divided'
-        }));
-      }
-      list.push(vnode);
-    });
+    if (this.data !== undefined) {
+      this.data.forEach((node) => {
+        if (node.divided) {
+          list.push(h('li', {
+            'class': 'gk-menu-divided'
+          }));
+        }
+        if (typeof node.children === 'object') {
+          list.push(h('gk-menu-item', {
+            props: node
+          }, [node.label, h('gk-submenu', {
+            props: {
+              data: node.children
+            }
+          })]));
+        } else {
+          list.push(h('gk-menu-item', {
+            props: node
+          }, node.label));
+        }
+      });
+    } else {
+      this.$slots.default.forEach((vnode) => {
+        if (vnode.componentOptions.propsData.divided !== undefined) {
+          list.push(h('li', {
+            'class': 'gk-menu-divided'
+          }));
+        }
+        list.push(vnode);
+      });
+    }
     return h('ul', {
       'class': 'gk-menu gk-sub-menu'
     }, list);
   },
+  computed: {
+    parentMenu() {
+      return this.$parent.$parent;
+    }
+  },
   methods: {
+    handleCommand(command) {
+      this.parentMenu.handleCommand(command);
+      this.hideMenu();
+    },
     showMenu() {
       this.visible = true;
       this.menu.style.display = 'block';

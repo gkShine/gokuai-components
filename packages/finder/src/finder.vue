@@ -6,10 +6,54 @@
             <div class="gk-finder-show-ops" v-show="!preview">
                 <gk-dropdown style="display: inline-block" @command="handleSort">
                     <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
-                    <gk-dropdown-menu slot="dropdown" show-arrow>
-                        <gk-dropdown-item command="filename" keymap="ctrl+s" icon="fa fa-user">filename</gk-dropdown-item>
-                        <gk-dropdown-item command="last_dateline" keymap="f2" disabled>最后修改</gk-dropdown-item>
-                        <gk-dropdown-item command="filesize" keymap="space">大小</gk-dropdown-item>
+                    <gk-dropdown-menu slot="dropdown" show-arrow :data="[
+                    {
+                        command: 'filename',
+                        keymap: 'ctrl+s',
+                        icon: 'fa fa-user',
+                        label: 'filename'
+                    },
+                    {
+                        command: 'last_dataline',
+                        keymap: 'f2',
+                        disabled: true,
+                        label: '最后修改'
+                    },
+                    {
+                        command: 'filesize',
+                        keymap: 'space',
+                        label: '大小',
+                        children: [
+                             {
+                                command: 'filename',
+                                keymap: 'ctrl+s',
+                                icon: 'fa fa-user',
+                                label: 'filename'
+                            },
+                            {
+                                command: 'last_dataline',
+                                keymap: 'f2',
+                                label: '最后修改',
+                                children: [
+                                 {
+                                    command: 'filename',
+                                    keymap: 'ctrl+s',
+                                    icon: 'fa fa-user',
+                                    label: 'filename',
+                                    children: [
+                                        {
+                                            command: 'filename',
+                                            keymap: 'ctrl+s',
+                                            icon: 'fa fa-user',
+                                            label: 'filename'
+                                        }
+                                    ]
+                                }
+                                ]
+                            }
+                        ]
+                    }
+                    ]">
                     </gk-dropdown-menu>
                 </gk-dropdown>
 
@@ -87,8 +131,8 @@
             <gk-menu-item icon="fa fa-user" >保存</gk-menu-item>
             <gk-menu-item disabled>最后修改</gk-menu-item>
             <gk-menu-item>大小</gk-menu-item>
-            <gk-menu-item keymap="shift+s">
-                <gk-checkbox></gk-checkbox><span>刺激菜单</span>
+            <gk-menu-item>
+                <span>刺激菜单</span>
                 <gk-submenu>
                     <gk-menu-item>大小</gk-menu-item>
                     <gk-menu-item>大小2</gk-menu-item>

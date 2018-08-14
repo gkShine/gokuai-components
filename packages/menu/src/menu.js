@@ -1,5 +1,9 @@
+import GkMenuItem from "./menu-item";
+import GkSubmenu from "./submenu";
+
 export default {
   name: "GkMenu",
+  components: {GkMenuItem, GkSubmenu},
   props: {
     target: String,
     'show-arrow': Boolean,
@@ -10,7 +14,8 @@ export default {
     placement: {
       type: String,
       default: 'bottom-start'
-    }
+    },
+    data: Array
   },
   data() {
     return {
@@ -23,14 +28,37 @@ export default {
   },
   render(h) {
     let list = [];
-    this.$slots.default.forEach((vnode) => {
-      if (vnode.componentOptions.propsData.divided !== undefined) {
-        list.push(h('li', {
-          'class': 'gk-menu-divided'
-        }));
-      }
-      list.push(vnode);
-    });
+    if (this.data !== undefined) {
+      this.data.forEach((node) => {
+        if (node.divided) {
+          list.push(h('li', {
+            'class': 'gk-menu-divided'
+          }));
+        }
+        if (typeof node.children === 'object') {
+          list.push(h('gk-menu-item', {
+            props: node
+          }, [node.label, h('gk-submenu', {
+            props: {
+              data: node.children
+            }
+          })]));
+        } else {
+          list.push(h('gk-menu-item', {
+            props: node
+          }, node.label));
+        }
+      });
+    } else {
+      this.$slots.default.forEach((vnode) => {
+        if (vnode.componentOptions.propsData.divided !== undefined) {
+          list.push(h('li', {
+            'class': 'gk-menu-divided'
+          }));
+        }
+        list.push(vnode);
+      });
+    }
     if (this.showArrow) {
       list.push(h('div', {
         'class': 'gk-menu-arrow',
@@ -41,7 +69,21 @@ export default {
       'class': 'gk-menu'
     }, list);
   },
+  computed: {
+    dropdown() {
+      let parent = this.$parent;
+      if (parent && parent.$el.className === 'gk-dropdown') {
+        return parent;
+      }
+      return null;
+    }
+  },
   methods: {
+    handleCommand(command) {
+      this.$emit('command', command);
+      this.dropdown.$emit('command', command);
+      this.hideMenu();
+    },
     show(event) {
       this.position = {
         left: event.clientX,

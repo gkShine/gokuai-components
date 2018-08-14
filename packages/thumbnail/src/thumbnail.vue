@@ -60,7 +60,7 @@
         this.clickItem = true;
         clearTimeout(this.clickTimer);
         this.clickTimer = setTimeout(() => {
-          if (event.ctrlKey || event.metaKey) {
+          if (event && (event.ctrlKey || event.metaKey)) {
             let selected = this.selected;
             this.selected = {};
             if (selected[index] === undefined) {
@@ -75,7 +75,7 @@
             }
           } else  {
             this.selected = {};
-            if (event.shiftKey && this.lastSelectedIndex > -1) {
+            if (event && event.shiftKey && this.lastSelectedIndex > -1) {
               for (let i = Math.min(index, this.lastSelectedIndex); i <= Math.max(index, this.lastSelectedIndex); i++) {
                 this.selected[i] = this.data[i];
               }
@@ -117,6 +117,17 @@
         event.stopPropagation();
         event.preventDefault();
       },
+      handleSelectPrevNext(offset) {
+        let keys = Object.keys(this.selected);
+        if (keys.length !== 1) {
+          return false;
+        }
+        let index = parseInt(keys[0]) + offset;
+        if (index < 0 || index > this.data.length - 1) {
+          return false;
+        }
+        this.handleSelect(this.data[index], index);
+      },
       getSelected() {
         return Object.values(this.selected);
       },
@@ -129,6 +140,10 @@
         if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
           this.handleSelectAll();
           e.preventDefault();
+        } else if (e.code === 'ArrowLeft') {
+          this.handleSelectPrevNext(-1)
+        } else if (e.code === 'ArrowRight') {
+          this.handleSelectPrevNext(+1)
         }
       };
     }
