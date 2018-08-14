@@ -7,9 +7,9 @@
                 <gk-dropdown style="display: inline-block" @command="handleSort">
                     <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
                     <gk-dropdown-menu slot="dropdown" show-arrow>
-                        <gk-dropdown-item command="filename" icon="fa fa-user">filename</gk-dropdown-item>
-                        <gk-dropdown-item command="last_dateline" disabled>最后修改</gk-dropdown-item>
-                        <gk-dropdown-item command="filesize" >大小</gk-dropdown-item>
+                        <gk-dropdown-item command="filename" keymap="ctrl+s" icon="fa fa-user">filename</gk-dropdown-item>
+                        <gk-dropdown-item command="last_dateline" keymap="f2" disabled>最后修改</gk-dropdown-item>
+                        <gk-dropdown-item command="filesize" keymap="space">大小</gk-dropdown-item>
                     </gk-dropdown-menu>
                 </gk-dropdown>
 
@@ -84,16 +84,16 @@
         </div>
 
         <gk-menu ref="contextmenu">
-            <gk-menu-item icon="fa fa-user">filename</gk-menu-item>
+            <gk-menu-item icon="fa fa-user" >保存</gk-menu-item>
             <gk-menu-item disabled>最后修改</gk-menu-item>
             <gk-menu-item>大小</gk-menu-item>
-            <gk-menu-item>
+            <gk-menu-item keymap="shift+s">
                 <gk-checkbox></gk-checkbox><span>刺激菜单</span>
                 <gk-submenu>
                     <gk-menu-item>大小</gk-menu-item>
                     <gk-menu-item>大小2</gk-menu-item>
                     <gk-menu-item>大小2</gk-menu-item>
-                    <gk-menu-item>
+                    <gk-menu-item keymap="shift+s">
                         大小2
                         <gk-submenu>
                             <gk-menu-item>大小</gk-menu-item>
@@ -130,9 +130,8 @@
   export default {
     name: 'GkFinder',
     components: {
-      GkCheckbox,
-      GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail, GkTableColumn,
-      GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
+      GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail,
+      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
     props: {
       list: { //当前文件列表
         type: Array,

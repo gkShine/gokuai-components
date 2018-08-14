@@ -82,3 +82,23 @@ export function formatDate(date, format) {
 export function timeToDate(timestamp, format) {
   return formatDate(new Date(timestamp), format);
 }
+
+export function getOS() {
+  let os = 'Others';
+  if (navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Linux') > -1) {
+    os = 'Android';
+  } else if (navigator.userAgent.indexOf('iPhone') > -1) {
+    os = 'iOS';
+  } else if (navigator.userAgent.indexOf('Windows Phone') > -1) {
+    os = 'WP';
+  } else if (window.navigator.userAgent.indexOf('Windows NT') > -1) {
+    os = 'Windows';
+  } else if (window.navigator.userAgent.indexOf('Mac') > -1) {
+    os = 'Mac';
+  } else if (window.navigator.userAgent.indexOf('X11') > -1) {
+    os = 'UNIX';
+  } else if (window.navigator.userAgent.indexOf('Linux') > -1) {
+    os = 'Linux';
+  }
+  return os;
+}

@@ -73,7 +73,8 @@
         checked: checked,
         showAllCheckbox: false,
         hasScrollbar: false,
-        clickTimer: false
+        clickTimer: false,
+        clickItem: false
       }
     },
     computed: {
@@ -104,6 +105,7 @@
     },
     methods: {
       handleSelect(item, index, event) {
+        this.clickItem = true;
         clearTimeout(this.clickTimer);
         this.clickTimer = setTimeout(() => {
           if (event.ctrlKey || event.metaKey) {
@@ -134,10 +136,13 @@
               this.$emit('select', item, index, event);
             }
           }
+          this.clickItem = false;
         }, 20);
-        event.stopPropagation();
       },
       handleCancelSelect() {
+        if (this.clickItem) {
+          return;
+        }
         this.selected = {};
         this.$emit('select', null, null, event);
       },
