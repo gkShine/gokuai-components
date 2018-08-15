@@ -86,21 +86,21 @@
 </template>
 
 <script>
-  import GkBreadcrumb from "../../breadcrumb/src/breadcrumb";
-  import GkButton from "../../button/src/button";
-  import GkButtonGroup from "../../button/src/button-group";
-  import GkTable from "../../table/src/table";
-  import GkTableColumn from "../../table/src/table-column";
-  import {timeToDate, bitSize} from "../../../src/common/util";
-  import GkThumbnail from "../../thumbnail/src/thumbnail";
-  import GkSlide from "../../slide/src/slide";
-  import GkMenu from "../../menu/src/menu";
-  import GkMenuItem from "../../menu/src/menu-item";
-  import GkDropdown from "../../dropdown/src/dropdown";
-  import GkDropdownItem from "../../dropdown/src/dropdown-item.js";
-  import GkDropdownMenu from "../../dropdown/src/dropdown-menu.js";
-  import GkSubmenu from "../../menu/src/submenu.js";
-  import GkCheckbox from "../../checkbox/src/checkbox";
+  import GkBreadcrumb from "gokuai-components/packages/breadcrumb/src/breadcrumb";
+  import GkButton from "gokuai-components/packages/button/src/button";
+  import GkButtonGroup from "gokuai-components/packages/button/src/button-group";
+  import GkTable from "gokuai-components/packages/table/src/table";
+  import GkTableColumn from "gokuai-components/packages/table/src/table-column";
+  import GkThumbnail from "gokuai-components/packages/thumbnail/src/thumbnail";
+  import GkSlide from "gokuai-components/packages/slide/src/slide";
+  import GkMenu from "gokuai-components/packages/menu/src/menu";
+  import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
+  import GkDropdown from "gokuai-components/packages/dropdown/src/dropdown";
+  import GkDropdownItem from "gokuai-components/packages/dropdown/src/dropdown-item";
+  import GkDropdownMenu from "gokuai-components/packages/dropdown/src/dropdown-menu";
+  import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
+  import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
+  import {timeToDate, bitSize} from "gokuai-components/src/common/util";
 
   export default {
     name: 'GkFinder',

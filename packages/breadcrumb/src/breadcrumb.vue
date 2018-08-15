@@ -37,10 +37,10 @@
 </template>
 
 <script>
-  import GkButton from "../../button/src/button";
-  import GkButtonGroup from "../../button/src/button-group";
-  import GkMenu from "../../menu/src/menu";
-  import GkMenuItem from "../../menu/src/menu-item";
+  import GkButton from "gokuai-components/packages/button/src/button";
+  import GkButtonGroup from "gokuai-components/packages/button/src/button-group";
+  import GkMenu from "gokuai-components/packages/menu/src/menu";
+  import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
 
   export default {
     name: "GkBreadcrumb",

@@ -1,5 +1,5 @@
-import GkMenuItem from "./menu-item";
-import GkSubmenu from "./submenu";
+import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
+import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
 
 export default {
   name: "GkMenu",

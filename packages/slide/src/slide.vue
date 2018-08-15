@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import tooltip from '../../tooltip/src/tooltip';
+  import tooltip from 'gokuai-components/packages/tooltip/src/tooltip';
 
   export default {
     name: "gkSlide",

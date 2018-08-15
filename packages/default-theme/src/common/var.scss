@@ -1,44 +1,44 @@
-$--primary-color: #4B7FEF;
-$--primary-hover-color: #E6F2FF;
-$--disabled-color: #9F9F9F;
+$--primary-color: #4B7FEF !default;
+$--primary-hover-color: #E6F2FF !default;
+$--disabled-color: #9F9F9F !default;
 
-$--font-size: 14px;
-$--font-color: #4A4A4A;
-$--font-reverse-color: #FFFFFF;
-$--link-font-color: #3D7DF7;
+$--font-size: 14px !default;
+$--font-color: #4A4A4A !default;
+$--font-reverse-color: #FFFFFF !default;
+$--link-font-color: #3D7DF7 !default;
 
 /* Breadcrumb
 --------------------------*/
-$--breadcrumb-button-size: 28px;
-$--breadcrumb-item-width: 100px;
+$--breadcrumb-button-size: 28px !default;
+$--breadcrumb-item-width: 100px !default;
 
 /* Table
 --------------------------*/
-$--table-head-height: 36px;
-$--table-hover-color: $--primary-hover-color;
-$--table-active-color: $--primary-color;
-$--table-head-background-color: #8C95A4;
-$--table-body-background-color: #FFFFFF;
+$--table-head-height: 36px !default;
+$--table-hover-color: $--primary-hover-color !default;
+$--table-active-color: $--primary-color !default;
+$--table-head-background-color: #8C95A4 !default;
+$--table-body-background-color: #FFFFFF !default;
 
 /* Button
 --------------------------*/
-$--button-border-color: #8C95A4;
+$--button-border-color: #8C95A4 !default;
 
 /* Thumbnail
 --------------------------*/
-$--thumbnail-background-color: #FFFFFF;
-$--thumbnail-hover-color: #e6f2ff;
-$--thumbnail-active-color: $--primary-color;
+$--thumbnail-background-color: #FFFFFF !default;
+$--thumbnail-hover-color: #e6f2ff !default;
+$--thumbnail-active-color: $--primary-color !default;
 
 /* Slide
 --------------------------*/
-$--slide-toolbar-height: 40px;
-$--slide-toolbar-background-color: #2b2d32;
+$--slide-toolbar-height: 40px !default;
+$--slide-toolbar-background-color: #2b2d32 !default;
 
 /* Menu
 --------------------------*/
-$--menu-background-color: #FFFFFF;
-$--menu-hover-color: $--primary-hover-color;
-$--menu-active-color: $--primary-color;
-$--menu-disabled-font-color: $--disabled-color;
-$--menu-item-height: 26px;
+$--menu-background-color: #FFFFFF !default;
+$--menu-hover-color: $--primary-hover-color !default;
+$--menu-active-color: $--primary-color !default;
+$--menu-disabled-font-color: $--disabled-color !default;
+$--menu-item-height: 26px !default;

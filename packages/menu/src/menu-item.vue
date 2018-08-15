@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import { getOS } from "../../../src/common/util";
+  import { getOS } from "gokuai-components/src/common/util";
 
   export default {
     name: "GkMenuItem",

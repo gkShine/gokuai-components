@@ -27,8 +27,8 @@
 
 <script>
   import {VirtualScroller} from 'vue-virtual-scroller';
-  import GkTableCell from "./table-cell";
-  import loading from '../../loading/src/loading';
+  import GkTableCell from "gokuai-components/packages/table/src/table-cell";
+  import loading from 'gokuai-components/packages/loading/src/loading';
 
   export default {
     name: "GkTable",

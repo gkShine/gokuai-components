@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import GkCheckbox from "../../checkbox/src/checkbox";
+  import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   export default {
     name: "gkTableColumn",
     components: {GkCheckbox},

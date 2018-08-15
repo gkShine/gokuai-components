@@ -17,8 +17,8 @@
 </template>
 
 <script>
-  import GkThumbnailItem from "./thumbnail-item.js";
-  import loading from '../../loading/src/loading';
+  import GkThumbnailItem from "gokuai-components/packages/thumbnail/src/thumbnail-item";
+  import loading from "gokuai-components/packages/loading/src/loading";
 
   export default {
     name: "GkThumbnail",
