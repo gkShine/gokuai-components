@@ -47,8 +47,7 @@
     line-height: $--menu-item-height;
     display: block;
     text-decoration: none;
-    padding-left: 25px;
-    padding-right: 5px;
+    padding: 0 25px;
     cursor: default;
     clear: both;
 
@@ -61,6 +60,7 @@
 
     .gk-menu-item-right {
       float: right;
+      margin-right: -20px;
 
       i {
         margin-left: 0;

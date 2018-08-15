@@ -1,59 +1,13 @@
 <template>
     <div class="gk-finder">
         <div class="gk-finder-toolbar">
-            <gk-breadcrumb :show-nav="false" :data="navList" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
+            <gk-breadcrumb :data="navList" show-nav @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
-                <gk-dropdown style="display: inline-block" @command="handleSort">
+                <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
                     <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
-                    <gk-dropdown-menu slot="dropdown" show-arrow :data="[
-                    {
-                        command: 'filename',
-                        keymap: 'ctrl+s',
-                        icon: 'fa fa-user',
-                        label: 'filename'
-                    },
-                    {
-                        command: 'last_dataline',
-                        keymap: 'f2',
-                        disabled: true,
-                        label: '最后修改'
-                    },
-                    {
-                        command: 'filesize',
-                        keymap: 'space',
-                        label: '大小',
-                        children: [
-                             {
-                                command: 'filename',
-                                keymap: 'ctrl+s',
-                                icon: 'fa fa-user',
-                                label: 'filename'
-                            },
-                            {
-                                command: 'last_dataline',
-                                keymap: 'f2',
-                                label: '最后修改',
-                                children: [
-                                 {
-                                    command: 'filename',
-                                    keymap: 'ctrl+s',
-                                    icon: 'fa fa-user',
-                                    label: 'filename',
-                                    children: [
-                                        {
-                                            command: 'filename',
-                                            keymap: 'ctrl+s',
-                                            icon: 'fa fa-user',
-                                            label: 'filename'
-                                        }
-                                    ]
-                                }
-                                ]
-                            }
-                        ]
-                    }
-                    ]">
+                    <gk-dropdown-menu slot="dropdown" show-arrow>
+                        <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList" :command="sort.value" :key="idx">{{sort.label}}</gk-dropdown-item>
                     </gk-dropdown-menu>
                 </gk-dropdown>
 
@@ -77,7 +31,7 @@
                               @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" >
                     <template slot-scope="props">
                         <p>
-                            <img :src="props.thumb + '&size=128'"/>
+                            <img :src="props.thumb + '&size=128'" width="128" height="128"/>
                         </p>
                         <p>{{props.filename}}</p>
                     </template>
@@ -95,8 +49,8 @@
                     <gk-table-column property="last_dateline" label="最后修改" :formatter="formatDate" sortable
                                      :width="180"></gk-table-column>
                     <gk-table-column property="filesize" label="大小" :formatter="formatSize" sortable
-                                     :width="100"></gk-table-column>
-                    <gk-table-column :width="200"></gk-table-column>
+                                     :width="80"></gk-table-column>
+                    <gk-table-column width="20%"></gk-table-column>
                 </gk-table>
                 <gk-table ref="table" fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex" v-else>
@@ -104,7 +58,7 @@
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename">
-                                <img :src="props.thumb + '&size=32'"/>
+                                <img :src="props.thumb + '&size=32'" height="32"/>
                                 <div>
                                     <p>{{props.filename}}</p>
                                     <p>
@@ -116,7 +70,7 @@
                             </div>
                         </template>
                     </gk-table-column>
-                    <gk-table-column :width="200"></gk-table-column>
+                    <gk-table-column width="20%"></gk-table-column>
                 </gk-table>
             </template>
 
@@ -191,12 +145,20 @@
         type: Number,
         default: 42
       },
+      'sort-list': Array,
+      'default-sort': {
+        type: String,
+        default: ''
+      },
       loading: Boolean,
       previewToolbar: Object
     },
     data() {
+      let [sort, order] = this.defaultSort.split(' ');
       return {
         viewMode: 'default',
+        sort: sort || '',
+        order: order || '',
         selected: {},
         preview: false,
         navList: this.initNavs(),
@@ -209,6 +171,13 @@
       current: 'changeFile'
     },
     methods: {
+      getSortIcon(key) {
+        let icon = '';
+        if (key === this.sort) {
+            icon = 'fa ' + (this.order === 'asc' ? 'fa-long-arrow-up' : 'fa-long-arrow-down');
+        }
+        return icon;
+      },
       initNavs() {
         let navs = [], path = '', fullpath = '';
         this.root && navs.push(this.root);
@@ -269,7 +238,11 @@
         this.preview = false;
       },
       handleSort(command) {
-        console.log(command);
+        if (this.sort === command) {
+            this.order = this.order === 'desc' ? 'asc' : 'desc';
+        }
+        this.sort = command;
+        this.$emit('sort-change', this.sort, this.order);
       },
       changeFile() {
         if (this.current.dir) {

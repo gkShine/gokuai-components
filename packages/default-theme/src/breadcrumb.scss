@@ -2,7 +2,6 @@
 
 .gk-breadcrumb {
   position: relative;
-  overflow: hidden;
   font-size: $--font-size;
 
   .gk-breadcrumb-ops {
@@ -17,14 +16,27 @@
     }
   }
 
+  .gk-breadcrumb-input {
+    width: 100%;
+    margin: 0;
+    padding: 0 6px;
+    font-size: $--font-size;
+    color: $--font-color;
+    height: $--breadcrumb-button-size;
+    border: 1px solid $--button-border-color;
+  }
+
   .gk-breadcrumb-list {
     float: left;
     padding: 0;
     margin: 0;
+    overflow: hidden;
     line-height: $--breadcrumb-button-size;
 
     .gk-breadcrumb-item {
       float: left;
+      display: flex;
+      overflow: hidden;
       list-style: none;
 
       a {
@@ -33,6 +45,7 @@
       }
 
       i {
+        line-height: $--breadcrumb-button-size;
         margin: 0 5px;
         font-weight: bold;
         color: $--font-color;
@@ -40,7 +53,28 @@
 
       span {
         color: #9B9B9B;
+        cursor: default;
+      }
+
+      a, span {
+        max-width: $--breadcrumb-item-width;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
+  }
+
+  .gk-breadcrumb-full {
+    background: #fff;
+    position: absolute;
+    border: 1px solid $--button-border-color;
+    padding: 0 5px;
+    z-index: 1000;
+  }
+
+  .gk-breadcrumb-hidden {
+    visibility: hidden;
+    position: absolute;
   }
 }

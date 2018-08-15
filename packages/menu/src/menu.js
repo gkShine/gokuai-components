@@ -50,7 +50,7 @@ export default {
         }
       });
     } else {
-      this.$slots.default.forEach((vnode) => {
+      this.$slots.default && this.$slots.default.forEach((vnode) => {
         if (vnode.componentOptions.propsData.divided !== undefined) {
           list.push(h('li', {
             'class': 'gk-menu-divided'
@@ -81,16 +81,20 @@ export default {
   methods: {
     handleCommand(command) {
       this.$emit('command', command);
-      this.dropdown.$emit('command', command);
+      this.dropdown && this.dropdown.$emit('command', command);
       this.hideMenu();
     },
     show(event) {
-      this.position = {
-        left: event.clientX,
-        top: event.clientY,
-        height: 0,
-        width: 0
-      };
+      if (event instanceof MouseEvent) {
+        this.position = {
+          left: event.clientX,
+          top: event.clientY,
+          height: 0,
+          width: 0
+        };
+      } else {
+        this.dom = event;
+      }
       this.showMenu();
     },
     showMenu() {

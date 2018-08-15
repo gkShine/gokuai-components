@@ -7,7 +7,7 @@ export default {
     size: {
       type: Object,
       default: () => {
-        return {w: 120, h: 160};
+        return {w: 148, h: 180};
       }
     }
   },

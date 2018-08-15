@@ -17,7 +17,7 @@
     },
     props: {
       label: String,
-      width: Number,
+      width: Number|String,
       checkbox: Boolean,
       property: String,
       align: {
@@ -29,7 +29,7 @@
     computed: {
       columnStyle() {
         return {
-          width: this.width + 'px',
+          width: typeof this.width === 'number' ? this.width + 'px' : this.width,
           'text-align': this.align
         }
       }
