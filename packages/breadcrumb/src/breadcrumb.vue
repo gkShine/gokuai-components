@@ -14,7 +14,7 @@
                 <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
             </li>
         </ul>
-        <input ref="input" v-show="mode === 'input'" @click.stop.prevent v-model="current" class="gk-breadcrumb-input" @keyup.enter="handleGoto" />
+        <input ref="input" v-show="mode === 'input'" @click.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.enter="handleGoto" />
         <ul v-show="mode === 'normal'" class="gk-breadcrumb-list">
             <template v-for="(item, idx) in list">
                 <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item" >
@@ -66,7 +66,9 @@
         mode: 'normal',
         list: [],
         menu: [],
-        current: ''
+        history: [],
+        current: '',
+        input: ''
       };
     },
     watch: {
@@ -84,7 +86,7 @@
     },
     methods: {
       change(data) {
-        this.current = data[data.length - 1][this.value];
+        this.input = this.current = data[data.length - 1][this.value];
         let _data = Array.from(data);
 
         setTimeout(() => {
@@ -102,15 +104,27 @@
         },100);
       },
       handelClick(item, event) {
+        if (item[this.input] === this.current) {
+          return;
+        }
+        this.history.push(this.current);
         let index = item.$$id;
         this.$emit('navigator', item[this.value], this.data[index], index, event);
       },
       handleGoto() {
-        this.$emit('goto', this.current);
         this.changeMode('normal');
+        if (this.input === this.current) {
+          return;
+        }
+        this.history.push(this.value);
+        this.$emit('goto', this.value);
       },
       handlePrevNext(offset) {
-        this.$emit('goto', offset);
+        if (offset > 0) {
+          this.$emit('next');
+        } else {
+          this.$emit('prev');
+        }
       },
       changeMode(mode, event) {
         switch (mode) {

@@ -1,7 +1,7 @@
 <template>
     <div class="gk-finder">
         <div class="gk-finder-toolbar">
-            <gk-breadcrumb :data="navList" show-nav @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
+            <gk-breadcrumb :data="navList" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
                 <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
@@ -54,7 +54,7 @@
                 </gk-table>
                 <gk-table ref="table" fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex" v-else>
-                    <gk-table-column :width="30"></gk-table-column>
+                    <gk-table-column :width="20"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename">
@@ -81,30 +81,7 @@
             </gk-slide>
         </div>
 
-        <gk-menu ref="contextmenu">
-            <gk-menu-item icon="fa fa-user" >保存</gk-menu-item>
-            <gk-menu-item disabled>最后修改</gk-menu-item>
-            <gk-menu-item>大小</gk-menu-item>
-            <gk-menu-item>
-                <span>刺激菜单</span>
-                <gk-submenu>
-                    <gk-menu-item>大小</gk-menu-item>
-                    <gk-menu-item>大小2</gk-menu-item>
-                    <gk-menu-item>大小2</gk-menu-item>
-                    <gk-menu-item keymap="shift+s">
-                        大小2
-                        <gk-submenu>
-                            <gk-menu-item>大小</gk-menu-item>
-                            <gk-menu-item>大小2</gk-menu-item>
-                            <gk-menu-item>大小2</gk-menu-item>
-                            <gk-menu-item>
-                                大小2
-                            </gk-menu-item>
-                        </gk-submenu>
-                    </gk-menu-item>
-                </gk-submenu>
-            </gk-menu-item>
-        </gk-menu>
+        <gk-menu ref="contextmenu" v-if="buttons" :data="buttons"></gk-menu>
     </div>
 </template>
 
@@ -150,6 +127,7 @@
         type: String,
         default: ''
       },
+      buttons: Array,
       loading: Boolean,
       previewToolbar: Object
     },
@@ -218,6 +196,9 @@
         }
       },
       rightClickItem(file, index, event) {
+        if (!this.buttons) {
+          return;
+        }
         this.$refs.contextmenu.show(event);
       },
       clickBreadcrumb(value, file, index) {

@@ -27,7 +27,6 @@
 
 <script>
   import {VirtualScroller} from 'vue-virtual-scroller';
-  import _ from 'lodash';
   import GkTableCell from "./table-cell";
   import loading from '../../loading/src/loading';
 
@@ -206,7 +205,13 @@
       },
       watchScrollbar() {
         this.setScrollbar();
-        window.onresize = _.debounce(() => { this.setScrollbar(); }, 5);
+        let timer = 0;
+        window.addEventListener('resize', () => {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            this.setScrollbar();
+          }, 5);
+        });
       },
       getSelected() {
         return Object.values(this.selected);
