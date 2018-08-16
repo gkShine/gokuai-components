@@ -1,3 +1,4 @@
+var Components = require('../../components.json');
 var fs = require('fs');
 var render = require('json-templater/string');
 var uppercamelcase = require('uppercamelcase');
@@ -31,16 +32,12 @@ module.exports = {
 module.exports.default = module.exports;
 `;
 
-var ComponentNames = fs.readdirSync('./packages');
-
+var ComponentNames = Object.keys(Components);
 var includeComponentTemplate = [];
 var installTemplate = [];
 var listTemplate = [];
 
 ComponentNames.forEach(name => {
-  if (name === 'default-theme') {
-    return;
-  }
   var componentName = uppercamelcase(name);
 
   includeComponentTemplate.push(render(IMPORT_TEMPLATE, {

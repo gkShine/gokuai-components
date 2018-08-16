@@ -1,0 +1,15 @@
+{
+  "presets": ["env"],
+  "env": {
+    "utils": {
+      "plugins": [
+        ["module-resolver", {
+          "root": ["gokuai-components"],
+          "alias": {
+            "gokuai-components/src": "gokuai-components/lib"
+          }
+        }]
+      ]
+    }
+  }
+}

@@ -1,30 +1,24 @@
 const path = require('path');
-const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-
+const Components = require('../components.json');
 const config = require('./config');
 
 module.exports = {
   mode: 'production',
-  entry: {
-    app: ["babel-polyfill", './src/index.js']
-  },
+  entry: Components,
   output: {
     path: path.resolve('./lib'),
     publicPath: '/dist/',
-    filename: 'index.js',
+    filename: '[name].js',
     chunkFilename: '[id].js',
-    libraryTarget: 'umd',
-    library: 'GOKUAI',
-    umdNamedDefine: true
+    libraryTarget: 'commonjs2'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
-    alias: config.alias
+    alias: config.alias,
+    modules: ['node_modules']
   },
-  externals: {
-    vue: config.vue
-  },
+  externals: config.externals,
   module:{
     rules:[
       {
@@ -42,9 +36,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new VueLoaderPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
+    new VueLoaderPlugin()
   ]
 };
