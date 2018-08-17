@@ -2,24 +2,30 @@
   "name": "gokuai-components",
   "version": "1.0.0",
   "description": "gokuai-components",
-  "main": "index.js",
+  "main": "lib/index.js",
   "files": [
     "lib",
     "src",
     "packages"
   ],
   "scripts": {
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.config.dev.js",
     "build:theme": "gulp build --gulpfile packages/default-theme/gulpfile.js && cp -rf packages/default-theme/lib lib/default-theme",
     "build:file": "node build/bin/gen-components.js && node build/bin/build-entry.js",
     "build:main": "webpack --config build/webpack.config.js",
-    "build:component": "webpack --config build/webpack.component.js",
+    "build:component": "webpack --config build/webpack.config.component.js",
     "build": "npm run clean && npm run build:file && npm run build:main && npm run build:component",
     "clean": "rimraf lib && rimraf packages/*/lib"
   },
   "dependencies": {
     "vue-virtual-scroller": "^0.12.0"
   },
+  "peerDependencies": {
+    "vue": "^2.5.17"
+  },
   "devDependencies": {
+    "axios": "^0.18.0",
+    "axios-mock-adapter": "^1.15.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
@@ -27,18 +33,25 @@
     "babel-preset-env": "^1.7.0",
     "css-loader": "^1.0.0",
     "eslint": "^5.3.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-vue": "^4.7.1",
     "font-awesome": "^4.7.0",
+    "html-webpack-plugin": "^3.2.0",
     "json-templater": "^1.2.0",
     "lodash": "^4.17.10",
-    "node-compass": "^0.2.4",
+    "mockjs": "^1.0.1-beta3",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
     "uppercamelcase": "^3.0.0",
+    "url-loader": "^1.1.0",
     "vue": "^2.5.17",
     "vue-loader": "^15.3.0",
+    "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5",
+    "webpack-merge": "^4.1.4",
     "webpack-node-externals": "^1.7.2"
   },
   "repository": {
