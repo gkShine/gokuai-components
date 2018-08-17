@@ -9,12 +9,12 @@
     "packages"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.config.dev.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.config.js",
     "build:theme": "gulp build --gulpfile packages/default-theme/gulpfile.js && cp -rf packages/default-theme/lib lib/default-theme",
     "build:file": "node build/bin/gen-components.js && node build/bin/build-entry.js",
     "build:main": "webpack --config build/webpack.config.js",
-    "build:component": "webpack --config build/webpack.config.component.js",
-    "build": "npm run clean && npm run build:file && npm run build:main && npm run build:component",
+    "build:component": "webpack --config build/webpack.component.config.js",
+    "build": "npm run clean && npm run build:file && npm run build:main && npm run build:component && npm run build:theme",
     "clean": "rimraf lib && rimraf packages/*/lib"
   },
   "dependencies": {

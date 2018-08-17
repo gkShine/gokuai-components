@@ -1,6 +1,8 @@
-const merge = require('webpack-merge')
-const baseConfig = require('./webpack.config.base')
+'use strict'
+
 const webpack = require('webpack')
+const merge = require('webpack-merge')
+const baseConfig = require('./webpack.base.config')
 const utils = require('./utils')
 const config = require('./config');
 

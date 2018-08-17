@@ -1,7 +1,7 @@
 'use strict'
 
 const merge = require('webpack-merge')
-const baseConfig = require('./webpack.config.base')
+const baseConfig = require('./webpack.base.config')
 const Components = require('../components.json')
 const utils = require('./utils')
 const config = require('./config')
