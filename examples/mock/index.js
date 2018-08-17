@@ -19,9 +19,12 @@ export default {
     //获取文件列表（分页）
     mock.onGet('/file/listpage').reply(config => {
       let {page, fullpath} = config.params;
-      let mockFiles = fullpath ? Files[fullpath] : Files;
+      fullpath = fullpath || '';
       let total = mockFiles.length;
       mockFiles = mockFiles.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      mockFiles.forEach(file => {
+        file.fullpath = fullpath + '/' + file.fullpath;
+      });
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
