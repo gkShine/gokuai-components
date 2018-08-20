@@ -31,7 +31,7 @@
                               @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" >
                     <template slot-scope="props">
                         <p>
-                            <img :src="props.thumb + '&size=128'" width="128" height="128"/>
+                            <img :src="props.thumb" width="128" height="128"/>
                         </p>
                         <p>{{props.filename}}</p>
                     </template>
@@ -42,7 +42,7 @@
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename">
-                                <img :src="props.thumb + '&size=32'" height="16"/>{{props.filename}}
+                                <img :src="props.thumb" height="16"/>{{props.filename}}
                             </div>
                         </template>
                     </gk-table-column>
@@ -58,7 +58,7 @@
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename">
-                                <img :src="props.thumb + '&size=32'" height="32"/>
+                                <img :src="props.thumb" height="32"/>
                                 <div>
                                     <p>{{props.filename}}</p>
                                     <p>
@@ -112,11 +112,10 @@
         type: Array,
         required: true
       },
-      value: { //选中文件/文件夹
+      value: { //当前打开文件/文件夹
         type: Object|null,
         required: true
       },
-      current: Object, //当前打开文件/文件夹
       root: Object, //根文件夹或库
       'item-height': {
         type: Number,
@@ -146,7 +145,7 @@
     },
     watch: {
       list: 'loadSuccess',
-      current: 'changeFile'
+      value: 'changeFile'
     },
     methods: {
       getSortIcon(key) {
@@ -159,8 +158,8 @@
       initNavs() {
         let navs = [], path = '', fullpath = '';
         this.root && navs.push(this.root);
-        if (this.current && this.current.fullpath) {
-          fullpath += this.current.fullpath + '/';
+        if (this.value && this.value.fullpath) {
+          fullpath += this.value.fullpath + '/';
         }
         for (let i = 0; i < fullpath.length; i++) {
           if (fullpath[i] === '/') {
@@ -226,7 +225,7 @@
         this.$emit('sort-change', this.sort, this.order);
       },
       changeFile() {
-        if (this.current.dir) {
+        if (this.value.dir) {
           this.preview = false;
         }
       }

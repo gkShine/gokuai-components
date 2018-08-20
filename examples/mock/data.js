@@ -9,12 +9,12 @@ let gen = (length) => {
     if (i < dirLength) {
       dir = 1;
     }
-    let filename = Mock.Random.cname();
+    let filename = Mock.Random.ctitle(3, 40);
     filename = dir ? filename : filename + '.' + Mock.Random.string('lower', 1, 4);
     let file = {
       "mount_id": Mock.Random.integer(1, 10000),
       "hash": Mock.Random.string(40),
-      "dir": Mock.Random.integer(0, 1),
+      "dir": dir,
       "fullpath": filename,
       "filename": filename,
       "filehash": dir ? "" : Mock.Random.string(40),
@@ -30,4 +30,18 @@ let gen = (length) => {
 
 gen(1000);
 
-export {Files};
+let Root = {
+  "mount_id": Mock.Random.integer(1, 10000),
+  "hash": Mock.Random.string(40),
+  "dir": 1,
+  "fullpath": "",
+  "filename": Mock.Random.ctitle(3, 20),
+  "filehash": "",
+  "filesize": "",
+  "last_member_name": Mock.Random.cname(),
+  "last_dateline": Date.parse(Mock.Random.datetime()) / 1000,
+  "thumb": Mock.Random.dataImage('125x125'),
+  "previewUrl": Mock.Random.dataImage()
+};
+
+export {Files, Root};

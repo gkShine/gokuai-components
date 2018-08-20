@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { Files } from './data';
+import { Files, Root } from './data';
 
 export default {
   bootstrap() {
@@ -16,10 +16,19 @@ export default {
       msg: 'failure'
     });
 
+    mock.onGet('/file').reply(config => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, Root]);
+        }, 1000);
+      });
+    });
+
     //获取文件列表（分页）
     mock.onGet('/file/listpage').reply(config => {
       let {page, fullpath} = config.params;
       fullpath = fullpath || '';
+      let mockFiles = Files;
       let total = mockFiles.length;
       mockFiles = mockFiles.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
       mockFiles.forEach(file => {
