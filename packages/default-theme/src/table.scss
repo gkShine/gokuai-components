@@ -69,6 +69,17 @@
     }
   }
 
+  .gk-table-more {
+    @include fit-window;
+    top: auto;
+    text-align: center;
+    font-size: $--table-more-font-size;
+    height: $--table-more-height;
+    line-height: $--table-more-height;
+    color: $--table-more-font-color;
+    background: $--table-more-background;
+  }
+
   &.gk-table-fit {
     @include fit-window;
 

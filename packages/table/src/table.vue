@@ -8,7 +8,7 @@
             </tr>
             </thead>
         </table>
-        <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data" @click.native="handleCancelSelect()"
+        <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle" v-scroll-load="loadMore" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data" @click.native="handleCancelSelect()"
                           content-tag="table" :item-height="itemHeight">
             <template slot-scope="props">
                 <tr
@@ -22,6 +22,9 @@
                 </tr>
             </template>
         </virtual-scroller>
+        <div v-if="showMore" class="gk-table-more">
+            <span class="gk-table-more-text">{{moreText}}</span>
+        </div>
     </section>
 </template>
 
@@ -29,18 +32,24 @@
   import {VirtualScroller} from 'vue-virtual-scroller';
   import GkTableCell from "gokuai-components/packages/table/src/table-cell";
   import loading from 'gokuai-components/packages/loading/src/loading';
+  import scrollLoad from 'gokuai-components/packages/scroll-load/src/scroll-load';
 
   export default {
     name: "GkTable",
-    directives: {loading},
+    directives: {loading, scrollLoad},
     components: {GkTableCell, VirtualScroller},
     props: {
+      'show-more': Boolean,
       'show-header': Boolean,
       'show-checkbox': Boolean,
       'default-index': Number|Array,
       'default-checked-index': {
         type: Array,
         default: () => []
+      },
+      'more-text': {
+        type: String,
+        default: 'loading...'
       },
       height: Number,
       loading: Boolean,
@@ -67,6 +76,7 @@
         checked[index] = this.data[index];
       });
       return {
+        page: 1,
         selected: selected,
         lastSelectedIndex: -1,
         checked: checked,
@@ -103,6 +113,9 @@
       }
     },
     methods: {
+      loadMore(page) {
+        this.$emit('loadMore', page);
+      },
       handleSelect(item, index, event) {
         this.clickItem = true;
         clearTimeout(this.clickTimer);

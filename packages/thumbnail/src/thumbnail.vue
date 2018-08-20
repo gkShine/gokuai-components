@@ -1,5 +1,5 @@
 <template>
-    <ul class="gk-thumbnail" @click="handleCancelSelect" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit}" v-loading="loading">
+    <ul class="gk-thumbnail gk-scrollbar" @click="handleCancelSelect" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit}" v-loading="loading" v-scroll-load="loadMore">
         <gk-thumbnail-item
                 @click.native="handleSelect(item, index, $event)"
                 @dblclick.native="handleDblclick(item, index, $event)"
@@ -19,10 +19,11 @@
 <script>
   import GkThumbnailItem from "gokuai-components/packages/thumbnail/src/thumbnail-item";
   import loading from "gokuai-components/packages/loading/src/loading";
+  import scrollLoad from 'gokuai-components/packages/scroll-load/src/scroll-load';
 
   export default {
     name: "GkThumbnail",
-    directives: {loading},
+    directives: {loading, scrollLoad},
     components: {GkThumbnailItem},
     props: {
       data: Array,
@@ -56,6 +57,9 @@
       }
     },
     methods: {
+      loadMore(page) {
+        this.$emit('loadMore', page);
+      },
       handleSelect(item, index, event) {
         this.clickItem = true;
         clearTimeout(this.clickTimer);

@@ -5,6 +5,7 @@
   @include fit-dom;
 
   .gk-finder-toolbar {
+    padding: 10px 0;
     .gk-breadcrumb {
       margin-right: 180px;
       height: 28px;
@@ -40,7 +41,7 @@
   .gk-finder-content {
     @include fit-window;
     top: $--breadcrumb-button-size;
-    margin-top: 16px;
+    margin-top: 20px;
 
     p {
       margin: 0;
@@ -52,7 +53,7 @@
     }
 
     &.gk-finder-view-default {
-      .gk-finder-filename {
+      .gk-finder-filename-column {
         display: flex;
 
         img {
@@ -67,7 +68,7 @@
       }
 
       .gk-table-item-active {
-        .gk-finder-filename {
+        .gk-finder-filename-column {
           span {
             color: #FFFFFF;
           }
@@ -76,13 +77,22 @@
     }
 
     &.gk-finder-view-list {
-      .gk-finder-filename {
+      .gk-finder-filename-column {
         img {
           display: inline-block;
           vertical-align: middle;
           margin-right: 10px;
           margin-top: -2px;
         }
+      }
+    }
+
+    &.gk-finder-view-thumbnail {
+      .gk-finder-filename {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 6px;
       }
     }
   }

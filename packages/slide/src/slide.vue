@@ -11,9 +11,9 @@
                 <i :class="btn.icon" placement="top" v-tooltip :title="btn.title" v-for="(btn, idx) in left" :key="idx" @click="handleBtn(btn)"></i>
             </div>
             <div class="gk-slide-toolbar-center">
-                <i v-if="center.prev" placement="top" v-tooltip :title="center.prev" class="fa fa-angle-left" :class="{'gk-disable': selectedIndex === 0}" @click="handlePrev"></i>
+                <i v-if="center.prev" placement="top" v-tooltip :title="center.prev" class="gk-icon-angleleft" :class="{'gk-disable': selectedIndex === 0}" @click="handlePrev"></i>
                 <span>{{formatText(center.text)}}</span>
-                <i v-if="center.next" placement="top" v-tooltip :title="center.next" class="fa fa-angle-right" :class="{'gk-disable': selectedIndex === (list.length - 1)}" @click="handleNext"></i>
+                <i v-if="center.next" placement="top" v-tooltip :title="center.next" class="gk-icon-angleright" :class="{'gk-disable': selectedIndex === (list.length - 1)}" @click="handleNext"></i>
             </div>
             <div class="gk-slide-toolbar-right">
                 <i :class="btn.icon" placement="top" v-tooltip :title="btn.title" v-for="(btn, idx) in right" :key="idx" @click="handleBtn(btn)"></i>

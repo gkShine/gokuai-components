@@ -10,6 +10,7 @@ import Finder from '../packages/finder/index.js';
 import Loading from '../packages/loading/index.js';
 import Menu from '../packages/menu/index.js';
 import MenuItem from '../packages/menu-item/index.js';
+import ScrollLoad from '../packages/scroll-load/index.js';
 import Slide from '../packages/slide/index.js';
 import Submenu from '../packages/submenu/index.js';
 import Table from '../packages/table/index.js';
@@ -28,6 +29,7 @@ const components = [
   Finder,
   Menu,
   MenuItem,
+  ScrollLoad,
   Slide,
   Submenu,
   Table,
@@ -59,6 +61,7 @@ module.exports = {
   Finder,
   Menu,
   MenuItem,
+  ScrollLoad,
   Slide,
   Submenu,
   Table,

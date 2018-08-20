@@ -1,6 +1,13 @@
 <template>
     <div class="container">
-        <gk-finder v-model="openFile" :root="file" :list="fileList" :loading="loading"></gk-finder>
+        <h3 class="demo-title">
+            文件管理器
+        </h3>
+        <div class="demo-block">
+            <gk-finder v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading"
+                       :default-sort="sort" :sort-list="sortList" @loadMore="getMore" :show-more="locked" :more-text="moreText"
+            ></gk-finder>
+        </div>
     </div>
 </template>
 
@@ -13,38 +20,76 @@
         openFile: {},
         file: {},
         root: {},
+        cache: {},
+        total: 0,
         fileList: [],
-        loading: false
+        loading: false,
+        locked: false,
+        moreText: '加载中...',
+        sort: 'filename asc',
+        sortList: [
+          {
+            value: 'filename',
+            label: '文件名'
+          },
+          {
+            value: 'last_dataline',
+            label: '最后修改'
+          },
+          {
+            value: 'filesize',
+            label: '大小'
+          }
+        ]
       }
     },
+    watch: {
+      'openFile': 'changeOpenFile'
+    },
     methods: {
-      getFiles() {
+      getFiles(fullpath) {
+        if (this.cache[fullpath] !== undefined) {
+          this.fileList = this.cache[fullpath];
+          return;
+        }
         let para = {
-          page: 1
+          page: 1,
+          fullpath: fullpath
         };
+        this.loading = true;
         getFileList(para).then(data => {
-          this.fileList = data.list;
+          this.cache[fullpath] = this.fileList = data.list;
+          this.total = data.total;
+          this.loading = false;
         });
       },
       getRoot() {
         getFile({}).then(data => {
           this.root = data;
+
+          this.getFiles(data.fullpath);
         });
+      },
+      getMore(page, file) {
+        if (this.locked) {
+          return;
+        }
+        let para = {
+          page: page,
+          fullpath: file.fullpath
+        };
+        this.locked = true;
+        getFileList(para).then(data => {
+          this.fileList = this.fileList.concat(data.list);
+          this.locked = false;
+        });
+      },
+      changeOpenFile() {
+        this.getFiles(this.openFile.fullpath);
       }
     },
     mounted() {
       this.getRoot();
-      this.getFiles();
     }
   }
 </script>
-
-<style scoped>
-    .container {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-    }
-</style>

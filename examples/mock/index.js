@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { Files, Root } from './data';
+import { genFiles, rootFile } from './data';
 
 export default {
   bootstrap() {
@@ -19,7 +19,7 @@ export default {
     mock.onGet('/file').reply(config => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          resolve([200, Root]);
+          resolve([200, rootFile]);
         }, 1000);
       });
     });
@@ -28,11 +28,11 @@ export default {
     mock.onGet('/file/listpage').reply(config => {
       let {page, fullpath} = config.params;
       fullpath = fullpath || '';
-      let mockFiles = Files;
+      let mockFiles = genFiles(300);
       let total = mockFiles.length;
       mockFiles = mockFiles.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
       mockFiles.forEach(file => {
-        file.fullpath = fullpath + '/' + file.fullpath;
+        file.fullpath = (fullpath ? (fullpath + '/') : '') + file.fullpath;
       });
       return new Promise((resolve, reject) => {
         setTimeout(() => {

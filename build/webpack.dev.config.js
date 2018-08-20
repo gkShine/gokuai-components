@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 const utils = require('./utils')
 const config = require('./config')
@@ -32,11 +33,15 @@ module.exports = merge(baseConfig, {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }, {
-        test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader'
-        ]
+        test: /\.(sa|sc|c)ss$/,
+        use: ["vue-style-loader", "css-loader", {
+          loader: 'postcss-loader',
+          options: {
+            plugins: (loader) => [
+              require('autoprefixer')(), //CSS浏览器兼容
+            ]
+          }
+        }, "sass-loader"]
       }
     ]
   },
@@ -65,6 +70,10 @@ module.exports = merge(baseConfig, {
       filename: 'index.html',
       template: 'examples/index.html',
       inject: true
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     }),
     new webpack.HotModuleReplacementPlugin()
   ]

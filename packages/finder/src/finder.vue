@@ -1,13 +1,16 @@
 <template>
     <div class="gk-finder">
         <div class="gk-finder-toolbar">
-            <gk-breadcrumb :data="navList" @navigator="clickBreadcrumb" label="filename" value="fullpath"></gk-breadcrumb>
+            <gk-breadcrumb :data="navList" @navigator="clickBreadcrumb" label="filename"
+                           value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
                 <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
-                    <gk-button icon="fa fa-sort" class="gk-finder-sort-button"></gk-button>
+                    <gk-button icon="gk-icon-sort" class="gk-finder-sort-button"></gk-button>
                     <gk-dropdown-menu slot="dropdown" show-arrow>
-                        <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList" :command="sort.value" :key="idx">{{sort.label}}</gk-dropdown-item>
+                        <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
+                                          :command="sort.value" :key="idx">{{sort.label}}
+                        </gk-dropdown-item>
                     </gk-dropdown-menu>
                 </gk-dropdown>
 
@@ -27,21 +30,25 @@
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
-                <gk-thumbnail ref="table" fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list" :border="0" :default-index="selectedIndex"
-                              @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" >
+                <gk-thumbnail ref="table" fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list"
+                              :border="0" :default-index="selectedIndex" @loadMore="loadMore" @select="selectItem"
+                              @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
                             <img :src="props.thumb" width="128" height="128"/>
                         </p>
-                        <p>{{props.filename}}</p>
+                        <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table ref="table" fit :loading="loading" show-checkbox show-header :data="list" :itemHeight="itemHeight"
-                          :default-index="selectedIndex" @select="selectItem" @dblclick="dblclickItem" @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
+                <gk-table ref="table" fit :loading="loading" show-checkbox show-header :data="list"
+                          :itemHeight="itemHeight"
+                          :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
+                          @loadMore="loadMore" @select="selectItem" @dblclick="dblclickItem"
+                          @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column checkbox :width="30" align="center"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
-                            <div class="gk-finder-filename">
+                            <div class="gk-finder-filename-column">
                                 <img :src="props.thumb" height="16"/>{{props.filename}}
                             </div>
                         </template>
@@ -50,14 +57,16 @@
                                      :width="180"></gk-table-column>
                     <gk-table-column property="filesize" label="大小" :formatter="formatSize" sortable
                                      :width="80"></gk-table-column>
-                    <gk-table-column width="20%"></gk-table-column>
+                    <gk-table-column width="10%"></gk-table-column>
                 </gk-table>
-                <gk-table ref="table" fit :loading="loading" :data="list" :itemHeight="itemHeight + 20" @select="selectItem"
-                          @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex" v-else>
+                <gk-table ref="table" fit :loading="loading" :data="list" :itemHeight="itemHeight + 20"
+                          @select="selectItem"
+                          @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
+                          :more-text="moreText" :show-more="showMore" @loadMore="loadMore" v-else>
                     <gk-table-column :width="20"></gk-table-column>
                     <gk-table-column property="filename" label="文件名" sortable>
                         <template slot-scope="props">
-                            <div class="gk-finder-filename">
+                            <div class="gk-finder-filename-column">
                                 <img :src="props.thumb" height="32"/>
                                 <div>
                                     <p>{{props.filename}}</p>
@@ -74,7 +83,8 @@
                 </gk-table>
             </template>
 
-            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="selected" id="fullpath">
+            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="selected"
+                      id="fullpath">
                 <template slot-scope="props">
                     <iframe v-if="props.item.previewUrl" v-bind:src="props.item.previewUrl"></iframe>
                 </template>
@@ -106,14 +116,15 @@
     name: 'GkFinder',
     components: {
       GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail,
-      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb},
+      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb
+    },
     props: {
       list: { //当前文件列表
         type: Array,
         required: true
       },
       value: { //当前打开文件/文件夹
-        type: Object|null,
+        type: Object | null,
         required: true
       },
       root: Object, //根文件夹或库
@@ -126,6 +137,9 @@
         type: String,
         default: ''
       },
+      'show-more': Boolean,
+      'more-text': String,
+      total: Number,
       buttons: Array,
       loading: Boolean,
       previewToolbar: Object
@@ -151,13 +165,14 @@
       getSortIcon(key) {
         let icon = '';
         if (key === this.sort) {
-            icon = 'fa ' + (this.order === 'asc' ? 'fa-long-arrow-up' : 'fa-long-arrow-down');
+          icon = this.order === 'asc' ? 'gk-icon-longarrowup' : 'gk-icon-longarrowdown';
         }
         return icon;
       },
       initNavs() {
         let navs = [], path = '', fullpath = '';
-        this.root && navs.push(this.root);
+        Object.keys(this.root).length && navs.push(this.root);
+
         if (this.value && this.value.fullpath) {
           fullpath += this.value.fullpath + '/';
         }
@@ -184,11 +199,13 @@
       },
       selectItem(file, index) {
         this.selected = file;
-        this.$emit('input', file);
+        this.selectedIndex = [index];
       },
       dblclickItem(file, index) {
         this.selected = file;
+        this.selectedIndex = [index];
         this.navList.push(file);
+        this.$emit('input', file);
         this.$emit('enter', file, index);
         if (!file.dir) {
           this.showPreview();
@@ -203,6 +220,7 @@
       clickBreadcrumb(value, file, index) {
         this.navList = this.navList.slice(0, index + 1);
         this.selectItem(null, -1);
+        this.$emit('input', file);
         this.$emit('navigator', value, file);
       },
       showPreview() {
@@ -210,16 +228,22 @@
       },
       loadSuccess() {
         this.fileList = [];
-        this.list.forEach((file)=> {
+        this.list.forEach((file) => {
           if (!file.dir) {
             this.fileList.push(file);
           }
         });
         this.preview = false;
       },
+      loadMore(page) {
+        if (this.fileList.length === this.total) {
+          return;
+        }
+        this.$emit('loadMore', page, this.value);
+      },
       handleSort(command) {
         if (this.sort === command) {
-            this.order = this.order === 'desc' ? 'asc' : 'desc';
+          this.order = this.order === 'desc' ? 'asc' : 'desc';
         }
         this.sort = command;
         this.$emit('sort-change', this.sort, this.order);

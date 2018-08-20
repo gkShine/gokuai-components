@@ -1,15 +1,15 @@
 <template>
     <div class="gk-breadcrumb">
         <gk-button-group ref="ops" class="gk-breadcrumb-ops" v-if="showNav" plain>
-            <gk-button icon="fa fa-angle-left" @click="handlePrevNext(-1)"></gk-button>
-            <gk-button icon="fa fa-angle-right" @click="handlePrevNext(+1)"></gk-button>
+            <gk-button icon="gk-icon-angleleft" @click="handlePrevNext(-1)"></gk-button>
+            <gk-button icon="gk-icon-angleright" @click="handlePrevNext(+1)"></gk-button>
         </gk-button-group>
 
         <ul ref="list" class="gk-breadcrumb-list" :class="mode === 'full' ? 'gk-breadcrumb-full' : 'gk-breadcrumb-hidden'">
             <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in navs">
                 <template v-if="idx < data.length - 1">
                     <a href="javascript:void(0)" :title="item[label]" @click="handelClick(item, $event)">{{item[label]}}</a>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="gk-icon-angleright"></i>
                 </template>
                 <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
             </li>
@@ -19,12 +19,12 @@
             <template v-for="(item, idx) in list">
                 <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item" >
                     <a href="javascript:void(0)" @click="showMenu">...</a>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="gk-icon-angleright"></i>
                 </li>
                 <li :key="idx" class="gk-breadcrumb-item" >
                     <template v-if="idx < list.length - 1">
                         <a href="javascript:void(0)" :title="item[label]" @click="handelClick(item, $event)">{{item[label]}}</a>
-                        <i class="fa fa-angle-right"></i>
+                        <i class="gk-icon-angleright"></i>
                     </template>
                     <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
                 </li>
@@ -58,7 +58,11 @@
         type: String,
         default: 'value'
       },
-      'show-nav': Boolean
+      'show-nav': Boolean,
+      'index': {
+        type: String,
+        default: '$_i'
+      }
     },
     data() {
       return {
@@ -78,7 +82,7 @@
       navs() {
         let navs = [];
         this.data.forEach((nav, index) => {
-          nav.$$id = index;
+          nav[this.index] = index;
           navs.push(nav);
         });
         return navs;
@@ -86,6 +90,9 @@
     },
     methods: {
       change(data) {
+        if (!data.length) {
+          return;
+        }
         this.input = this.current = data[data.length - 1][this.value];
         let _data = Array.from(data);
 
@@ -108,7 +115,7 @@
           return;
         }
         this.history.push(this.current);
-        let index = item.$$id;
+        let index = item[this.index];
         this.$emit('navigator', item[this.value], this.data[index], index, event);
       },
       handleGoto() {

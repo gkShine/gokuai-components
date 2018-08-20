@@ -1,7 +1,7 @@
 <template>
     <li class="gk-menu-item" :class="{'gk-menu-item-disabled':disabled}" @click="handleClick" :aria-disabled="disabled">
         <i v-if="icon" :class="icon"></i><slot></slot>
-        <span class="gk-menu-item-right" v-if="showRight"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><i v-if="hasSub" class="fa fa-caret-right"></i></span>
+        <span class="gk-menu-item-right" v-if="showRight"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><i v-if="hasSub" class="gk-icon-caretright"></i></span>
     </li>
 </template>
 

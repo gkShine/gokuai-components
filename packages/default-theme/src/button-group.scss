@@ -1,6 +1,8 @@
 .gk-button-group {
+  clear: both;
   & > .gk-button {
     margin-left: -1px;
+    float: left;
   }
 
   &[plain] > .gk-button {

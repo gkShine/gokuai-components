@@ -10,6 +10,7 @@
   "loading": "./packages/loading/index.js",
   "menu": "./packages/menu/index.js",
   "menu-item": "./packages/menu-item/index.js",
+  "scroll-load": "./packages/scroll-load/index.js",
   "slide": "./packages/slide/index.js",
   "submenu": "./packages/submenu/index.js",
   "table": "./packages/table/index.js",

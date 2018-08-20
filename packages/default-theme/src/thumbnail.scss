@@ -4,7 +4,8 @@
 .gk-thumbnail {
   padding: 10px;
   margin: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  clear: both;
   background-color: $--thumbnail-background-color;
 
   &.gk-thumbnail-fit {
