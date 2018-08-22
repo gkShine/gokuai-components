@@ -80,7 +80,9 @@
         });
       },
       updateHeadLabel() {
-        this.headLabel = this.headTpl.replace(':d', this.$refs.table.getCheckedIndex().length);
+        setTimeout(() => {
+          this.headLabel = this.headTpl.replace(':d', this.$refs.table.getCheckedIndex().length);
+        }, 20);
       },
       findFile(id) {
         for (let i in this.files) {
@@ -136,11 +138,11 @@
       if (this.selector) {
         this.webUpload(this.selector);
       } else {
+        this.initDelete('.gk-uploader-delete');
         let uploader = this.webUpload('.gk-file-uploader');
 
         if (!isIE()) {
-          console.log(uploader);
-          this.uploader.addButton({
+          uploader.addButton({
             id: '.gk-folder-uploader'
           });
 
@@ -152,8 +154,6 @@
             }
           }, 10);
         }
-
-        this.initDelete('.gk-uploader-delete');
       }
     }
   }

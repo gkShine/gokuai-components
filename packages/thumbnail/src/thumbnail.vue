@@ -55,7 +55,6 @@
     methods: {
       updateData() {
         this.selected = intersect(this.selected, this.data);
-        this.refreshCheckAllState();
       },
       loadMore() {
         this.$emit('loadMore');
