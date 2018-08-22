@@ -52,7 +52,7 @@
         headLabel: this.headTpl.replace(':d', 0),
         list: [],
         files: [],
-        uploader: {}
+        uploader: false
       }
     },
     computed: {
@@ -91,15 +91,13 @@
       },
       removeFile(id) {
         let {file, index} = this.findFile(id);
-        Object.values(this.uploader).forEach((uploader) => {
-          uploader.removeFile(file);
-        });
+        this.uploader.removeFile(file);
         this.files.splice(index, 1);
         this.list.splice(index, 1);
       },
       webUpload(selector) {
-        if (this.uploader[selector]) {
-          return;
+        if (this.uploader !== false) {
+          return this.uploader;
         }
         let uploader = WebUploader.create({
           auto: this.auto,
@@ -121,7 +119,8 @@
           this.$emit('before', file);
         });
 
-        this.uploader[selector] = uploader;
+        this.uploader = uploader;
+        return uploader;
       },
       initDelete(selector) {
         document.querySelector(selector).onclick = () => {
@@ -137,10 +136,13 @@
       if (this.selector) {
         this.webUpload(this.selector);
       } else {
-        this.webUpload('.gk-file-uploader');
+        let uploader = this.webUpload('.gk-file-uploader');
 
         if (!isIE()) {
-          this.webUpload('.gk-folder-uploader');
+          console.log(uploader);
+          this.uploader.addButton({
+            id: '.gk-folder-uploader'
+          });
 
           let timer = setInterval(() => {
             let input = document.querySelector('.gk-folder-uploader input');
