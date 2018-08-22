@@ -22,6 +22,7 @@
         root: {},
         cache: {},
         total: 0,
+        page: 1,
         fileList: [],
         loading: false,
         locked: false,
@@ -59,6 +60,7 @@
         this.loading = true;
         getFileList(para).then(data => {
           this.cache[fullpath] = this.fileList = data.list;
+          this.page = 1;
           this.total = data.total;
           this.loading = false;
         });
@@ -70,12 +72,12 @@
           this.getFiles(data.fullpath);
         });
       },
-      getMore(page, file) {
+      getMore(file) {
         if (this.locked) {
           return;
         }
         let para = {
-          page: page,
+          page: ++this.page,
           fullpath: file.fullpath
         };
         this.locked = true;

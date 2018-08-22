@@ -30,8 +30,10 @@ export default {
         }
       });
     } else if (column.property) {
-      let label = this.data[column.property];
-      content = this.column.formatter ? this.column.formatter(label, this.data) : label ;
+      let value = this.data[column.property];
+      content = this.column.formatter ? this.column.formatter(value, this.data, this.index) : value ;
+    } else if (this.column.formatter) {
+      content = this.column.formatter();
     }
     return h('td', {
       style: column.columnStyle,

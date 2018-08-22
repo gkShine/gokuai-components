@@ -24,6 +24,9 @@ module.exports = {
         test: /\.js$/,
         exclude: config.jsexclude,
         loader: 'babel-loader'
+      }, {
+        test: /\.swf$/,
+        loader: 'file-loader'
       }
     ]
   },

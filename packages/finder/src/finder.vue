@@ -6,7 +6,7 @@
 
             <div class="gk-finder-show-ops" v-show="!preview">
                 <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
-                    <gk-button icon="gk-icon-sort" class="gk-finder-sort-button"></gk-button>
+                    <gk-button icon="gk-icon-sort" class="gk-finder-sort-button" plain></gk-button>
                     <gk-dropdown-menu slot="dropdown" show-arrow>
                         <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
                                           :command="sort.value" :key="idx">{{sort.label}}
@@ -196,6 +196,7 @@
       handleViewMode(mode) {
         this.selectedIndex = this.$refs.table.getSelectedIndex();
         this.viewMode = mode;
+        this.$refs.table.checked = {};
       },
       selectItem(file, index) {
         this.selected = file;
@@ -235,11 +236,11 @@
         });
         this.preview = false;
       },
-      loadMore(page) {
+      loadMore() {
         if (this.fileList.length === this.total) {
           return;
         }
-        this.$emit('loadMore', page, this.value);
+        this.$emit('loadMore', this.value);
       },
       handleSort(command) {
         if (this.sort === command) {

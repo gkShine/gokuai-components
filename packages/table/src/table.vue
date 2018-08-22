@@ -1,5 +1,5 @@
 <template>
-    <section class="gk-table" :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
+    <section class="gk-table" :style="tableStyle" :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
         <table ref="thead" class="gk-table-header" v-show="showHeader">
             <thead>
             <tr>
@@ -33,6 +33,7 @@
   import GkTableCell from "gokuai-components/packages/table/src/table-cell";
   import loading from 'gokuai-components/packages/loading/src/loading';
   import scrollLoad from 'gokuai-components/packages/scroll-load/src/scroll-load';
+  import {intersect, getSelected} from "gokuai-components/src/common/util";
 
   export default {
     name: "GkTable",
@@ -44,7 +45,7 @@
       'show-checkbox': Boolean,
       'default-index': Number|Array,
       'default-checked-index': {
-        type: Array,
+        type: Number|Array,
         default: () => []
       },
       'more-text': {
@@ -64,22 +65,11 @@
       }
     },
     data() {
-      let selected = {}, checked = {};
-      if (typeof this.defaultIndex === 'object') {
-        this.defaultIndex.forEach((index) => {
-          selected[index] = this.data[index];
-        });
-      } else {
-        selected[this.defaultIndex] = this.data[this.defaultIndex];
-      }
-      this.defaultCheckedIndex.forEach((index) => {
-        checked[index] = this.data[index];
-      });
       return {
         page: 1,
-        selected: selected,
+        selected: getSelected(this.defaultIndex, this.data),
         lastSelectedIndex: -1,
-        checked: checked,
+        checked: getSelected(this.defaultCheckedIndex, this.data),
         showAllCheckbox: false,
         hasScrollbar: false,
         clickTimer: false,
@@ -89,6 +79,9 @@
     computed: {
       computedStyle() {
         let style = {};
+        if (!this.$refs.thead) {
+          return;
+        }
         if (!this.fit && this.height) {
           let height = this.height;
           if (this.showHeader) {
@@ -96,6 +89,16 @@
             height = height - parseInt(headHeight);
           }
           style.height = height + 'px';
+        }
+        return style;
+      },
+      tableStyle() {
+        let style = {};
+        if (this.fit) {
+          return style;
+        }
+        if (this.height) {
+          style.height = this.height + 'px';
         }
         return style;
       },
@@ -112,9 +115,38 @@
         return columns;
       }
     },
+    watch: {
+      data: 'updateData'
+    },
     methods: {
-      loadMore(page) {
-        this.$emit('loadMore', page);
+      updateData() {
+        this.checked = intersect(this.checked, this.data);
+        this.selected = intersect(this.selected, this.data);
+        this.refreshCheckAllState();
+      },
+      refreshCheckAllState() {
+        let headCheckbox = this.getHeadCheckbox();
+        if (headCheckbox !== undefined) {
+          let checkedLen = Object.keys(this.checked).length;
+          headCheckbox.setChecked(checkedLen > 0 && checkedLen === this.data.length);
+        }
+      },
+      getHeadCheckbox() {
+        if (this.$refs.thead && this.$refs.thead.querySelector('th.gk-table-checkbox')) {
+          return this.$children[0].$children[0];
+        }
+      },
+      getCheckboxes() {
+        let checkboxes = [];
+        this.$refs.table.$children.forEach((child) => {
+          if (child.$el.className.indexOf('gk-table-checkbox') > -1) {
+            checkboxes.push(child.$children[0]);
+          }
+        });
+        return checkboxes;
+      },
+      loadMore() {
+        this.$emit('loadMore');
       },
       handleSelect(item, index, event) {
         this.clickItem = true;
@@ -175,23 +207,23 @@
         } else {
           delete this.checked[index];
         }
+        //自动隐藏checkbox模式
         !this.showCheckbox && (this.showAllCheckbox = Object.keys(this.checked).length > 0);
+        let checked = Object.values(this.checked);
+        this.refreshCheckAllState();
+        this.$emit('check', checked, event);
       },
       handleCheckAll(checked) {
-        let checkboxs = this.$refs.table.$el.querySelectorAll('.gk-table-checkbox > :first-child');
-        for (let i = 0; i < checkboxs.length; i++) {
-          checkboxs[i].checked = checked;
-          if (checked) {
-            checkboxs[i].classList.add('gk-checkbox-checked');
-          } else {
-            checkboxs[i].classList.remove('gk-checkbox-checked');
-          }
-        }
+        let checkboxes = this.getCheckboxes();
+        checkboxes.forEach((checkbox) => {
+          checkbox.setChecked(checked);
+        });
         if (checked) {
           this.checked = this.data;
         } else {
           this.checked = [];
         }
+        this.$emit('check', Object.values(this.checked), event);
       },
       handleContextmenu(item, index, event) {
         if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
@@ -213,6 +245,9 @@
         this.handleSelect(this.data[index], index);
       },
       setScrollbar() {
+        if (!this.$refs.table) {
+          return;
+        }
         let el = this.$refs.table.$el;
         this.hasScrollbar = this.itemHeight * this.data.length > el.clientHeight;
       },
@@ -234,6 +269,9 @@
       },
       getChecked() {
         return Object.values(this.checked);
+      },
+      getCheckedIndex() {
+        return Object.keys(this.checked);
       }
     },
     mounted() {

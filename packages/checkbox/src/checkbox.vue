@@ -1,5 +1,5 @@
 <template>
-    <input ref="checkbox" :aria-checked="checked" :checked="checked" class="gk-checkbox" @change="changeValue" type="checkbox" :class="{'gk-checkbox-checked':checked}"/>
+    <input ref="checkbox" :aria-checked="checked" :checked="checked" class="gk-checkbox" @change="changeChecked" type="checkbox" :class="{'gk-checkbox-checked':checked}"/>
 </template>
 
 <script>
@@ -13,9 +13,18 @@
         checked: this.isChecked
       };
     },
+    watch: {
+      'isChecked': 'updateChecked'
+    },
     methods: {
-      changeValue() {
+      updateChecked() {
+        this.checked = this.isChecked;
+      },
+      changeChecked() {
         this.checked = this.$refs.checkbox.checked;
+      },
+      setChecked(value) {
+        this.checked = value;
       }
     }
   }

@@ -1,1 +1,1 @@
-.gk-button{outline:0;padding:0;cursor:pointer;text-align:center;background:#fff;border:1px solid #8C95A4;color:#4A4A4A}.gk-button.gk-button-active{background-color:#4B7FEF;color:#FFF}
+.gk-button{outline:0;cursor:pointer;text-align:center;background:#fff;border:1px solid #8C95A4;color:#4A4A4A;font-size:14px;padding:9px 28px}.gk-button.gk-button-plain{padding:0}.gk-button.gk-button-active{background-color:#4B7FEF;color:#FFF}div.gk-button{display:inline-block}

@@ -5,7 +5,6 @@ export default {
 
     option = Object.assign({
       distance: 20,
-      page: 1,
       disabled: false,
       frequency: 200,
       selector: false
@@ -14,9 +13,9 @@ export default {
       el = el.querySelector(option.selector);
     }
     let check = () => {
-      if (el.scrollTop + el.clientHeight + option.distance >= el.scrollHeight) {
+      if (el.clientHeight && el.scrollTop + el.clientHeight + option.distance >= el.scrollHeight) {
         if (typeof binding.value === 'function') {
-          binding.value(++option.page);
+          binding.value();
         }
       }
     };

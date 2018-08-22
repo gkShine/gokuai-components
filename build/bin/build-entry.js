@@ -19,6 +19,7 @@ const install = function(Vue, opts = {}) {
   });
   Vue.directive('gtooltip', Tooltip);
   Vue.directive('gloading', Loading);
+  Vue.directive('gscrollLoad', ScrollLoad);
 };
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
@@ -45,7 +46,7 @@ ComponentNames.forEach(name => {
     package: name
   }));
 
-  if (['Loading', 'Tooltip'].indexOf(componentName) === -1) {
+  if (['Loading', 'Tooltip', 'ScrollLoad'].indexOf(componentName) === -1) {
     installTemplate.push(render(INSTALL_COMPONENT_TEMPLATE, {
       name: componentName,
       component: name

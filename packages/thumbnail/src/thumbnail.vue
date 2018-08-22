@@ -20,6 +20,7 @@
   import GkThumbnailItem from "gokuai-components/packages/thumbnail/src/thumbnail-item";
   import loading from "gokuai-components/packages/loading/src/loading";
   import scrollLoad from 'gokuai-components/packages/scroll-load/src/scroll-load';
+  import {intersect, getSelected} from "gokuai-components/src/common/util";
 
   export default {
     name: "GkThumbnail",
@@ -35,17 +36,9 @@
       fit: Boolean
     },
     data() {
-      let selected = {};
-      if (typeof this.defaultIndex === 'object') {
-        this.defaultIndex.forEach((index) => {
-          selected[index] = this.data[index];
-        });
-      } else {
-        selected[this.defaultIndex] = this.data[this.defaultIndex];
-      }
       return {
         clickTimer: false,
-        selected: selected,
+        selected: getSelected(this.defaultIndex, this.data),
         clickItem: false
       };
     },
@@ -56,9 +49,16 @@
         };
       }
     },
+    watch: {
+      data: 'updateData'
+    },
     methods: {
-      loadMore(page) {
-        this.$emit('loadMore', page);
+      updateData() {
+        this.selected = intersect(this.selected, this.data);
+        this.refreshCheckAllState();
+      },
+      loadMore() {
+        this.$emit('loadMore');
       },
       handleSelect(item, index, event) {
         this.clickItem = true;

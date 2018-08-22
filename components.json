@@ -17,5 +17,7 @@
   "table-column": "./packages/table-column/index.js",
   "thumbnail": "./packages/thumbnail/index.js",
   "thumbnail-item": "./packages/thumbnail-item/index.js",
-  "tooltip": "./packages/tooltip/index.js"
+  "tooltip": "./packages/tooltip/index.js",
+  "uploader": "./packages/uploader/index.js",
+  "uploader-buttons": "./packages/uploader-buttons/index.js"
 }

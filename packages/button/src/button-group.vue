@@ -4,6 +4,9 @@
 
 <script>
   export default {
-    name: "GkButtonGroup"
+    name: "GkButtonGroup",
+    props: {
+      plain: Boolean
+    }
   }
 </script>

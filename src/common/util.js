@@ -102,3 +102,43 @@ export function getOS() {
   }
   return os;
 }
+
+export function isIE() {
+  let ua = navigator.userAgent.toLowerCase();
+  let isIE = ua.indexOf("msie") > -1;
+  if (isIE) {
+    return ua.match(/msie ([\d.]+)/)[1];
+  }
+  return false;
+}
+
+/**
+ * 获取两个对象的交集
+ */
+export function intersect(obj1, obj2, isArray) {
+  let result = {};
+  for (let i in obj1) {
+    for (let j in obj2) {
+      if (JSON.stringify(obj1[i]) === JSON.stringify(obj2[j])) {
+        result[j] = obj1[i];
+        break;
+      }
+    }
+  }
+  return isArray ? Object.values(result) : result;
+}
+
+export function getSelected(defaultIndex, data) {
+  let selected = {};
+  if (defaultIndex === undefined) {
+    return selected;
+  }
+  if (typeof defaultIndex === 'object') {
+    defaultIndex.forEach((index) => {
+      selected[index] = data[index];
+    });
+  } else {
+    selected[defaultIndex] = data[defaultIndex];
+  }
+  return selected;
+}

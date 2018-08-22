@@ -18,6 +18,8 @@ import TableColumn from '../packages/table-column/index.js';
 import Thumbnail from '../packages/thumbnail/index.js';
 import ThumbnailItem from '../packages/thumbnail-item/index.js';
 import Tooltip from '../packages/tooltip/index.js';
+import Uploader from '../packages/uploader/index.js';
+import UploaderButtons from '../packages/uploader-buttons/index.js';
 const components = [
   Breadcrumb,
   Button,
@@ -29,13 +31,14 @@ const components = [
   Finder,
   Menu,
   MenuItem,
-  ScrollLoad,
   Slide,
   Submenu,
   Table,
   TableColumn,
   Thumbnail,
-  ThumbnailItem
+  ThumbnailItem,
+  Uploader,
+  UploaderButtons
 ];
 const install = function(Vue, opts = {}) {
   components.forEach(component => {
@@ -43,6 +46,7 @@ const install = function(Vue, opts = {}) {
   });
   Vue.directive('gtooltip', Tooltip);
   Vue.directive('gloading', Loading);
+  Vue.directive('gscrollLoad', ScrollLoad);
 };
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
@@ -61,12 +65,13 @@ module.exports = {
   Finder,
   Menu,
   MenuItem,
-  ScrollLoad,
   Slide,
   Submenu,
   Table,
   TableColumn,
   Thumbnail,
-  ThumbnailItem
+  ThumbnailItem,
+  Uploader,
+  UploaderButtons
 };
 module.exports.default = module.exports;

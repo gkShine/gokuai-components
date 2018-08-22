@@ -2,15 +2,24 @@
 
 .gk-button {
   outline: 0;
-  padding: 0;
   cursor: pointer;
   text-align: center;
   background: #ffffff;
   border: 1px solid $--button-border-color;
   color: $--font-color;
+  font-size: $--font-size;
+  padding: $--button-padding;
+
+  &.gk-button-plain {
+    padding: 0;
+  }
 
   &.gk-button-active {
     background-color: $--primary-color;
     color: $--font-reverse-color;
   }
+}
+
+div.gk-button {
+  display: inline-block;
 }

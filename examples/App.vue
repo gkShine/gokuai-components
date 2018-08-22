@@ -1,26 +1,8 @@
 <template>
     <div id="app">
         <ul class="aside">
-            <li>
-                <router-link to="/button">按钮</router-link>
-            </li>
-            <li>
-                <router-link to="/menu">菜单</router-link>
-            </li>
-            <li>
-                <router-link to="/table">表格</router-link>
-            </li>
-            <li>
-                <router-link to="/slide">预览</router-link>
-            </li>
-            <li>
-                <router-link to="/dropdown">下拉框</router-link>
-            </li>
-            <li>
-                <router-link to="/thumbnail">幻灯片</router-link>
-            </li>
-            <li>
-                <router-link to="/finder">文件管理器</router-link>
+            <li :class="{'active':route.path === $route.path}" v-for="(route, index) in $router.options.routes" :key="index">
+                <router-link :to="route.path">{{route.name}}</router-link>
             </li>
         </ul>
         <router-view/>
@@ -48,6 +30,12 @@
                     font-size: 14px;
 
                     &:hover {
+                        color: #4B7FEF;
+                    }
+                }
+
+                &.active {
+                    a {
                         color: #4B7FEF;
                     }
                 }
@@ -86,4 +74,8 @@
     .demo-block:hover {
         box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5)
     }
+
+    .demo-toolbar {
+        padding: 10px;
+     }
 </style>
