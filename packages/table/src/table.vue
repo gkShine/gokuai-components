@@ -1,29 +1,40 @@
 <template>
-    <section class="gk-table" :style="tableStyle" :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
-        <table ref="thead" class="gk-table-header" v-show="showHeader">
-            <thead>
-            <tr>
-                <slot></slot>
-                <th v-if="hasScrollbar" class="gk-table-header-last"></th>
-            </tr>
-            </thead>
-        </table>
-        <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle" v-scroll-load="loadMore" v-loading="loading" ref="table" class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data" @click.native="handleCancelSelect()"
-                          content-tag="table" :item-height="itemHeight">
-            <template slot-scope="props">
-                <tr
-                        class="gk-table-item"
-                        :class="{'gk-table-item-active':selected[props.itemIndex] !== undefined}"
-                        @click="handleSelect(props.item, props.itemIndex, $event)"
-                        @dblclick="handleDbclick(props.item, props.itemIndex, $event)"
-                        @contextmenu="handleContextmenu(props.item, props.itemIndex, $event)"
-                >
-                    <gk-table-cell @check="handleCheck" :is-checked="checked[props.itemIndex] !== undefined" :index="props.itemIndex" :data="props.item" :column="column" v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
+    <section class="gk-table" :style="tableStyle"
+             :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
+        <template v-if="data.length">
+            <table ref="thead" class="gk-table-header" v-show="showHeader">
+                <thead>
+                <tr>
+                    <slot></slot>
+                    <th v-if="hasScrollbar" class="gk-table-header-last"></th>
                 </tr>
-            </template>
-        </virtual-scroller>
-        <div v-if="showMore" class="gk-table-more">
-            <span class="gk-table-more-text">{{moreText}}</span>
+                </thead>
+            </table>
+            <virtual-scroller @contextmenu.native="handleContextmenu(null, null, $event)" :style="computedStyle"
+                              v-scroll-load="loadMore" v-loading="loading" ref="table"
+                              class="gk-table-virtual gk-scrollbar" contentClass="gk-table-body" :items="data"
+                              @click.native="handleCancelSelect()"
+                              content-tag="table" :item-height="itemHeight">
+                <template slot-scope="props">
+                    <tr
+                            class="gk-table-item"
+                            :class="{'gk-table-item-active':selected[props.itemIndex] !== undefined}"
+                            @click="handleSelect(props.item, props.itemIndex, $event)"
+                            @dblclick="handleDbclick(props.item, props.itemIndex, $event)"
+                            @contextmenu="handleContextmenu(props.item, props.itemIndex, $event)"
+                    >
+                        <gk-table-cell @check="handleCheck" :is-checked="checked[props.itemIndex] !== undefined"
+                                       :index="props.itemIndex" :data="props.item" :column="column"
+                                       v-for="(column, idx) in columns" :key="idx"></gk-table-cell>
+                    </tr>
+                </template>
+            </virtual-scroller>
+            <div v-if="showMore" class="gk-table-more">
+                <span class="gk-table-more-text">{{moreText}}</span>
+            </div>
+        </template>
+        <div v-else class="gk-table-empty">
+            <slot name="empty"></slot>
         </div>
     </section>
 </template>
@@ -43,9 +54,9 @@
       'show-more': Boolean,
       'show-header': Boolean,
       'show-checkbox': Boolean,
-      'default-index': Number|Array,
+      'default-index': Number | Array,
       'default-checked-index': {
-        type: Number|Array,
+        type: Number | Array,
         default: () => []
       },
       'more-text': {
@@ -62,7 +73,8 @@
       itemHeight: {
         type: Number,
         default: 42
-      }
+      },
+      beforeSelect: Function
     },
     data() {
       return {
@@ -149,6 +161,9 @@
         this.$emit('loadMore');
       },
       handleSelect(item, index, event) {
+        if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
+          return false;
+        }
         this.clickItem = true;
         clearTimeout(this.clickTimer);
         this.clickTimer = setTimeout(() => {
@@ -165,7 +180,7 @@
               this.selected = selected;
               this.$emit('select', null, null, event);
             }
-          } else  {
+          } else {
             this.selected = {};
             if (event && event.shiftKey && this.lastSelectedIndex > -1) {
               for (let i = Math.min(index, this.lastSelectedIndex); i <= Math.max(index, this.lastSelectedIndex); i++) {

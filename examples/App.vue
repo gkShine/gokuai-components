@@ -67,8 +67,6 @@
         border: 1px solid #ebebeb;
         border-radius: 3px;
         transition: .2s;
-        width: 1024px;
-        height: 768px;
     }
 
     .demo-block:hover {

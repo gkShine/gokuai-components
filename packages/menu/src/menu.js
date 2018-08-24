@@ -51,7 +51,7 @@ export default {
       });
     } else {
       this.$slots.default && this.$slots.default.forEach((vnode) => {
-        if (vnode.componentOptions.propsData.divided !== undefined) {
+        if (vnode.componentOptions && vnode.componentOptions.propsData.divided !== undefined) {
           list.push(h('li', {
             'class': 'gk-menu-divided'
           }));

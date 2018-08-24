@@ -69,6 +69,10 @@
     }
   }
 
+  .gk-table-empty {
+    @include fit-dom;
+  }
+
   .gk-table-more {
     @include fit-window;
     top: auto;

@@ -1,4 +1,4 @@
-export function bitSize(num) {
+export function bitSize(num, lower) {
   if (num === undefined || num === '-') {
     return num;
   }
@@ -8,7 +8,7 @@ export function bitSize(num) {
   if (num < 0) {
     return '';
   }
-  let type = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  let type = lower && ['b', 'kb', 'mb', 'gb', 'tb', 'pb'] || ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
   let j = 0;
   while (num >= 1024) {
     if (j >= 5)

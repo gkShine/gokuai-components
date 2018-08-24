@@ -9,9 +9,11 @@
   color: $--font-color;
   font-size: $--font-size;
   padding: $--button-padding;
+  border-radius: $--button-border-radius;
 
   &.gk-button-plain {
     padding: 0;
+    border-radius: 0;
   }
 
   &.gk-button-active {

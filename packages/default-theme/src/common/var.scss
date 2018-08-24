@@ -28,6 +28,7 @@ $--table-more-background: rgba(255,255,255,0.8) !default;
 --------------------------*/
 $--button-border-color: #8C95A4 !default;
 $--button-padding: 9px 28px !default;
+$--button-border-radius: 2px !default;
 
 /* Thumbnail
 --------------------------*/
@@ -47,3 +48,8 @@ $--menu-hover-color: $--primary-hover-color !default;
 $--menu-active-color: $--primary-color !default;
 $--menu-disabled-font-color: $--disabled-color !default;
 $--menu-item-height: 26px !default;
+$--menu-item-padding: 0 25px !default;
+
+/* Uploader
+--------------------------*/
+$--uploader-empty-color: #5C7088;
