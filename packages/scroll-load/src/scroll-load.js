@@ -1,4 +1,5 @@
 export default {
+  name: 'gk-scroll-load',
   bind(el, binding) {
     let timer = 0;
     let option = (new Function('return {' + (el.getAttribute('gk-scroll-load-option') || '') + '}'))();

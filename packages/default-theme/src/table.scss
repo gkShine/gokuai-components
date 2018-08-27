@@ -7,7 +7,7 @@
   .gk-table-header {
     border-spacing: 0;
     width: 100%;
-    background: #f0f0f0;
+    background: $--table-head-background-color;
 
     thead {
       tr {
@@ -15,7 +15,7 @@
 
         th {
           height: $--table-head-height;
-          color: $--table-head-background-color;
+          color: $--table-head-font-color;
           font-size: 14px;
           font-weight: normal;
           text-align: left;
@@ -46,7 +46,7 @@
 
       tr.gk-table-item {
         td {
-          border-top: 1px solid #f0f0f0;
+          border-top: 1px solid $--table-border-color;
         }
 
         &:hover {
@@ -63,6 +63,12 @@
           td {
             color: $--font-reverse-color;
             background-color: $--table-active-color;
+          }
+        }
+
+        &:last-child {
+          td {
+            border-bottom: 1px solid $--table-border-color;
           }
         }
       }

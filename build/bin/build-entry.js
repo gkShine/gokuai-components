@@ -17,9 +17,9 @@ const install = function(Vue, opts = {}) {
   components.forEach(component => {
     Vue.component(component.name, component);
   });
-  Vue.directive('gtooltip', Tooltip);
-  Vue.directive('gloading', Loading);
-  Vue.directive('gscrollLoad', ScrollLoad);
+  Vue.directive(Tooltip.name, Tooltip);
+  Vue.directive(Loading.name, Loading);
+  Vue.directive(ScrollLoad.name, ScrollLoad);
 };
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {

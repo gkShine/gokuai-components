@@ -53,53 +53,114 @@
 .gk-uploader {
   position: relative;
 
-  .gk-uploader-empty {
-    @include fit-dom;
-    background-color: #F3F3F3;
+  .gk-uploader-body {
+    @include fit-window;
 
-    .gk-uploader-empty-content {
-      position: absolute;
-      left: 50%;
-      top: 50%;
+    i[class^="gk-icon"] {
+      cursor: pointer;
+      margin-right: 5px;
+    }
+  }
+  .uploader-state-pause {
 
-      h3 {
-        color: $--uploader-empty-color;
-        font-size: 18px;
-        font-weight: 400;
-        line-height: 28px;
-        margin: 0 0 24px;
-        text-align: center;
+  }
+
+  .uploader-state-cancel {
+
+  }
+
+  .uploader-state-success {
+
+  }
+
+  .uploader-state-error {
+
+  }
+}
+
+.gk-uploader-dialog {
+  position: absolute;
+  box-shadow: 0 0 12px 6px rgba(0, 0,0,0.09);
+  border-radius: 5px 5px 0 0;
+  display: none;
+
+  .gk-uploader-head {
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+    background: #FFFFFF;
+    padding: 10px;
+
+    h2 {
+      float: left;
+      margin: 0;
+      font-weight: normal;
+      color: $--font-color;
+      font-size: 16px;
+    }
+
+    div {
+      color: $--font-color;
+      float: right;
+
+      i {
+        cursor: pointer;
+        font-size: 14px;
+        margin-left: 5px;
       }
 
-      & > div {
-        border: 1px dashed #E4E4E4;
-        padding: 10px;
-        color: $--font-color;
-
-        h4 {
-          margin: 0;
-          font-size: $--font-size;
-          color: $--uploader-empty-color;
-          line-height: 23px;
-          font-weight: normal;
-        }
-
-        ul {
-          margin: 0;
-          padding: 0;
-
-          li {
-            line-height: 23px;
-            list-style: none;
-            font-size: $--font-size;
-            color: $--uploader-empty-color;
-          }
-        }
+      i.gk-icon-times {
+        font-size: 16px;
       }
     }
   }
 
-  .gk-icon-times {
-    cursor: pointer;
+  .gk-uploader-body {
+    top: 40px;
+  }
+}
+
+.gk-uploader-empty {
+  @include fit-dom;
+  background-color: #F3F3F3;
+
+  .gk-uploader-empty-content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    h3 {
+      color: $--uploader-empty-color;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+      margin: 0 0 24px;
+      text-align: center;
+    }
+
+    & > div {
+      border: 1px dashed #E4E4E4;
+      padding: 10px;
+      color: $--font-color;
+
+      h4 {
+        margin: 0;
+        font-size: $--font-size;
+        color: $--uploader-empty-color;
+        line-height: 23px;
+        font-weight: normal;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+          line-height: 23px;
+          list-style: none;
+          font-size: $--font-size;
+          color: $--uploader-empty-color;
+        }
+      }
+    }
   }
 }

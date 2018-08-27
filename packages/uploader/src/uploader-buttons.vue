@@ -30,7 +30,8 @@
     components: {GkButton, GkDropdown, GkDropdownMenu, GkDropdownItem},
     props: {
       buttons: Array,
-      dropdown: Boolean
+      dropdown: Boolean,
+      translate: Object
     },
     data() {
       return {};
@@ -56,21 +57,27 @@
       defaultButtons() {
         return {
           delete: {
+            type: 'delete',
             class: 'gk-uploader-delete',
-            label: 'delete'
+            label: this.$t('delete')
           },
           file: {
+            type: 'file',
             class: 'gk-uploader-file',
-            label: 'upload file'
+            label: this.$t('upload file')
           },
           folder: {
+            type: 'folder',
             class: 'gk-uploader-folder',
-            label: 'upload folder'
+            label: this.$t('upload folder')
           }
         };
       }
     },
     methods: {
+      $t(value) {
+        return this.translate && this.translate[value] || value;
+      },
       getButtonType(type) {
         return ['file', 'folder'].indexOf(type) > -1 ? 'html' : 'button'
       }

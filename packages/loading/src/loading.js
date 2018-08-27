@@ -1,4 +1,5 @@
 export default {
+  name: 'gk-loading',
   show(el) {
     if (!this.exist) {
       let position = window.getComputedStyle(el).position;

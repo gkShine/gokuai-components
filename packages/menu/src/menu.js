@@ -136,8 +136,8 @@ export default {
       let position = this.position;
       let menuStyle = window.getComputedStyle(this.menu);
       let {topTop, bottomTop, startLeft, centerLeft, endLeft} = {
-        topTop: position.top - this.menu.clientHeight - parseInt(menuStyle.marginTop) - parseInt(menuStyle.marginBottom),
-        bottomTop: position.top + position.height,
+        topTop: position.top + window.pageYOffset - this.menu.clientHeight - parseInt(menuStyle.marginTop) - parseInt(menuStyle.marginBottom),
+        bottomTop: position.top + window.pageYOffset + position.height,
         startLeft: position.left,
         centerLeft: position.left - (this.menu.clientWidth - position.width) / 2,
         endLeft: position.left - this.menu.clientWidth + position.width
@@ -171,7 +171,7 @@ export default {
       if (top < 0) {
         top = bottomTop;
       }
-      if (top + this.menu.clientHeight - parseInt(menuStyle.marginTop) > window.innerHeight) {
+      if (position.top + position.height + this.menu.clientHeight - parseInt(menuStyle.marginTop) > window.innerHeight) {
         top = topTop;
       }
 

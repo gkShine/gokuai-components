@@ -1,7 +1,7 @@
-import loading from './src/loading';
+import Loading from './src/loading';
 
-export default {
-  install(Vue) {
-    Vue.directive('gloading', loading);
-  }
+Loading.install = function(Vue) {
+  Vue.directive(Loading.name, Loading);
 };
+
+export default Loading;

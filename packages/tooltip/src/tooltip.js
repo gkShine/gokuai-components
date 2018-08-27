@@ -1,4 +1,5 @@
 export default {
+  name: 'gk-tooltip',
   get(el) {
     return document.getElementById(el.getAttribute('aria-describedby'));
   },
@@ -27,19 +28,19 @@ export default {
     switch (placement) {
       case 'top':
         left = position.left - (tooltip.clientWidth - position.width) / 2 - parseInt(tooltipStyle.marginLeft);
-        top = position.top - tooltip.clientHeight - parseInt(tooltipStyle.marginTop) - parseInt(tooltipStyle.marginBottom);
+        top = position.top + window.pageYOffset - tooltip.clientHeight - parseInt(tooltipStyle.marginTop) - parseInt(tooltipStyle.marginBottom);
         break;
       case 'left':
         left = position.left - tooltip.clientWidth - parseInt(tooltipStyle.marginLeft) - parseInt(tooltipStyle.marginRight);
-        top = position.top - (tooltip.clientHeight - position.height) / 2 - parseInt(tooltipStyle.marginTop);
+        top = position.top + window.pageYOffset - (tooltip.clientHeight - position.height) / 2 - parseInt(tooltipStyle.marginTop);
         break;
       case 'right':
         left = position.left + position.width;
-        top = position.top - (tooltip.clientHeight - position.height) / 2 - parseInt(tooltipStyle.marginTop);
+        top = position.top + window.pageYOffset - (tooltip.clientHeight - position.height) / 2 - parseInt(tooltipStyle.marginTop);
         break;
       default:
         left = position.left - (tooltip.clientWidth - position.width) / 2 - parseInt(tooltipStyle.marginLeft);
-        top = position.top + position.height;
+        top = position.top + window.pageYOffset + position.height;
     }
     tooltip.style.left = left + 'px';
     tooltip.style.top = top + 'px';

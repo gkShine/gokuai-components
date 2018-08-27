@@ -1,7 +1,7 @@
-import scrollLoad from './src/scroll-load';
+import ScrollLoad from './src/scroll-load';
 
-export default {
-  install(Vue) {
-    Vue.directive('gscroll-load', scrollLoad);
-  }
+ScrollLoad.install = function(Vue) {
+  Vue.directive(ScrollLoad.name, ScrollLoad);
 };
+
+export default ScrollLoad;
