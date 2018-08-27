@@ -7,7 +7,7 @@
             <div class="demo-toolbar">
                 <gk-uploader-buttons :buttons="autoButtons" dropdown>上传</gk-uploader-buttons>
             </div>
-            <gk-uploader dnd :buttons="autoButtons" style="height: 400px" ref="uploader" :form-data="{code: '3k5adph3', fullpath: ''}" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit >
+            <gk-uploader dnd :buttons="autoButtons" style="height: 400px" ref="uploader" :form-data="{code: '3k5adph3', fullpath: ''}" server="http://yk3-test2.goukuai.cn/index/test_upload" headTpl="已选择:d个" fit >
                 <h3>可直接拖拽文件到这里上传，最大文件不超过1GB</h3>
                 <div>
                     <h4>温馨提示:</h4>
@@ -26,7 +26,7 @@
                 <gk-uploader-buttons :translate="translate"></gk-uploader-buttons>
                 <gk-button @click.native="startUpload">开始上传</gk-button>
             </div>
-            <gk-uploader style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false">
+            <gk-uploader style="height: 600px" ref="uploader" server="http://yk3-test2.goukuai.cn/index/test_upload" headTpl="已选择:d个" fit :auto="false">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </gk-table>
-            <gk-uploader :buttons="dialogButtons" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" :height="400" @success="uploadSuccess">
+            <gk-uploader :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" ref="uploader" server="http://yk3-test2.goukuai.cn/index/test_upload" headTpl="已选择:d个" :height="400" @success="uploadSuccess">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
@@ -109,6 +109,8 @@
           'delete': '删除',
           'upload file': '上传文件',
           'upload folder': '上传文件夹',
+          'Upload Finish': '上传完成',
+          'Uploading (:n/:t)': '上传中(:n/:t)'
         }
       }
     },
