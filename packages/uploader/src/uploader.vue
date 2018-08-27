@@ -277,7 +277,7 @@
         }, this.options || {}));
 
         uploader.on('fileQueued', (file) => {
-          this.list.push({
+          this.list.unshift({
             id: file.id,
             name: file.name,
             size: file.size,
