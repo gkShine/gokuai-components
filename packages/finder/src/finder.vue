@@ -46,16 +46,16 @@
                           @loadMore="loadMore" @select="selectItem" @dblclick="dblclickItem"
                           @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column checkbox :width="30" align="center"></gk-table-column>
-                    <gk-table-column property="filename" label="文件名" sortable>
+                    <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
                                 <img :src="props.thumb" height="16"/>{{props.filename}}
                             </div>
                         </template>
                     </gk-table-column>
-                    <gk-table-column property="last_dateline" label="最后修改" :formatter="formatDate" sortable
+                    <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate" sortable
                                      :width="180"></gk-table-column>
-                    <gk-table-column property="filesize" label="大小" :formatter="formatSize" sortable
+                    <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize" sortable
                                      :width="80"></gk-table-column>
                     <gk-table-column width="10%"></gk-table-column>
                 </gk-table>
@@ -64,7 +64,7 @@
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                           :more-text="moreText" :show-more="showMore" @loadMore="loadMore" v-else>
                     <gk-table-column :width="20"></gk-table-column>
-                    <gk-table-column property="filename" label="文件名" sortable>
+                    <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
                                 <img :src="props.thumb" height="32"/>
@@ -142,7 +142,8 @@
       total: Number,
       buttons: Array,
       loading: Boolean,
-      previewToolbar: Object
+      previewToolbar: Object,
+      translate: Object
     },
     data() {
       let [sort, order] = this.defaultSort.split(' ');
@@ -162,6 +163,9 @@
       value: 'changeFile'
     },
     methods: {
+      gettext(value) {
+        return this.translate && this.translate[value] || value;
+      },
       getSortIcon(key) {
         let icon = '';
         if (key === this.sort) {

@@ -59,23 +59,23 @@
           delete: {
             type: 'delete',
             class: 'gk-uploader-delete',
-            label: this.$t('delete')
+            label: this.gettext('delete')
           },
           file: {
             type: 'file',
             class: 'gk-uploader-file',
-            label: this.$t('upload file')
+            label: this.gettext('upload file')
           },
           folder: {
             type: 'folder',
             class: 'gk-uploader-folder',
-            label: this.$t('upload folder')
+            label: this.gettext('upload folder')
           }
         };
       }
     },
     methods: {
-      $t(value) {
+      gettext(value) {
         return this.translate && this.translate[value] || value;
       },
       getButtonType(type) {

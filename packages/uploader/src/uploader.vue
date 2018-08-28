@@ -128,14 +128,14 @@
       mini: 'changeMini'
     },
     methods: {
-      $t(value) {
+      gettext(value) {
         return this.translate && this.translate[value] || value;
       },
       dialogTitle() {
         if (this.finishFiles.length === this.list.length) {
-          return this.$t('Upload Finish');
+          return this.gettext('Upload Finish');
         }
-        return this.$t('Uploading (:n/:t)').replace(':n', this.finishFiles.length).replace(':t', this.list.length);
+        return this.gettext('Uploading (:n/:t)').replace(':n', this.finishFiles.length).replace(':t', this.list.length);
       },
       changeMini() {
         this.$refs.uploader.style.height = this.mini ? 'auto' : this.height + 'px';
@@ -147,16 +147,16 @@
         let stateText = '';
         switch (data.state) {
           case this.states.pause:
-            stateText = this.$t('paused');
+            stateText = this.gettext('paused');
             break;
           case this.states.success:
-            stateText = this.$t('successful');
+            stateText = this.gettext('successful');
             break;
           case this.states.cancel:
-            stateText = this.$t('canceled');
+            stateText = this.gettext('canceled');
             break;
           case this.states.error:
-            stateText = this.$t('error');
+            stateText = this.gettext('error');
             break;
         }
         if (stateText) {
