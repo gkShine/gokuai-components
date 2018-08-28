@@ -9,7 +9,12 @@
                       :height="height"
                       @check="updateHeadLabel" :beforeSelect="() => false">
                 <gk-table-column :checkbox="showCheck" :width="30" align="center"></gk-table-column>
-                <gk-table-column property="name" :label="headLabel"></gk-table-column>
+                <gk-table-column property="name" :label="headLabel">
+                    <template slot-scope="props">
+                        <gk-fileicon :filename="props.name" :size="24"></gk-fileicon>
+                        {{props.name}}
+                    </template>
+                </gk-table-column>
                 <gk-table-column property="size" :width="80" :formatter="formatSize"></gk-table-column>
                 <gk-table-column property="percent" :width="130" :formatter="formatState"></gk-table-column>
                 <gk-table-column property="state" :formatter="formatOption" align="center" :width="100"></gk-table-column>
@@ -28,11 +33,12 @@
   import swgimg from 'webuploader/dist/Uploader.swf';
   import GkTable from "gokuai-components/packages/table/src/table";
   import GkTableColumn from "gokuai-components/packages/table/src/table-column";
+  import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import {isIE, bitSize} from "gokuai-components/src/common/util";
 
   export default {
     name: "GkUploader",
-    components: {GkTable, GkTableColumn},
+    components: {GkTable, GkTableColumn, GkFileicon},
     props: {
       auto: {
         type: Boolean,
@@ -149,6 +155,7 @@
             button.style.display = this.list.length ? 'inline-block' : 'none'
           });
         }
+        this.updateHeadLabel();
       },
       formatSize(value) {
         return bitSize(value);
@@ -353,7 +360,6 @@
             checked.forEach(file => {
               this.removeFile(file.id);
             });
-            this.updateHeadLabel();
           };
         });
       },

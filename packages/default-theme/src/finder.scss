@@ -56,7 +56,7 @@
       .gk-finder-filename-column {
         display: flex;
 
-        img {
+        img, i {
           margin-right: 10px;
         }
 
@@ -78,10 +78,10 @@
 
     &.gk-finder-view-list {
       .gk-finder-filename-column {
-        img {
+        img, i {
           display: inline-block;
           vertical-align: middle;
-          margin-right: 10px;
+          margin-right: 5px;
           margin-top: -2px;
         }
       }

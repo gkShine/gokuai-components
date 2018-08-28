@@ -6,6 +6,7 @@ import Checkbox from '../packages/checkbox/index.js';
 import Dropdown from '../packages/dropdown/index.js';
 import DropdownItem from '../packages/dropdown-item/index.js';
 import DropdownMenu from '../packages/dropdown-menu/index.js';
+import Fileicon from '../packages/fileicon/index.js';
 import Finder from '../packages/finder/index.js';
 import Loading from '../packages/loading/index.js';
 import Menu from '../packages/menu/index.js';
@@ -28,6 +29,7 @@ const components = [
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  Fileicon,
   Finder,
   Menu,
   MenuItem,
@@ -62,6 +64,7 @@ module.exports = {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  Fileicon,
   Finder,
   Menu,
   MenuItem,

@@ -1,0 +1,219 @@
+[class^="gk-fileicon-"], [class*=" gk-fileicon-"] {
+  display: inline-block;
+  vertical-align: middle;
+  background-size: cover;
+  background-image: url("./icons/file.svg");
+}
+
+@for $i from 2 through 7
+{
+  .gk-fileicon-#{$i * 4} {
+    height: (4px * $i);
+    width: (4px * $i);
+  }
+}
+
+@for $i from 1 through 8
+{
+  .gk-fileicon-#{$i * 32} {
+    height: (32px * $i);
+    width: (32px * $i);
+  }
+}
+
+/***** 文件图标 *****/
+.gk-fileicon-bmp,
+.gk-fileicon-gif,
+.gk-fileicon-jpg,
+.gk-fileicon-jpeg,
+.gk-fileicon-png,
+.gk-fileicon-svg {
+  background-image: url("./icons/image.svg");
+}
+
+.gk-fileicon-mp4,
+.gk-fileicon-mkv,
+.gk-fileicon-rm,
+.gk-fileicon-rmvb,
+.gk-fileicon-avi,
+.gk-fileicon-3gp,
+.gk-fileicon-flv,
+.gk-fileicon-wmv,
+.gk-fileicon-asf,
+.gk-fileicon-mpeg,
+.gk-fileicon-mpg,
+.gk-fileicon-mov,
+.gk-fileicon-ts,
+.gk-fileicon-m4v {
+  background-image: url("./icons/movie.svg");
+}
+
+.gk-fileicon-mp3,
+.gk-fileicon-wma,
+.gk-fileicon-wav,
+.gk-fileicon-flac,
+.gk-fileicon-ape,
+.gk-fileicon-ogg,
+.gk-fileicon-aac,
+.gk-fileicon-m4a {
+  background-image: url("./icons/music.svg");
+}
+
+.gk-fileicon-c,
+.gk-fileicon-cpp,
+.gk-fileicon-h,
+.gk-fileicon-cs,
+.gk-fileicon-vb,
+.gk-fileicon-vbs,
+.gk-fileicon-java,
+.gk-fileicon-sql,
+.gk-fileicon-ruby,
+.gk-fileicon-php,
+.gk-fileicon-asp,
+.gk-fileicon-aspx,
+.gk-fileicon-py,
+.gk-fileicon-jsp,
+.gk-fileicon-pl,
+.gk-fileicon-rb,
+.gk-fileicon-m,
+.gk-fileicon-css,
+.gk-fileicon-go,
+.gk-fileicon-xml,
+.gk-fileicon-erl,
+.gk-fileicon-lua {
+  background-image: url("./icons/code.svg");
+}
+
+.gk-fileicon-odt,
+.gk-fileicon-rtf,
+.gk-fileicon-ods,
+.gk-fileicon-csv,
+.gk-fileicon-odp,
+.gk-fileicon-text,
+.gk-fileicon-txt {
+  background-image: url("./icons/txt.svg");
+}
+
+.gk-fileicon-rar,
+.gk-fileicon-zip,
+.gk-fileicon-7z,
+.gk-fileicon-cab,
+.gk-fileicon-tar,
+.gk-fileicon-gz {
+  background-image: url("./icons/zip.svg");
+}
+
+.gk-fileicon-exe,
+.gk-fileicon-bat,
+.gk-fileicon-com {
+  background-image: url("./icons/exe.svg");
+}
+
+.gk-fileicon-html,
+.gk-fileicon-htm {
+  background-image: url("./icons/html.svg");
+}
+
+.gk-fileicon-js,
+.gk-fileicon-javascript {
+  background-image: url("./icons/js.svg");
+}
+
+.gk-fileicon-ai {
+  background-image: url("./icons/ai.svg");
+}
+
+.gk-fileicon-apk {
+  background-image: url("./icons/apk.svg");
+}
+
+.gk-fileicon-cdr {
+  background-image: url("./icons/cdr.svg");
+}
+
+.gk-fileicon-dmg {
+  background-image: url("./icons/dmg.svg");
+}
+
+.gk-fileicon-md {
+  background-image: url("./icons/md.svg");
+}
+
+.gk-fileicon-psd {
+  background-image: url("./icons/ps.svg");
+}
+
+.gk-fileicon-ipa {
+  background-image: url("./icons/ipa.svg");
+}
+
+.gk-fileicon-iso {
+  background-image: url("./icons/iso.svg");
+}
+
+.gk-fileicon-pdf {
+  background-image: url("./icons/pdf.svg");
+}
+
+.gk-fileicon-gnode {
+  background-image: url("./icons/gnote.svg");
+}
+
+.gk-fileicon-doc,
+.gk-fileicon-docx {
+  background-image: url("./icons/word.svg");
+}
+
+.gk-fileicon-xls,
+.gk-fileicon-xlsx {
+  background-image: url("./icons/excel.svg");
+}
+
+.gk-fileicon-ppt,
+.gk-fileicon-pptx {
+  background-image: url("./icons/ppt.svg");
+}
+
+/***** 文件状态 *****/
+.gk-fileicon-lock {
+  background-image: url("./icons/lock.svg");
+}
+
+/***** 文件夹图标 *****/
+.gk-fileicon-folder {
+  background-image: url("./icons/folder/folder.svg");
+}
+
+.gk-fileicon-share-folder {
+  background-image: url("./icons/folder/share_folder.svg");
+}
+
+.gk-fileicon-cache-folder {
+  background-image: url("./icons/folder/cache_folder.svg");
+}
+
+.gk-fileicon-download-folder {
+  background-image: url("./icons/folder/download_folder.svg");
+}
+
+/***** 文件夹状态图标 *****/
+.gk-fileicon-lock-folder {
+  background-image: url("./icons/folder/lock_folder.svg");
+}
+
+.gk-fileicon-sync-folder {
+  background-image: url("./icons/folder/sync_folder.svg");
+}
+
+.gk-fileicon-upload-folder {
+  background-image: url("./icons/folder/upload_folder.svg");
+}
+
+/***** 收集库文件夹图标 *****/
+.gk-fileicon-collection-public-folder {
+  background-image: url("./icons/folder/collection_public_folder.svg");
+}
+
+.gk-fileicon-collection-private-folder {
+  background-image: url("./icons/folder/collection_private_folder.svg");
+}

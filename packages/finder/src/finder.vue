@@ -35,7 +35,8 @@
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
-                            <img :src="props.thumb" width="128" height="128"/>
+                            <img v-if="props.thumb" :src="props.thumb" width="128" height="128"/>
+                            <gk-fileicon v-else :filename="props.filename" :size="128" :folder="props.dir"></gk-fileicon>
                         </p>
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
@@ -49,7 +50,7 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <img :src="props.thumb" height="16"/>{{props.filename}}
+                                <img v-if="props.thumb" :src="props.thumb" height="20"/><gk-fileicon v-else :filename="props.filename" :size="20" :folder="props.dir"></gk-fileicon>{{props.filename}}
                             </div>
                         </template>
                     </gk-table-column>
@@ -67,7 +68,8 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <img :src="props.thumb" height="32"/>
+                                <img v-if="props.thumb" :src="props.thumb" height="32"/>
+                                <gk-fileicon v-else :filename="props.filename" :size="32" :folder="props.dir"></gk-fileicon>
                                 <div>
                                     <p>{{props.filename}}</p>
                                     <p>
@@ -110,13 +112,14 @@
   import GkDropdownMenu from "gokuai-components/packages/dropdown/src/dropdown-menu";
   import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
   import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
+  import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import {timeToDate, bitSize} from "gokuai-components/src/common/util";
 
   export default {
     name: 'GkFinder',
     components: {
       GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail,
-      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb
+      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb, GkFileicon
     },
     props: {
       list: { //当前文件列表

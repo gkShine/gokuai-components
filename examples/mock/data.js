@@ -20,7 +20,7 @@ let genFiles = (length) => {
       "filesize": dir ? "" : Mock.Random.integer(0, 1073741824),
       "last_member_name": Mock.Random.cname(),
       "last_dateline": Date.parse(Mock.Random.datetime()) / 1000,
-      "thumb": Mock.Random.dataImage('125x125', dir ? '我是文件夹' : '我是文件'),
+      // "thumb": Mock.Random.dataImage('125x125', dir ? '我是文件夹' : '我是文件'),
       "previewUrl": Mock.Random.dataImage()
     };
     files.push(Mock.mock(file));
@@ -38,7 +38,7 @@ let rootFile = {
   "filesize": "",
   "last_member_name": Mock.Random.cname(),
   "last_dateline": Date.parse(Mock.Random.datetime()) / 1000,
-  "thumb": Mock.Random.dataImage('125x125', '我是文件夹'),
+  // "thumb": Mock.Random.dataImage('125x125', '我是文件夹'),
   "previewUrl": Mock.Random.dataImage()
 };
 

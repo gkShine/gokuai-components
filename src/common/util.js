@@ -142,3 +142,7 @@ export function getSelected(defaultIndex, data) {
   }
   return selected;
 }
+
+export function getExt(filename) {
+  return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
+}
