@@ -62,7 +62,8 @@
       dnd: String,
       chunked: Boolean,
       dialog: Boolean,
-      translate: Object
+      translate: Object,
+      'hide-delete': Boolean
     },
     data() {
       return {
@@ -74,6 +75,7 @@
         files: [],
         finishFiles: [],
         uploader: false,
+        deleteButtons: [],
         emptyContentStyle: {}
       }
     },
@@ -125,7 +127,8 @@
       }
     },
     watch: {
-      mini: 'changeMini'
+      mini: 'changeMini',
+      list: 'changeList'
     },
     methods: {
       gettext(value) {
@@ -139,6 +142,13 @@
       },
       changeMini() {
         this.$refs.uploader.style.height = this.mini ? 'auto' : this.height + 'px';
+      },
+      changeList() {
+        if (this.hideDelete) {
+          this.deleteButtons.forEach((button) => {
+            button.style.display = this.list.length ? 'inline-block' : 'none'
+          });
+        }
       },
       formatSize(value) {
         return bitSize(value);
@@ -285,7 +295,7 @@
             percent: 0,
             speed: 0
           });
-          this.files.push(file);
+          this.files.unshift(file);
           this.hidden = this.mini = false;
           this.$emit('before', file);
         });
@@ -335,13 +345,17 @@
         return uploader;
       },
       initDelete(selector) {
-        document.querySelector(selector).onclick = () => {
-          let checked = this.$refs.table.getChecked();
-          checked.forEach(file => {
-            this.removeFile(file.id);
-          });
-          this.updateHeadLabel();
-        };
+        this.deleteButtons = document.querySelectorAll(selector);
+        this.deleteButtons.forEach((button) => {
+          this.hideDelete && (button.style.display = 'none');
+          button.onclick = () => {
+            let checked = this.$refs.table.getChecked();
+            checked.forEach(file => {
+              this.removeFile(file.id);
+            });
+            this.updateHeadLabel();
+          };
+        });
       },
       updateEmptyStyle() {
         let position = this.$refs.emptyContent.getBoundingClientRect();
