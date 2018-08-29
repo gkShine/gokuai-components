@@ -2,6 +2,9 @@
   display: inline-block;
   vertical-align: middle;
   background-size: cover;
+}
+
+i[class^="gk-fileicon-"], i[class*=" gk-fileicon-"] {
   background-image: url("./icons/file.svg");
 }
 

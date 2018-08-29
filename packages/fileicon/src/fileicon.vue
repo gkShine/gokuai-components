@@ -1,5 +1,5 @@
 <template>
-    <img :class="sizeCls" v-if="showThumb" :src="thumb" @error="showThumb = false" />
+    <img :class="sizeCls" v-if="showThumbnail" :src="thumbnail" @error="showThumb = false" />
     <i v-else :class="[sizeCls, typeCls]"></i>
 </template>
 
@@ -10,8 +10,8 @@
     name: "GkFileicon",
     props: {
       folder: Boolean,
-      thumb: String,
       type: String,
+      thumbnail: String,
       filename: String,
       size: {
         type: Number,
@@ -20,7 +20,7 @@
     },
     data() {
       return {
-        showThumb: !!this.thumb
+        showThumbnail: !!this.thumbnail
       }
     },
     computed: {
