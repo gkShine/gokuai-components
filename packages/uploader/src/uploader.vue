@@ -82,7 +82,7 @@
         hidden: this.dialog,
         headLabel: this.headTpl.replace(':d', 0),
         list: [],
-        files: [],
+        relation: {},
         finishFiles: [],
         uploader: false,
         deleteButtons: [],
@@ -140,7 +140,11 @@
     watch: {
       mini: 'changeMini',
       list: 'changeList',
-      finishFiles: 'checkFinish'
+      finishFiles: 'checkFinish',
+      formData: {
+        handler: 'updateData',
+        deep: true
+      }
     },
     methods: {
       gettext(value) {
@@ -168,6 +172,9 @@
           this.mini = true;
         }
       },
+      updateData(data) {
+        this.uploader.option('formData', data);
+      },
       formatSize(value) {
         return bitSize(value);
       },
@@ -188,7 +195,7 @@
             break;
           case this.states.uploadError:
           case this.states.error:
-            let {file,} = this.findFile(data.id);
+            let file = this.uploader.getFile(data.id);
             stateText = file.statusText;
             break;
         }
@@ -208,6 +215,7 @@
         let icons = [];
         switch (data.state) {
           case this.states.ready:
+          case this.states.error:
             if (!this.auto) {
               icons.push(h('i', {
                 'class': 'gk-icon-times',
@@ -224,7 +232,7 @@
               'class': 'gk-icon-playarrow',
               on: {
                 click() {
-                  let {file,} = self.findFile(data.id);
+                  let file = self.uploader.getFile(data.id);
                   self.uploader.upload(file);
                   data.state = self.states.progress;
                 }
@@ -250,7 +258,7 @@
               'class': 'gk-icon-redo',
               on: {
                 click() {
-                  let {file,} = self.findFile(data.id);
+                  let file = self.uploader.getFile(data.id);
                   self.uploader.retry(file);
                   data.state = self.states.progress;
                 }
@@ -280,27 +288,21 @@
           this.headLabel = this.headTpl.replace(':d', this.$refs.table.getCheckedIndex().length);
         }, 20);
       },
-      findFile(id) {
-        for (let i in this.files) {
-          if (this.files[i].id === id) {
-            return {file: this.files[i], index: i};
-          }
-        }
-      },
       findList(id) {
-        for (let i in this.list) {
-          if (this.list[i].id === id) {
-            return {item: this.list[i], index: i};
-          }
-        }
+        return this.list[this.relation[id]];
       },
       removeFile(id) {
-        let {file, index} = this.findFile(id);
+        let file = this.uploader.getFile(id);
         this.uploader.removeFile(file);
-        this.files.splice(index, 1);
 
-        let {item, listIndex} = this.findList(id);
-        this.list.splice(listIndex, 1);
+        let index = this.relation[id];
+        this.list.splice(index, 1);
+        delete this.relation[id];
+
+        //更新关联
+        for (let i = index; i < this.list.length; i++) {
+          this.relation[this.list[i].id] = i;
+        }
       },
       webUpload(picker) {
         if (this.uploader !== false) {
@@ -318,7 +320,7 @@
           disableGlobalDnd: this.dnd
         }, this.options || {}));
 
-        uploader.on('beforeFileQueued', (file) => {
+        uploader.on('fileQueued', (file) => {
           let result = this.beforeCheck ? this.beforeCheck(file) : true;
           this.list.push({
             id: file.id,
@@ -329,20 +331,17 @@
             percent: 0,
             speed: 0
           });
+          this.relation[file.id] = this.list.length - 1;
           this.hidden = this.mini = false;
           if (result !== true) {
             this.finishFiles.push(file);
             file.setStatus('invalid', result);
           }
-        });
-
-        uploader.on('fileQueued', (file) => {
-          this.files.push(file);
           this.$emit('before', file);
         });
 
         uploader.on('uploadProgress', (file, percent) => {
-          let {item,} = this.findList(file.id);
+          let item = this.findList(file.id);
           let timestamp = new Date().getTime();
           let diffSecond = (timestamp - (item.timestamp || timestamp - 1000)) / 1000;
           let diffSize = (percent - item.percent) * item.size;
@@ -356,12 +355,12 @@
         });
 
         uploader.on('uploadBeforeSend', (object, data) => {
-          let {item,} = this.findList(object.file.id);
+          let item = this.findList(object.file.id);
           data.path = item.path.substring(0, item.path.lastIndexOf(data.name) - 1);
         });
 
         uploader.on('uploadSuccess', (file, response) => {
-          let {item,} = this.findList(file.id);
+          let item = this.findList(file.id);
           let result = this.checkResponse ? this.checkResponse(file, response) : true;
           if (result === true) {
             item.state = this.states.success;
@@ -374,7 +373,7 @@
         });
 
         uploader.on('uploadError', (file, reason) => {
-          let {item,} = this.findList(file.id);
+          let item = this.findList(file.id);
           item.state = this.states.uploadError;
           file.setStatus('error', reason);
           this.$emit('uploadError', file, reason);

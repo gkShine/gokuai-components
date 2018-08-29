@@ -7,7 +7,7 @@
             <div class="demo-toolbar">
                 <gk-uploader-buttons :buttons="autoButtons" dropdown>上传</gk-uploader-buttons>
             </div>
-            <gk-uploader dnd :buttons="autoButtons" style="height: 400px" ref="uploader" :form-data="{code: '3k5adph3', fullpath: ''}" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit >
+            <gk-uploader dnd :buttons="autoButtons" style="height: 400px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit >
                 <h3>可直接拖拽文件到这里上传，最大文件不超过1GB</h3>
                 <div>
                     <h4>温馨提示:</h4>
@@ -25,8 +25,9 @@
             <div class="demo-toolbar">
                 <gk-uploader-buttons :translate="translate"></gk-uploader-buttons>
                 <gk-button @click.native="startUpload">开始上传</gk-button>
+                <input v-model="formData.code"/>
             </div>
-            <gk-uploader :before-check="checkSize" style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false">
+            <gk-uploader :before-check="checkSize" style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false" :form-data="formData">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
@@ -81,6 +82,9 @@
     data() {
       return {
         list: [],
+        formData: {
+          code: ''
+        },
         autoButtons: [
           {
             class: 'auto-gk-uploader-file',
