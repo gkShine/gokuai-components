@@ -26,7 +26,7 @@
                 <gk-uploader-buttons :translate="translate"></gk-uploader-buttons>
                 <gk-button @click.native="startUpload">开始上传</gk-button>
             </div>
-            <gk-uploader style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false">
+            <gk-uploader :before-check="checkSize" style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </gk-table>
-            <gk-uploader :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" :height="400" @success="uploadSuccess">
+            <gk-uploader :before-check="checkSize" :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" :height="400" @success="uploadSuccess">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
@@ -115,6 +115,12 @@
       }
     },
     methods: {
+      checkSize({size}, error) {
+        if (size > 2090774) {
+          return '超出大小[401]';
+        }
+        return true;
+      },
       formatSize(value, item) {
         return bitSize(value);
       },
