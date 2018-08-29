@@ -35,7 +35,7 @@
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
-                            <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="128" :folder="props.dir"></gk-fileicon>
+                            <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="128" :folder="!!props.dir"></gk-fileicon>
                         </p>
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
@@ -49,7 +49,7 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="20" :folder="props.dir"></gk-fileicon>{{props.filename}}
+                                <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="20" :folder="!!props.dir"></gk-fileicon>{{props.filename}}
                             </div>
                         </template>
                     </gk-table-column>
@@ -67,7 +67,7 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="32" :folder="props.dir"></gk-fileicon>
+                                <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="32" :folder="!!props.dir"></gk-fileicon>
                                 <div>
                                     <p>{{props.filename}}</p>
                                     <p>

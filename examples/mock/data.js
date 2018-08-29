@@ -1,5 +1,7 @@
 import Mock from 'mockjs'
 
+let extensions = ['doc', 'text', 'pdf', 'ppt', 'xls', 'mp4', 'php', 'html', 'htm', 'mp3', 'mp4', 'doc', 'jpg', 'md', 'txt',  'zip', 'exe', 'ai', 'apk', 'cdr', 'dmg', 'ipa', 'iso', 'psd'];
+
 let genFiles = (length) => {
   let files = [];
   let dirLength = Mock.Random.integer(0, length);
@@ -9,7 +11,7 @@ let genFiles = (length) => {
       dir = 1;
     }
     let filename = Mock.Random.ctitle(3, 40);
-    filename = dir ? filename : filename + '.' + Mock.Random.string('lower', 1, 4);
+    filename = dir ? filename : filename + '.' + Mock.Random.pick(extensions);
     let file = {
       "mount_id": Mock.Random.integer(1, 10000),
       "hash": Mock.Random.string(40),
@@ -20,7 +22,7 @@ let genFiles = (length) => {
       "filesize": dir ? "" : Mock.Random.integer(0, 1073741824),
       "last_member_name": Mock.Random.cname(),
       "last_dateline": Date.parse(Mock.Random.datetime()) / 1000,
-      // "thumb": Mock.Random.dataImage('125x125', dir ? '我是文件夹' : '我是文件'),
+      "thumb": dir ? '' : Mock.Random.boolean() && Mock.Random.dataImage('125x125', '我是文件') || '',
       "previewUrl": Mock.Random.dataImage()
     };
     files.push(Mock.mock(file));
