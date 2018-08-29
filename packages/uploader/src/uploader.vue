@@ -134,7 +134,8 @@
     },
     watch: {
       mini: 'changeMini',
-      list: 'changeList'
+      list: 'changeList',
+      finishFiles: 'checkFinish'
     },
     methods: {
       gettext(value) {
@@ -157,12 +158,20 @@
         }
         this.updateHeadLabel();
       },
+      checkFinish() {
+        if (this.dialog && this.finishFiles.length === this.list.length) {
+          this.mini = true;
+        }
+      },
       formatSize(value) {
         return bitSize(value);
       },
       formatState(value, data) {
         let stateText = '';
         switch (data.state) {
+          case this.states.ready:
+            stateText = this.auto ? this.gettext('ready') : '';
+            break;
           case this.states.pause:
             stateText = this.gettext('paused');
             break;
@@ -294,15 +303,16 @@
         }, this.options || {}));
 
         uploader.on('fileQueued', (file) => {
-          this.list.unshift({
+          this.list.push({
             id: file.id,
             name: file.name,
+            path: file.source.source.webkitRelativePath || file.name,
             size: file.size,
             state: this.states.ready,
             percent: 0,
             speed: 0
           });
-          this.files.unshift(file);
+          this.files.push(file);
           this.hidden = this.mini = false;
           this.$emit('before', file);
         });
@@ -319,6 +329,12 @@
             speed: diffSize / diffSecond
           });
           this.$emit('progress', file, percent);
+        });
+
+        uploader.on('uploadBeforeSend', (object, data) => {
+          let {fi, index} = this.findFile(object.file.id);
+          let path = this.list[index].path;
+          data.path = path.substring(0, path.lastIndexOf(data.name) - 1);
         });
 
         uploader.on('uploadSuccess', (file, response) => {
@@ -344,7 +360,6 @@
         });
 
         uploader.on('uploadComplete', (file, response) => {
-          let {fi, index} = this.findFile(file.id);
           this.$emit('complete', file, response);
         });
 
