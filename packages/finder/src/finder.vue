@@ -35,8 +35,7 @@
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
-                            <img v-if="props.thumb" :src="props.thumb" width="128" height="128"/>
-                            <gk-fileicon v-else :filename="props.filename" :size="128" :folder="props.dir"></gk-fileicon>
+                            <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="128" :folder="props.dir"></gk-fileicon>
                         </p>
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
@@ -50,7 +49,7 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <img v-if="props.thumb" :src="props.thumb" height="20"/><gk-fileicon v-else :filename="props.filename" :size="20" :folder="props.dir"></gk-fileicon>{{props.filename}}
+                                <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="20" :folder="props.dir"></gk-fileicon>{{props.filename}}
                             </div>
                         </template>
                     </gk-table-column>
@@ -68,8 +67,7 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <img v-if="props.thumb" :src="props.thumb" height="32"/>
-                                <gk-fileicon v-else :filename="props.filename" :size="32" :folder="props.dir"></gk-fileicon>
+                                <gk-fileicon :thumb="props.thumb" :filename="props.filename" :size="32" :folder="props.dir"></gk-fileicon>
                                 <div>
                                     <p>{{props.filename}}</p>
                                     <p>
