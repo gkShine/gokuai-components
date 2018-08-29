@@ -2,10 +2,11 @@
   display: inline-block;
   vertical-align: middle;
   background-size: cover;
+  background-image: url("./icons/file.svg");
 }
 
-i[class^="gk-fileicon-"], i[class*=" gk-fileicon-"] {
-  background-image: url("./icons/file.svg");
+img[class^="gk-fileicon-"], img[class*=" gk-fileicon-"] {
+  background-image: none;
 }
 
 @for $i from 2 through 7

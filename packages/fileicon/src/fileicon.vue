@@ -1,5 +1,5 @@
 <template>
-    <img :class="sizeCls" v-if="showThumbnail" :src="thumbnail" @error="showThumb = false" />
+    <img :class="sizeCls" v-if="showThumbnail" :src="thumbnail" @error="showThumbnail = false" />
     <i v-else :class="[sizeCls, typeCls]"></i>
 </template>
 
