@@ -184,8 +184,9 @@
         for (let i = 0; i < fullpath.length; i++) {
           if (fullpath[i] === '/') {
             navs.push({
-              filename: path.substring(path.lastIndexOf('/'), path.length),
-              fullpath: fullpath.substr(0, fullpath.length - 1)
+              filename: path.substring(path.lastIndexOf('/') + 1, path.length),
+              fullpath: fullpath.substr(0, fullpath.length - 1),
+              dir: 1
             });
           }
           path += fullpath[i];
@@ -257,8 +258,13 @@
       changeFile() {
         if (this.value.dir) {
           this.preview = false;
+        } else {
+          this.preview = true;
         }
       }
+    },
+    mounted() {
+      this.changeFile();
     }
   }
 </script>

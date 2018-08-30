@@ -1,8 +1,9 @@
 @import "./common/var.scss";
 @import "./mixins/utils.scss";
 
-$offset: 187;
-$duration: 1.4s;
+.gk-loading-scope {
+  overflow: hidden !important;
+}
 
 .gk-loading-wrapper {
   @include fit-window;
@@ -36,15 +37,15 @@ $duration: 1.4s;
 
     .gk-loading-spinner {
       width: 42px;
-      animation: gk-loading-rotator $duration linear infinite;
+      animation: gk-loading-rotator $--loading-duration linear infinite;
 
       .path {
-        stroke-dasharray: $offset;
+        stroke-dasharray: $--loading-offset;
         stroke-dashoffset: 0;
         transform-origin: center;
         animation:
-                gk-loading-dash $duration ease-in-out infinite,
-                gk-loading-colors ($duration*4) ease-in-out infinite;
+                gk-loading-dash $--loading-duration ease-in-out infinite,
+                gk-loading-colors ($--loading-duration*4) ease-in-out infinite;
       }
     }
   }
@@ -75,14 +76,14 @@ $duration: 1.4s;
 
 @keyframes gk-loading-dash {
   0% {
-    stroke-dashoffset: $offset;
+    stroke-dashoffset: $--loading-offset;
   }
   50% {
-    stroke-dashoffset: $offset/4;
+    stroke-dashoffset: $--loading-offset/4;
     transform:rotate(135deg);
   }
   100% {
-    stroke-dashoffset: $offset;
+    stroke-dashoffset: $--loading-offset;
     transform:rotate(450deg);
   }
 }

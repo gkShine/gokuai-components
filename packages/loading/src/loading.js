@@ -7,6 +7,7 @@ export default {
         this.static = true;
         el.style.position = 'relative';
       }
+      el.classList.add('gk-loading-scope');
 
       let box = document.createElement('div');
       box.className = 'gk-loading-wrapper';
@@ -38,6 +39,7 @@ export default {
   },
 
   hide(el) {
+    el.classList.remove('gk-loading-scope');
     this.box.addEventListener('transitionend', () => {
       this.box.remove();
       this.exist = false;

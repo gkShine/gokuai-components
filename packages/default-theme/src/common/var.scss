@@ -54,4 +54,9 @@ $--menu-item-padding: 0 25px !default;
 
 /* Uploader
 --------------------------*/
-$--uploader-empty-color: #5C7088;
+$--uploader-empty-color: #5C7088 !default;
+
+/* Loading
+--------------------------*/
+$--loading-offset: 187 !default;
+$--loading-duration: 1.4s !default;
