@@ -24,14 +24,7 @@ const install = function(Vue, opts = {}) {
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
-}
-module.exports = {
-  version: '{{version}}',
-  install,
-{{list}}
-};
-module.exports.default = module.exports;
-`;
+}`;
 
 var ComponentNames = Object.keys(Components);
 var includeComponentTemplate = [];
@@ -55,7 +48,14 @@ ComponentNames.forEach(name => {
   }
 });
 
-var template = render(MAIN_TEMPLATE, {
+var template = render(MAIN_TEMPLATE + `
+module.exports = {
+  version: '{{version}}',
+  install,
+{{list}}
+};
+module.exports.default = module.exports;
+`, {
   include: includeComponentTemplate.join(endOfLine),
   install: installTemplate.join(',' + endOfLine),
   version: process.env.VERSION || require('../../package.json').version,
@@ -64,3 +64,20 @@ var template = render(MAIN_TEMPLATE, {
 
 fs.writeFileSync(OUTPUT_PATH, template);
 console.log('[build entry] DONE:', OUTPUT_PATH);
+
+template = render(MAIN_TEMPLATE + `
+export default {
+  version: '{{version}}',
+  install,
+{{list}}
+};
+`, {
+  include: includeComponentTemplate.join(endOfLine),
+  install: installTemplate.join(',' + endOfLine),
+  version: process.env.VERSION || require('../../package.json').version,
+  list: listTemplate.join(',' + endOfLine)
+});
+
+OUTPUT_PATH = path.join(__dirname, '../../src/index-es6.js');
+fs.writeFileSync(OUTPUT_PATH, template);
+console.log('[build es6 entry] DONE:', OUTPUT_PATH);
