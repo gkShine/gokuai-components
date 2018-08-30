@@ -108,7 +108,7 @@
             }
           }
           this.list = _data;
-        },100);
+        }, 100);
       },
       handelClick(item, event) {
         if (item[this.input] === this.current) {
@@ -165,7 +165,7 @@
           clearTimeout(timer);
           timer = setTimeout(() => {
             this.change(this.navs);
-          }, 100);
+          }, 500);
         }
       });
     }

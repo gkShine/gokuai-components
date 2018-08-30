@@ -106,12 +106,14 @@
           return;
         }
         this.selected = this.list[--this.selectedIndex];
+        this.$emit('input', this.selected);
       },
       handleNext() {
         if (this.selectedIndex === (this.list.length - 1)) {
           return;
         }
         this.selected = this.list[++this.selectedIndex];
+        this.$emit('input', this.selected);
       }
     }
   }

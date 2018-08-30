@@ -35,7 +35,8 @@
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
-                            <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128" :folder="!!props.dir"></gk-fileicon>
+                            <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128"
+                                         :folder="!!props.dir"></gk-fileicon>
                         </p>
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
@@ -49,11 +50,14 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20" :folder="!!props.dir"></gk-fileicon>{{props.filename}}
+                                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20"
+                                             :folder="!!props.dir"></gk-fileicon>
+                                {{props.filename}}
                             </div>
                         </template>
                     </gk-table-column>
-                    <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate" sortable
+                    <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate"
+                                     sortable
                                      :width="180"></gk-table-column>
                     <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize" sortable
                                      :width="80"></gk-table-column>
@@ -67,7 +71,8 @@
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
-                                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32" :folder="!!props.dir"></gk-fileicon>
+                                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
+                                             :folder="!!props.dir"></gk-fileicon>
                                 <div>
                                     <p>{{props.filename}}</p>
                                     <p>
@@ -83,10 +88,9 @@
                 </gk-table>
             </template>
 
-            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="selected"
-                      id="fullpath">
+            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="value">
                 <template slot-scope="props">
-                    <iframe v-if="props.item.previewUrl" v-bind:src="props.item.previewUrl"></iframe>
+                    <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
                 </template>
             </gk-slide>
         </div>
@@ -111,7 +115,7 @@
   import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
   import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
-  import {timeToDate, bitSize} from "gokuai-components/src/common/util";
+  import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
 
   export default {
     name: 'GkFinder',
@@ -144,7 +148,8 @@
       buttons: Array,
       loading: Boolean,
       previewToolbar: Object,
-      translate: Object
+      translate: Object,
+      getPreviewUrl: Function
     },
     data() {
       let [sort, order] = this.defaultSort.split(' ');
@@ -175,22 +180,21 @@
         return icon;
       },
       initNavs() {
-        let navs = [], path = '', fullpath = '';
-        Object.keys(this.root).length && navs.push(this.root);
+        let navs = [];
 
         if (this.value && this.value.fullpath) {
-          fullpath += this.value.fullpath + '/';
-        }
-        for (let i = 0; i < fullpath.length; i++) {
-          if (fullpath[i] === '/') {
-            navs.push({
-              filename: path.substring(path.lastIndexOf('/') + 1, path.length),
-              fullpath: fullpath.substr(0, fullpath.length - 1),
+          let fullpath = this.value.fullpath;
+          while (fullpath) {
+            navs.unshift({
+              filename: baseName(fullpath),
+              fullpath: fullpath,
               dir: 1
             });
+            fullpath = dirName(fullpath);
           }
-          path += fullpath[i];
         }
+
+        Object.keys(this.root).length && navs.unshift(this.root);
         return navs;
       },
       formatDate(value) {
@@ -256,15 +260,14 @@
         this.$emit('sort-change', this.sort, this.order);
       },
       changeFile() {
-        if (this.value.dir) {
-          this.preview = false;
-        } else {
-          this.preview = true;
-        }
+        this.preview = !this.value.dir;
+        this.$emit('input', this.value);
       }
     },
     mounted() {
-      this.changeFile();
+      if (this.value && Object.keys(this.value).length) {
+        this.preview = !this.value.dir;
+      }
     }
   }
 </script>

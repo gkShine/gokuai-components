@@ -146,3 +146,13 @@ export function getSelected(defaultIndex, data) {
 export function getExt(filename) {
   return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
+
+export function baseName(path) {
+  path = path.toString();
+  return path.replace(/\\/g, '/').replace(/.*\//, '');
+}
+
+export function dirName(path) {
+  path = path.toString();
+  return path.indexOf('/') < 0 ? '' : path.replace(/\\/g, '/').replace(/\/[^\/]*$/, '');
+}
