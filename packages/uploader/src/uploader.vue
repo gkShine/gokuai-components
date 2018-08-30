@@ -17,8 +17,8 @@
                         {{props.name}}
                     </template>
                 </gk-table-column>
-                <gk-table-column property="size" :width="80" :formatter="formatSize"></gk-table-column>
-                <gk-table-column property="percent" :width="130" :formatter="formatState"></gk-table-column>
+                <gk-table-column property="size" :width="90" :formatter="formatSize"></gk-table-column>
+                <gk-table-column property="percent" :width="150" :formatter="formatState"></gk-table-column>
                 <gk-table-column property="state" :formatter="formatOption" align="center"
                                  :width="100"></gk-table-column>
                 <div slot="empty" class="gk-uploader-empty">

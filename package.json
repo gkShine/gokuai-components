@@ -21,7 +21,8 @@
     "vue-virtual-scroller": "^0.12.0"
   },
   "peerDependencies": {
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "webuploader": "^0.1.8"
   },
   "devDependencies": {
     "autoprefixer": "^9.1.3",
