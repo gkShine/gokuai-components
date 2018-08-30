@@ -25,7 +25,6 @@
             <div class="demo-toolbar">
                 <gk-uploader-buttons :translate="translate"></gk-uploader-buttons>
                 <gk-button @click.native="startUpload">开始上传</gk-button>
-                <input v-model="formData.code"/>
             </div>
             <gk-uploader :before-check="checkSize" style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false" :form-data="formData">
                 <div>
