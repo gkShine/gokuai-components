@@ -168,8 +168,11 @@
         this.updateHeadLabel();
       },
       checkFinish() {
-        if (this.dialog && this.finishFiles.length === this.list.length) {
-          this.mini = true;
+        if (this.finishFiles.length === this.list.length) {
+          this.$emit('finish');
+          if (this.dialog) {
+            this.mini = true;
+          }
         }
       },
       updateData(data) {
