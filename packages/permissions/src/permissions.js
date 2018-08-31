@@ -89,7 +89,7 @@ export default {
 
     //上传文件
     upload() {
-      if (this.root.link && this.root.permissions.link.indexOf('file_upload') === -1) {
+      if (this.root.link && !this.linkUpload()) {
         return false;
       }
       return this.sync() || this._intersect(['file_upload', 'file_write'], this.root.permissions.current).length > 0;
@@ -97,7 +97,7 @@ export default {
 
     //预览文件
     preview() {
-      if (this.root.link && this.root.permissions.link.indexOf('file_preview') === -1) {
+      if (this.root.link && !this.linkPreview()) {
         return false;
       }
       return this.sync() || this._intersect(['file_preview', 'file_read'], this.root.permissions.dist).length > 0;
@@ -125,7 +125,7 @@ export default {
 
     //下载文件
     download() {
-      if (this.root.link && this.root.permissions.link.indexOf('file_download') === -1) {
+      if (this.root.link && !this.linkDownload()) {
         return false;
       }
       return this.sync() || this.root.permissions.dist.indexOf('file_read') > -1;
@@ -164,6 +164,21 @@ export default {
     //恢复历史
     recoverHistory() {
       return this.history();
+    },
+
+    //外链上传
+    linkUpload() {
+      return this.root.permissions.link.indexOf('file_upload') > -1;
+    },
+
+    //外链预览
+    linkPreview() {
+      return this.root.permissions.link.indexOf('file_preview') > -1
+    },
+
+    //外链下载
+    linkDownload() {
+      return this.root.permissions.link.indexOf('file_download') > -1
     }
   }
 };
