@@ -1,5 +1,5 @@
 export default {
-  name: 'permissions',
+  name: '$permissions',
 
   //同步包含权限
   sync: ['file_upload', 'file_write', 'file_read', 'file_preview', 'file_delete'],

@@ -1,5 +1,5 @@
 export default {
-  name: 'advPermissions',
+  name: '$advPermissions',
 
   permissions: {
     root: [],
