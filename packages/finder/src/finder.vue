@@ -270,7 +270,7 @@
         return navs;
       },
       updateNavs(file) {
-        let navs = this.initNavs(file)
+        let navs = this.initNavs(file);
         navs.forEach((nav, index) => {
           if (this.navList[index] && nav.fullpath === this.navList[index].fullpath) {
             navs[index] = this.navList[index]

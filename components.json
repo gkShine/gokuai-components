@@ -1,4 +1,5 @@
 {
+  "advanced-permissions": "./packages/advanced-permissions/index.js",
   "breadcrumb": "./packages/breadcrumb/index.js",
   "button": "./packages/button/index.js",
   "button-group": "./packages/button-group/index.js",
@@ -11,6 +12,7 @@
   "loading": "./packages/loading/index.js",
   "menu": "./packages/menu/index.js",
   "menu-item": "./packages/menu-item/index.js",
+  "permissions": "./packages/permissions/index.js",
   "scroll-load": "./packages/scroll-load/index.js",
   "slide": "./packages/slide/index.js",
   "submenu": "./packages/submenu/index.js",
