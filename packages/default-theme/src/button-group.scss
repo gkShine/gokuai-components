@@ -2,6 +2,8 @@
 
 .gk-button-group {
   @include clearfix;
+  display: inline-block;
+  vertical-align: middle;
 
   & > .gk-button,
   & > .gk-uploader-buttons {

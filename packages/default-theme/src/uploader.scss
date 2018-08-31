@@ -16,6 +16,10 @@
 
 .gk-uploader-buttons,
 .gk-uploader-dropdown {
+  .gk-dropdown {
+    line-height: 1;
+  }
+
   .webuploader-container {
     position: relative;
     padding: 0;
