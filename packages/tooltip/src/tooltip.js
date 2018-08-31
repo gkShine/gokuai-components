@@ -64,6 +64,9 @@ export default {
 
   hide(el) {
     let tooltip = this.get(el);
+    if (!tooltip) {
+      return;
+    }
     tooltip.addEventListener('transitionend', () => {
       tooltip.remove();
     });

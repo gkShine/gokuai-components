@@ -41,9 +41,7 @@
           return {};
         }
       },
-      value: {
-        type: Object
-      },
+      value: Object,
       id: String
     },
     computed: {

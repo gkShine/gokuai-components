@@ -88,7 +88,7 @@
                 </gk-table>
             </template>
 
-            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="value">
+            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
                 <template slot-scope="props">
                     <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
                 </template>
@@ -159,14 +159,16 @@
         order: order || '',
         selected: {},
         preview: false,
-        navList: this.initNavs(),
+        previewFile: this.value,
+        navList: this.initNavs(this.value),
         selectedIndex: [],
         fileList: []
       };
     },
     watch: {
       list: 'loadSuccess',
-      value: 'changeFile'
+      value: 'openFile',
+      previewFile: 'changeFile'
     },
     methods: {
       gettext(value) {
@@ -178,24 +180,6 @@
           icon = this.order === 'asc' ? 'gk-icon-longarrowup' : 'gk-icon-longarrowdown';
         }
         return icon;
-      },
-      initNavs() {
-        let navs = [];
-
-        if (this.value && this.value.fullpath) {
-          let fullpath = this.value.fullpath;
-          while (fullpath) {
-            navs.unshift({
-              filename: baseName(fullpath),
-              fullpath: fullpath,
-              dir: 1
-            });
-            fullpath = dirName(fullpath);
-          }
-        }
-
-        Object.keys(this.root).length && navs.unshift(this.root);
-        return navs;
       },
       formatDate(value) {
         return timeToDate(value * 1000);
@@ -218,9 +202,7 @@
         this.navList.push(file);
         this.$emit('input', file);
         this.$emit('enter', file, index);
-        if (!file.dir) {
-          this.showPreview();
-        }
+        this.openFile(file);
       },
       rightClickItem(file, index, event) {
         if (!this.buttons) {
@@ -233,9 +215,6 @@
         this.selectItem(null, -1);
         this.$emit('input', file);
         this.$emit('navigator', value, file);
-      },
-      showPreview() {
-        this.preview = true;
       },
       loadSuccess() {
         this.fileList = [];
@@ -259,14 +238,50 @@
         this.sort = command;
         this.$emit('sort-change', this.sort, this.order);
       },
-      changeFile() {
-        this.preview = !this.value.dir;
-        this.$emit('input', this.value);
+      changeFile(file) {
+        this.updateNavs(file);
+        this.$emit('input', file);
+      },
+      openFile(file) {
+        if (!file.dir) {
+          this.previewFile = file;
+          this.preview = true;
+        } else {
+          this.preview = false;
+        }
+      },
+      initNavs(file) {
+        let navs = [];
+
+        if (file && file.fullpath) {
+          navs.unshift(file);
+          let fullpath = dirName(file.fullpath);
+          while (fullpath) {
+            navs.unshift({
+              filename: baseName(fullpath),
+              fullpath: fullpath,
+              dir: 1
+            });
+            fullpath = dirName(fullpath);
+          }
+        }
+
+        Object.keys(this.root).length && navs.unshift(this.root);
+        return navs;
+      },
+      updateNavs(file) {
+        let navs = this.initNavs(file)
+        navs.forEach((nav, index) => {
+          if (this.navList[index] && nav.fullpath === this.navList[index].fullpath) {
+            navs[index] = this.navList[index]
+          }
+        });
+        this.navList = navs;
       }
     },
     mounted() {
       if (this.value && Object.keys(this.value).length) {
-        this.preview = !this.value.dir;
+        this.openFile(this.value);
       }
     }
   }
