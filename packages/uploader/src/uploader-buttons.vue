@@ -1,5 +1,5 @@
 <template>
-    <div class="gk-uploader-buttons">
+    <div class="gk-uploader-buttons" :class="{'gk-uploader-buttons-inline':!dropdown}">
         <gk-dropdown v-if="dropdown && list.length > 1">
             <gk-button>
                 <slot></slot>

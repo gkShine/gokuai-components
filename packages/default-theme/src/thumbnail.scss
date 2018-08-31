@@ -5,8 +5,8 @@
   padding: 10px;
   margin: 0;
   overflow-y: auto;
-  clear: both;
   background-color: $--thumbnail-background-color;
+  @include clearfix;
 
   &.gk-thumbnail-fit {
     @include fit-window;

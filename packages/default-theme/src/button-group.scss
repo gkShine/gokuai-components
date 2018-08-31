@@ -1,6 +1,10 @@
+@import "./mixins/utils.scss";
+
 .gk-button-group {
-  clear: both;
-  & > .gk-button {
+  @include clearfix;
+
+  & > .gk-button,
+  & > .gk-uploader-buttons {
     margin-left: -1px;
     float: left;
   }
@@ -9,7 +13,8 @@
     border-radius: 0;
   }
 
-  & > .gk-button:first-child {
+  & > .gk-button:first-child,
+  & > .gk-uploader-buttons:first-child {
     margin-left: 0;
   }
 }

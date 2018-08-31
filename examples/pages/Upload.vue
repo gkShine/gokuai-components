@@ -41,7 +41,10 @@
         </h3>
         <div class="demo-block" style="width: 1024px; height: 660px">
             <div class="demo-toolbar">
-                <gk-uploader-buttons :buttons="dialogButtons" dropdown>上传</gk-uploader-buttons>
+                <gk-button-group>
+                    <gk-uploader-buttons :buttons="dialogButtons" dropdown>上传</gk-uploader-buttons>
+                    <gk-button>下载</gk-button>
+                </gk-button-group>
             </div>
             <gk-table :data="list" :height="600" class="file-list">
                 <gk-table-column width="40"></gk-table-column>

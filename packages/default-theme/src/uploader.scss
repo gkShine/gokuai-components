@@ -16,14 +16,6 @@
 
 .gk-uploader-buttons,
 .gk-uploader-dropdown {
-
-  .gk-button {
-    margin-right: 5px;
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
   .webuploader-container {
     position: relative;
     padding: 0;
@@ -46,6 +38,15 @@
       .webuploader-pick {
         padding: $--menu-item-padding;
       }
+    }
+  }
+}
+
+.gk-uploader-buttons-inline {
+  .gk-button {
+    margin-right: 5px;
+    &:last-child {
+      margin-right: 0;
     }
   }
 }

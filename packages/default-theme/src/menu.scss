@@ -1,4 +1,5 @@
 @import "./common/var.scss";
+@import "./mixins/utils.scss";
 
 .gk-menu {
   z-index: 9001;
@@ -41,6 +42,7 @@
   }
 
   .gk-menu-item {
+    @include clearfix;
     height: $--menu-item-height;
     color: $--font-color;
     font-size: $--font-size;
@@ -49,7 +51,6 @@
     text-decoration: none;
     padding: $--menu-item-padding;
     cursor: default;
-    clear: both;
 
     i {
       margin-left: -15px;
