@@ -9,10 +9,14 @@ export default {
   },
 
   dir: false,
+  link: false,
 
   initialize(permissions) {
     if (permissions instanceof Object) {
-      this.permissions = permissions;
+      this.permissions = Object.assign(this.permissions, permissions);
+      if (this.permissions.link.length > 0) {
+        this.link = true;
+      }
     }
     this.check.initialize(this);
     return this;
@@ -27,6 +31,7 @@ export default {
   //设置外链权限
   setLink(permissions) {
     this.permissions.link = this._value(permissions);
+    this.link = true;
     return this;
   },
 
@@ -41,6 +46,11 @@ export default {
     this.permissions.dist = this._value(permissions);
     this.dir = dir;
     return this;
+  },
+
+  //设置是否为文件夹
+  setDir(dir) {
+    this.dir = dir;
   },
 
   //获取值
