@@ -267,7 +267,6 @@
         this.hasScrollbar = this.itemHeight * this.data.length > el.clientHeight;
       },
       watchScrollbar() {
-        this.setScrollbar();
         let timer = 0;
         window.addEventListener('resize', () => {
           clearTimeout(timer);
@@ -301,6 +300,9 @@
           this.handleSelectPrevNext(+1)
         }
       });
+    },
+    updated() {
+      this.setScrollbar();
     }
   }
 </script>
