@@ -7,16 +7,21 @@
 
   & > .gk-button,
   & > .gk-uploader-buttons {
-    margin-left: -1px;
     float: left;
+
+    &:not(:first-child) {
+      margin-left: -1px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
   &[plain] > .gk-button {
     border-radius: 0;
-  }
-
-  & > .gk-button:first-child,
-  & > .gk-uploader-buttons:first-child {
-    margin-left: 0;
   }
 }

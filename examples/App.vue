@@ -44,6 +44,7 @@
 
         .container {
             margin-left: 300px;
+            padding-right: 20px;
         }
     }
 
@@ -67,7 +68,7 @@
         border: 1px solid #ebebeb;
         border-radius: 3px;
         transition: .2s;
-        margin-bottom: 60px
+        margin-bottom: 60px;
     }
 
     .demo-block:hover {

@@ -4,13 +4,31 @@
   outline: 0;
   cursor: pointer;
   text-align: center;
+  transition: .1s;
   background: #ffffff;
   border: 1px solid $--button-border-color;
   color: $--font-color;
   font-size: $--font-size;
   padding: $--button-padding;
   border-radius: $--button-border-radius;
-  line-height: 20px;
+  line-height: 1;
+
+  &.gk-button--medium {
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+
+  &.gk-button--small {
+    padding: 9px 15px;
+    font-size: 12px;
+    border-radius: 3px;
+  }
+
+  &.gk-button--mini {
+    padding: 7px 15px;
+    font-size: 12px;
+    border-radius: 3px;
+  }
 
   &.gk-button-plain {
     padding: 0;
@@ -20,6 +38,15 @@
   &.gk-button-active {
     background-color: $--primary-color;
     color: $--font-reverse-color;
+    position: relative;
+  }
+
+  &:hover,
+  &:focus {
+    color: #339add;
+    border-color: #c2e1f5;
+    background-color: #ebf5fc;
+    position: relative;
   }
 }
 

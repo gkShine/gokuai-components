@@ -23,6 +23,9 @@
         showThumbnail: !!this.thumbnail
       }
     },
+    watch: {
+      thumbnail: 'watchThumbnai'
+    },
     computed: {
       sizeCls() {
         return 'gk-fileicon-' + this.size;
@@ -33,6 +36,11 @@
         } else {
           return 'gk-fileicon-' + (this.type || getExt(this.filename));
         }
+      }
+    },
+    methods: {
+      watchThumbnai(value) {
+        this.showThumbnail = !!value;
       }
     }
   }

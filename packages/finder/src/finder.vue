@@ -195,6 +195,7 @@
       selectItem(file, index) {
         this.selected = file;
         this.selectedIndex = [index];
+        this.$emit('select', file);
       },
       dblclickItem(file, index) {
         this.selected = file;

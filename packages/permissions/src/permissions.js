@@ -45,8 +45,12 @@ export default {
   },
 
   //设置目标文件(夹)
-  setDist(permissions, dir) {
-    this.permissions.dist = this._value(permissions);
+  setDist(dir, permissions) {
+    if (dir) {
+      this.permissions.dist = this._value(permissions);
+    } else { //文件没权限
+      this.permissions.dist = this.permissions.current;
+    }
     this.setDir(dir);
     return this;
   },
@@ -54,6 +58,7 @@ export default {
   //设置是否为文件夹
   setDir(dir) {
     this.dir = dir;
+    return this;
   },
 
   //获取值

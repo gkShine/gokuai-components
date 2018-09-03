@@ -69,7 +69,6 @@ export default {
     if (binding.oldValue === binding.value) {
       return;
     }
-    console.log(self);
     if (binding.value) {
       self.show(el);
     } else {

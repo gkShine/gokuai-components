@@ -1,13 +1,14 @@
 <template>
-    <button class="gk-button" :class="{'gk-button-plain':plainCls}" v-if="type === 'button'"><i v-if="icon" :class="icon"></i><slot></slot></button>
-    <div class="gk-button" :class="{'gk-button-plain':plainCls}" v-else-if="type === 'html'"><i v-if="icon" :class="icon"></i><slot></slot></div>
-    <span class="gk-button" :class="{'gk-button-plain':plainCls}" v-else-if="type === 'text'"><i v-if="icon" :class="icon"></i><slot></slot></span>
+    <button class="gk-button" :class="computedClass" v-if="type === 'button'"><i v-if="icon" :class="icon"></i><slot></slot></button>
+    <div class="gk-button" :class="computedClass" v-else-if="type === 'html'"><i v-if="icon" :class="icon"></i><slot></slot></div>
+    <span class="gk-button" :class="computedClass" v-else-if="type === 'text'"><i v-if="icon" :class="icon"></i><slot></slot></span>
 </template>
 
 <script>
   export default {
     name: "GkButton",
     props: {
+      size: String,
       plain: Boolean,
       icon: String,
       type: {
@@ -16,8 +17,14 @@
       }
     },
     computed: {
-      plainCls() {
-        return this.plain || this.$parent.plain;
+      computedClass() {
+        let classList = {
+          'gk-button-plain': this.plain || this.$parent.plain
+        };
+        if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {
+          classList['gk-button--' + this.size] = true;
+        }
+        return classList;
       }
     }
   }

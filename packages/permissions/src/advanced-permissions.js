@@ -51,6 +51,7 @@ export default {
   //设置是否为文件夹
   setDir(dir) {
     this.dir = dir;
+    return this;
   },
 
   //获取值

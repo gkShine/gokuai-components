@@ -1,5 +1,6 @@
 import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
+import Button from './pages/Button.vue'
 
 let routes = [
   {
@@ -9,7 +10,7 @@ let routes = [
   },
   {
     path: '/button',
-    component: Finder,
+    component: Button,
     name: '按钮'
   },
   {
