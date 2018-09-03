@@ -33,6 +33,7 @@ export default {
       }
       this.box = box;
     }
+    this.exist = true;
     window.requestAnimationFrame(() => {
       this.box.style.opacity = '1';
     });
@@ -42,6 +43,7 @@ export default {
     el.classList.remove('gk-loading-scope');
     this.box.addEventListener('transitionend', () => {
       this.box.remove();
+      this.box = null;
       this.exist = false;
 
       if (this.static) {
@@ -54,9 +56,8 @@ export default {
 
   bind(el, binding) {
     let self = binding.def;
-    self.static = false;
     self.box = null;
-    self.exist = false;
+    self.static = self.exist = false;
     self.options = {
       bg: el.getAttribute('gk-loading-background') || false,
       text: el.getAttribute('gk-loading-text') || false
@@ -65,9 +66,12 @@ export default {
 
   update(el, binding) {
     let self = binding.def;
+    if (binding.oldValue === binding.value) {
+      return;
+    }
+    console.log(self);
     if (binding.value) {
       self.show(el);
-      self.exist = true;
     } else {
       if (!self.exist) {
         return;

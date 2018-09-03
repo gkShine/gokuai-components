@@ -1,6 +1,6 @@
 <template>
     <section ref="uploader" class="gk-uploader" :class="{'gk-uploader-dialog': dialog}"
-             :style="{display: hidden ? 'none' : 'block',height: dialog ? height + 'px' : ''}">
+             :style="{display: hidden ? 'none' : 'block'}">
         <div class="gk-uploader-head" v-if="dialog">
             <h2>{{dialogTitle()}}</h2>
             <div><i :class="'gk-icon-window-' + (mini ? 'maximize': 'minimize')" @click="mini = !mini"></i><i
@@ -17,8 +17,8 @@
                         {{props.name}}
                     </template>
                 </gk-table-column>
-                <gk-table-column property="size" :width="90" :formatter="formatSize"></gk-table-column>
-                <gk-table-column property="percent" :width="150" :formatter="formatState"></gk-table-column>
+                <gk-table-column property="size" :width="80" :formatter="formatSize"></gk-table-column>
+                <gk-table-column property="percent" :width="130" :formatter="formatState"></gk-table-column>
                 <gk-table-column property="state" :formatter="formatOption" align="center"
                                  :width="100"></gk-table-column>
                 <div slot="empty" class="gk-uploader-empty">
@@ -78,7 +78,7 @@
     },
     data() {
       return {
-        mini: false,
+        mini: true,
         hidden: this.dialog,
         headLabel: this.headTpl.replace(':d', 0),
         list: [],
