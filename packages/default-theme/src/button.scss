@@ -1,17 +1,19 @@
 @import "./common/var.scss";
+@import "./mixins/button.scss";
 
 .gk-button {
   outline: 0;
   cursor: pointer;
   text-align: center;
   transition: .1s;
-  background: #ffffff;
+  background: $--button-background-color;
   border: 1px solid $--button-border-color;
   color: $--font-color;
   font-size: $--font-size;
   padding: $--button-padding;
   border-radius: $--button-border-radius;
   line-height: 1;
+  position: relative;
 
   &.gk-button--medium {
     padding: 10px 20px;
@@ -35,18 +37,33 @@
     border-radius: 0;
   }
 
-  &.gk-button-active {
-    background-color: $--primary-color;
-    color: $--font-reverse-color;
-    position: relative;
-  }
-
   &:hover,
-  &:focus {
+  &:focus,
+  .gk-button-active {
     color: #339add;
     border-color: #c2e1f5;
     background-color: #ebf5fc;
-    position: relative;
+    z-index: 1;
+  }
+
+  &.gk-button--primary {
+    @include button-variant($--primary-color, $--primary-hover-color, $--primary-active-color);
+  }
+
+  &.gk-button--success {
+    @include button-variant($--success-color, $--success-hover-color, $--success-active-color);
+  }
+
+  &.gk-button--info {
+    @include button-variant($--info-color, $--info-hover-color, $--info-active-color);
+  }
+
+  &.gk-button--warning {
+    @include button-variant($--warning-color, $--warning-hover-color, $--warning-active-color);
+  }
+
+  &.gk-button--danger {
+    @include button-variant($--danger-color, $--danger-hover-color, $--danger-active-color);
   }
 }
 

@@ -157,7 +157,6 @@
         viewMode: 'default',
         sort: sort || '',
         order: order || '',
-        selected: {},
         preview: false,
         previewFile: this.value,
         navList: this.initNavs(this.value),
@@ -193,12 +192,10 @@
         this.$refs.table.checked = {};
       },
       selectItem(file, index) {
-        this.selected = file;
         this.selectedIndex = [index];
         this.$emit('select', file);
       },
       dblclickItem(file, index) {
-        this.selected = file;
         this.selectedIndex = [index];
         this.navList.push(file);
         this.$emit('input', file);
@@ -278,6 +275,9 @@
           }
         });
         this.navList = navs;
+      },
+      getSelected() {
+        return this.$refs.table.getSelected();
       }
     },
     mounted() {

@@ -1,6 +1,17 @@
 <template>
     <div class="container">
         <h3 class="demo-title">
+            按钮
+        </h3>
+        <div class="demo-block" style="padding: 20px">
+            <gk-button>默认按钮</gk-button>
+            <gk-button type="primary">主要按钮</gk-button>
+            <gk-button type="success">成功按钮</gk-button>
+            <gk-button type="info">信息按钮</gk-button>
+            <gk-button type="warning">警告按钮</gk-button>
+            <gk-button type="danger">错误按钮</gk-button>
+        </div>
+        <h3 class="demo-title">
             按钮大小
         </h3>
         <div class="demo-block" style="padding: 20px">

@@ -1,7 +1,11 @@
 <template>
-    <button class="gk-button" :class="computedClass" v-if="type === 'button'"><i v-if="icon" :class="icon"></i><slot></slot></button>
-    <div class="gk-button" :class="computedClass" v-else-if="type === 'html'"><i v-if="icon" :class="icon"></i><slot></slot></div>
+    <div class="gk-button" :class="computedClass" v-if="type === 'html'"><i v-if="icon" :class="icon"></i>
+        <slot></slot>
+    </div>
     <span class="gk-button" :class="computedClass" v-else-if="type === 'text'"><i v-if="icon" :class="icon"></i><slot></slot></span>
+    <button class="gk-button" :class="computedClass" v-else><i v-if="icon" :class="icon"></i>
+        <slot></slot>
+    </button>
 </template>
 
 <script>
@@ -23,6 +27,9 @@
         };
         if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {
           classList['gk-button--' + this.size] = true;
+        }
+        if (['primary', 'success', 'info', 'warning', 'danger'].indexOf(this.type) > -1) {
+          classList['gk-button--' + this.type] = true;
         }
         return classList;
       }

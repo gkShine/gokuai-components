@@ -1,0 +1,18 @@
+@import "../common/var.scss";
+
+@mixin button-variant($fill-color, $hover-color, $active-color) {
+  border-color: $fill-color;
+  background-color: $fill-color;
+  color: $--font-reverse-color;
+
+  &:hover,
+  &:focus {
+    background-color: $hover-color;
+    border-color: $hover-color;
+  }
+
+  &.gk-button-active {
+    background: $hover-color;
+    border-color: $hover-color;
+  }
+}
