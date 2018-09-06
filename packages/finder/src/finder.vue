@@ -155,7 +155,6 @@
         order: order || '',
         preview: false,
         previewFile: this.value,
-        rightFile: {},
         navList: this.initNavs(this.value),
         selectedIndex: [],
         fileList: []
@@ -212,11 +211,11 @@
         if (!this.buttons) {
           return;
         }
-        this.rightFile = file;
+        this.selectItem(file, index);
         this.$refs.contextmenu.show(event);
       },
       commandFile(item) {
-        this.$emit('command', this.rightFile, item.command);
+        this.$emit('command', this.getSelected(), item.command);
       },
       clickBreadcrumb(value, file, index) {
         this.navList = this.navList.slice(0, index + 1);
