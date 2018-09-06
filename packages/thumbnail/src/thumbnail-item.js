@@ -1,15 +1,15 @@
+import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
+
 export default {
   name: "GkThumbnailItem",
+  components: {GkCheckbox},
   props: {
     render: Function,
     data: Object|String,
     property: String,
-    size: {
-      type: Object,
-      default: () => {
-        return {w: 148, h: 180};
-      }
-    }
+    size: Object,
+    checkbox: Boolean,
+    'is-checked': Boolean
   },
   render(h) {
     let content;
@@ -37,7 +37,18 @@ export default {
         height: this.size.h + 'px'
       }
     }, [
-      content
+      content,
+      this.checkbox && h('gk-checkbox', {
+        class: 'gk-thumbnail-checkbox',
+        props: {
+          isChecked: this.isChecked
+        },
+        nativeOn: {
+          click: (event) => {
+            this.$emit('change-checked', event);
+          }
+        }
+      })
     ]);
   }
 }

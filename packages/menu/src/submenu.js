@@ -129,6 +129,9 @@ export default {
           };
           break;
       }
+    },
+    bodyClick() {
+      this.visible && this.hideMenu();
     }
   },
   mounted() {
@@ -142,8 +145,9 @@ export default {
       }
     });
 
-    document.body.addEventListener('click', () => {
-      this.visible && this.hideMenu();
-    });
+    document.body.addEventListener('click', this.bodyClick);
+  },
+  destroyed() {
+    document.body.removeEventListener('click', this.bodyClick);
   }
 }

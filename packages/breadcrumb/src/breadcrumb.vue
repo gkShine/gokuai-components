@@ -72,7 +72,8 @@
         menu: [],
         history: [],
         current: '',
-        input: ''
+        input: '',
+        timer: 0
       };
     },
     watch: {
@@ -148,6 +149,17 @@
       showMenu(event) {
         this.$refs.more.show(event.target);
         event.stopPropagation();
+      },
+      windowResize() {
+        if (this.mode === 'normal') {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            this.change(this.navs);
+          }, 500);
+        }
+      },
+      documentClick() {
+        this.mode === 'input' && (this.mode = 'normal');
       }
     },
     mounted() {
@@ -156,18 +168,12 @@
         this.width = this.width - this.$refs.ops.$el.clientWidth;
       }
       this.change(this.navs);
-      document.addEventListener('click', () => {
-        this.mode === 'input' && (this.mode = 'normal');
-      });
-      let timer = 0;
-      window.addEventListener('resize', () => {
-        if (this.mode === 'normal') {
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            this.change(this.navs);
-          }, 500);
-        }
-      });
+      document.addEventListener('click', this.documentClick);
+      window.addEventListener('resize', this.windowResize);
+    },
+    destroyed() {
+      document.removeEventListener('click', this.documentClick);
+      window.removeEventListener('resize', this.windowResize);
     }
   }
 </script>

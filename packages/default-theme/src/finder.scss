@@ -52,7 +52,7 @@
       background-color: #FFFFFF;
     }
 
-    &.gk-finder-view-default {
+    &.gk-finder-view-listdetail {
       .gk-finder-filename-column {
         display: flex;
 
@@ -85,7 +85,7 @@
       }
     }
 
-    &.gk-finder-view-thumbnail {
+    &.gk-finder-view-listgrid {
       .gk-finder-filename {
         overflow: hidden;
         text-overflow: ellipsis;

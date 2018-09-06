@@ -104,10 +104,18 @@
     }
   }
 
-  .gk-checkbox {
-    display: none;
+  .gk-table-checkbox {
+    .gk-checkbox {
+      display: none;
 
-    &.gk-checkbox-checked {
+      &.gk-checkbox-checked {
+        display: inline;
+      }
+    }
+  }
+
+  .gk-table-header {
+    .gk-checkbox {
       display: inline;
     }
   }

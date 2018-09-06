@@ -1,15 +1,18 @@
 <template>
-    <ul class="gk-thumbnail gk-scrollbar" @click="handleCancelSelect" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit}" v-loading="loading" v-scroll-load="loadMore">
+    <ul ref="thumbnail" class="gk-thumbnail gk-scrollbar" @click="handleCancelSelect" @contextmenu="handleContextmenu(null, null, $event)" :class="{'gk-thumbnail-fit': fit, 'gk-thumbnail-checkbox': showCheckbox}" v-loading="loading" v-scroll-load="loadMore">
         <gk-thumbnail-item
+                :checkbox="checkbox"
                 @click.native="handleSelect(item, index, $event)"
                 @dblclick.native="handleDblclick(item, index, $event)"
                 @contextmenu.native="handleContextmenu(item, index, $event)"
+                @change-checked="handleCheck(item, index, $event)"
                 v-for="(item, index) in data"
                 :key="index"
                 :data="item"
                 :render="$scopedSlots.default"
                 :property="property"
                 :size="size"
+                :is-checked="checked[index] !== undefined"
                 :class="{'gk-thumbnail-active-item':selected[index] !== undefined}"
                 :style="style"
         ></gk-thumbnail-item>
@@ -29,16 +32,40 @@
     props: {
       data: Array,
       property: String,
-      size: Object,
+      size: {
+        type: Object,
+        default: () => {
+          return {w: 148, h: 180};
+        }
+      },
       border: Number,
       'default-index': Number|Array,
+      'default-checked-index': {
+        type: Number | Array,
+        default: () => []
+      },
       loading: Boolean,
-      fit: Boolean
+      fit: Boolean,
+      shortcut: Boolean,
+      beforeSelect: Function,
+      'show-checkbox': Boolean,
+      checkbox: Boolean,
+      'select-on-check': {
+        type: Boolean,
+        default: true
+      },
+      'check-on-select': {
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {
         clickTimer: false,
+        lastSelectedIndex: -1,
+        lastIndex: -1,
         selected: getSelected(this.defaultIndex, this.data),
+        checked: getSelected(this.defaultCheckedIndex, this.data),
         clickItem: false
       };
     },
@@ -60,6 +87,9 @@
         this.$emit('loadMore');
       },
       handleSelect(item, index, event) {
+        if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
+          return false;
+        }
         this.clickItem = true;
         clearTimeout(this.clickTimer);
         this.clickTimer = setTimeout(() => {
@@ -92,6 +122,8 @@
             }
           }
           this.clickItem = false;
+          this.lastIndex = index;
+          this.updateChecked();
         }, 20);
       },
       handleCancelSelect() {
@@ -99,18 +131,32 @@
           return false;
         }
         this.selected = {};
+        this.lastIndex = -1;
         this.$emit('select', null, null, event);
+        this.updateChecked();
       },
       handleSelectAll() {
-        let selected = {};
-        for (let i in this.data) {
-          selected[i] = this.data[i];
-        }
-        this.selected = selected;
+        this.selected = Object.assign({}, this.data);
+        this.lastIndex = this.data.length - 1;
+        this.updateChecked();
       },
       handleDblclick(data, index, event) {
         clearTimeout(this.clickTimer);
         this.$emit('dblclick', data, index, event);
+      },
+      handleCheck(item, index, event) {
+        if (event.target.checked) {
+          this.checked[index] = item;
+        } else {
+          delete this.checked[index];
+        }
+        let checked = Object.values(this.checked);
+        this.$emit('check', checked, event);
+        if (this.checkOnSelect || this.selectOnCheck) {
+          this.updateSelected(index);
+          console.log(event);
+          event.stopPropagation();
+        }
       },
       handleContextmenu(item, index, event) {
         if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
@@ -120,35 +166,84 @@
         event.stopPropagation();
         event.preventDefault();
       },
-      handleSelectPrevNext(offset) {
-        let keys = Object.keys(this.selected);
-        if (keys.length !== 1) {
+      handleSelectPrevNext(offset, event) {
+        if (this.lastIndex === -1) {
           return false;
         }
-        let index = parseInt(keys[0]) + offset;
+        let index = parseInt(this.lastIndex) + offset;
         if (index < 0 || index > this.data.length - 1) {
           return false;
         }
-        this.handleSelect(this.data[index], index);
+        this.handleSelect(this.data[index], index, event);
+      },
+      getLineSize() {
+        let el = this.$refs.thumbnail;
+        if (!el.childNodes.length) {
+            return 0;
+        }
+        let child = el.childNodes[0];
+        return parseInt(
+          (el.clientWidth - parseInt(window.getComputedStyle(el).padding) * 2)
+          / (child.clientWidth + parseInt(window.getComputedStyle(child).margin) * 2)
+        );
+      },
+      updateChecked() {
+        if (!this.selectOnCheck) {
+          return;
+        }
+        this.checked = Object.assign({}, this.selected);
+      },
+      updateSelected(index) {
+        if (!this.checkOnSelect) {
+          return;
+        }
+        this.selected = Object.assign({}, this.checked);
+        this.lastIndex = index;
       },
       getSelected() {
         return Object.values(this.selected);
       },
       getSelectedIndex() {
         return Object.keys(this.selected);
-      }
-    },
-    mounted() {
-      document.onkeydown = (e) => {
+      },
+      getChecked() {
+        return Object.values(this.checked);
+      },
+      getCheckedIndex() {
+        return Object.keys(this.checked);
+      },
+      documentKeyDown(e) {
         if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
           this.handleSelectAll();
           e.preventDefault();
-        } else if (e.code === 'ArrowLeft') {
-          this.handleSelectPrevNext(-1)
-        } else if (e.code === 'ArrowRight') {
-          this.handleSelectPrevNext(+1)
+          return false;
+        } else if (e.code === 'PgUp') {
+          this.handleSelect(this.data[0], 0, e);
+          e.preventDefault();
+        } else if (e.code === 'End' || e.code === 'PgDn') {
+          this.handleSelect(this.data[this.data.length - 1], this.data.length - 1, e);
+          e.preventDefault();
         }
-      };
+        if (!Object.keys(this.selected).length) {
+          return false;
+        }
+        if (e.code === 'ArrowLeft') {
+          this.handleSelectPrevNext(-1, e)
+        } else if (e.code === 'ArrowRight') {
+          this.handleSelectPrevNext(+1, e)
+        } else if (e.code === 'ArrowUp') {
+          this.handleSelectPrevNext(-this.getLineSize(), e);
+        } else if (e.code === 'ArrowDown') {
+          this.handleSelectPrevNext(+this.getLineSize(), e);
+        }
+        e.preventDefault();
+      }
+    },
+    mounted() {
+      this.shortcut && document.addEventListener('keydown', this.documentKeyDown);
+    },
+    destroyed() {
+      this.shortcut && document.removeEventListener('keydown', this.documentKeyDown);
     }
   }
 </script>

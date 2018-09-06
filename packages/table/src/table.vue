@@ -1,6 +1,6 @@
 <template>
     <section class="gk-table" :style="tableStyle"
-             :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox':showAllCheckbox || showCheckbox}">
+             :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox': showCheckbox}">
         <template v-if="data.length">
             <table ref="thead" class="gk-table-header" v-show="showHeader">
                 <thead>
@@ -51,9 +51,18 @@
     directives: {loading, scrollLoad},
     components: {GkTableCell, VirtualScroller},
     props: {
+      shortcut: Boolean,
       'show-more': Boolean,
       'show-header': Boolean,
       'show-checkbox': Boolean,
+      'select-on-check': {
+        type: Boolean,
+        default: true
+      },
+      'check-on-select': {
+        type: Boolean,
+        default: true
+      },
       'default-index': Number | Array,
       'default-checked-index': {
         type: Number | Array,
@@ -78,11 +87,12 @@
     },
     data() {
       return {
+        timer: 0,
         page: 1,
-        selected: getSelected(this.defaultIndex, this.data),
         lastSelectedIndex: -1,
+        lastIndex: -1,
+        selected: getSelected(this.defaultIndex, this.data),
         checked: getSelected(this.defaultCheckedIndex, this.data),
-        showAllCheckbox: false,
         hasScrollbar: false,
         clickTimer: false,
         clickItem: false
@@ -172,8 +182,8 @@
             this.selected = {};
             if (selected[index] === undefined) {
               selected[index] = item;
-              this.selected = selected;
               this.lastSelectedIndex = index;
+              this.selected = selected;
               this.$emit('select', item, index, event);
             } else {
               delete selected[index];
@@ -196,6 +206,8 @@
             }
           }
           this.clickItem = false;
+          this.lastIndex = index;
+          this.updateChecked();
         }, 20);
       },
       handleCancelSelect() {
@@ -203,30 +215,32 @@
           return;
         }
         this.selected = {};
+        this.lastIndex = -1;
         this.$emit('select', null, null, event);
+        this.updateChecked();
       },
       handleSelectAll() {
-        let selected = {};
-        for (let i in this.data) {
-          selected[i] = this.data[i];
-        }
-        this.selected = selected;
+        this.selected = Object.assign({}, this.data);
+        this.lastIndex = this.data.length - 1;
+        this.updateChecked();
       },
       handleDbclick(item, index, event) {
         clearTimeout(this.clickTimer);
         this.$emit('dblclick', item, index, event);
       },
-      handleCheck(item, index, {target}) {
-        if (target.checked) {
+      handleCheck(item, index, event) {
+        if (event.target.checked) {
           this.checked[index] = item;
         } else {
           delete this.checked[index];
         }
-        //自动隐藏checkbox模式
-        !this.showCheckbox && (this.showAllCheckbox = Object.keys(this.checked).length > 0);
         let checked = Object.values(this.checked);
         this.refreshCheckAllState();
         this.$emit('check', checked, event);
+        if (this.checkOnSelect || this.selectOnCheck) {
+          this.updateSelected(index);
+          event.stopPropagation();
+        }
       },
       handleCheckAll(checked) {
         let checkboxes = this.getCheckboxes();
@@ -239,6 +253,7 @@
           this.checked = [];
         }
         this.$emit('check', Object.values(this.checked), event);
+        this.updateSelected(this.checked.length - 1);
       },
       handleContextmenu(item, index, event) {
         if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
@@ -248,16 +263,15 @@
         event.stopPropagation();
         event.preventDefault();
       },
-      handleSelectPrevNext(offset) {
-        let keys = Object.keys(this.selected);
-        if (keys.length !== 1) {
+      handleSelectPrevNext(offset, event) {
+        if (this.lastIndex === -1) {
           return false;
         }
-        let index = parseInt(keys[0]) + offset;
+        let index = parseInt(this.lastIndex) + offset;
         if (index < 0 || index > this.data.length - 1) {
           return false;
         }
-        this.handleSelect(this.data[index], index);
+        this.handleSelect(this.data[index], index, event);
       },
       setScrollbar() {
         if (!this.$refs.table) {
@@ -266,14 +280,19 @@
         let el = this.$refs.table.$el;
         this.hasScrollbar = this.itemHeight * this.data.length > el.clientHeight;
       },
-      watchScrollbar() {
-        let timer = 0;
-        window.addEventListener('resize', () => {
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            this.setScrollbar();
-          }, 5);
-        });
+      updateChecked() {
+        if (!this.selectOnCheck) {
+          return;
+        }
+        this.checked = Object.assign({}, this.selected);
+        this.refreshCheckAllState();
+      },
+      updateSelected(index) {
+        if (!this.checkOnSelect) {
+            return;
+        }
+        this.selected = Object.assign({}, this.checked);
+        this.lastIndex = index;
       },
       getSelected() {
         return Object.values(this.selected);
@@ -286,23 +305,47 @@
       },
       getCheckedIndex() {
         return Object.keys(this.checked);
-      }
-    },
-    mounted() {
-      this.watchScrollbar();
-      document.addEventListener('keydown', (e) => {
+      },
+      windowResize() {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.setScrollbar();
+        }, 5);
+      },
+      documentKeyDown(e) {
         if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
           this.handleSelectAll();
           e.preventDefault();
-        } else if (e.code === 'ArrowUp') {
-          this.handleSelectPrevNext(-1)
-        } else if (e.code === 'ArrowDown') {
-          this.handleSelectPrevNext(+1)
+          return false;
+        } else if (e.code === 'PgUp') {
+          this.handleSelect(this.data[0], 0, e);
+          e.preventDefault();
+        } else if (e.code === 'End' || e.code === 'PgDn') {
+          this.handleSelect(this.data[this.data.length - 1], this.data.length - 1, e);
+          e.preventDefault();
         }
-      });
+        if (!Object.keys(this.selected).length) {
+          return false;
+        }
+        if (e.code === 'ArrowUp') {
+          this.handleSelectPrevNext(-1, e);
+          e.preventDefault();
+        } else if (e.code === 'ArrowDown') {
+          this.handleSelectPrevNext(+1, e);
+          e.preventDefault();
+        }
+      }
     },
-    updated() {
-      this.setScrollbar();
+    mounted() {
+      this.$nextTick(() => {
+        this.setScrollbar();
+      });
+      window.addEventListener('resize', this.windowResize);
+      this.shortcut && document.addEventListener('keydown', this.documentKeyDown);
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.windowResize);
+      this.shortcut && document.removeEventListener('keydown', this.documentKeyDown);
     }
   }
 </script>

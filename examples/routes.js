@@ -1,6 +1,8 @@
 import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
 import Button from './pages/Button.vue'
+import Table from './pages/Table.vue'
+import Thumbnail from './pages/Thumbnail.vue'
 
 let routes = [
   {
@@ -20,7 +22,7 @@ let routes = [
   },
   {
     path: '/table',
-    component: Finder,
+    component: Table,
     name: '表格'
   },
   {
@@ -40,7 +42,7 @@ let routes = [
   },
   {
     path: '/thumbnail',
-    component: Finder,
+    component: Thumbnail,
     name: '缩略图列表'
   },
   {

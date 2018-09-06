@@ -20,6 +20,8 @@
     data() {
       return {
         hasSub: false,
+        helpKey: undefined,
+        keyCode: undefined,
         shortcut: ''
       }
     },
@@ -70,29 +72,33 @@
         if (code.length === 1) {
           code = 'Key' + code;
         }
+        this.keyCode = code;
+        this.helpKey = help;
         if (help === undefined) {
-          document.addEventListener('keydown', (event) => {
-            if (event.code === code) {
-              this.handleClick(event);
-              event.preventDefault();
-            }
-          });
+          document.addEventListener('keydown', this.documentKeyDown);
         } else {
-          document.addEventListener('keydown', (event) => {
-            if (help === 'META' && !event.metaKey)  {
-              return;
-            } else if (help === 'CTRL' && !event.ctrlKey) {
-              return;
-            } else if (help === 'ALT' && !event.altKey)  {
-              return;
-            } else if (help === 'SHIFT' && !event.shiftKey) {
-              return;
-            }
-            if (event.code === code) {
-              this.handleClick(event);
-              event.preventDefault();
-            }
-          });
+          document.addEventListener('keydown', this.documentKeyDownWithHelp);
+        }
+      },
+      documentKeyDown(event) {
+        if (event.code === this.keyCode) {
+          this.handleClick(event);
+          event.preventDefault();
+        }
+      },
+      documentKeyDownWithHelp(event) {
+        if (this.helpKey === 'META' && !event.metaKey)  {
+          return;
+        } else if (this.helpKey === 'CTRL' && !event.ctrlKey) {
+          return;
+        } else if (this.helpKey === 'ALT' && !event.altKey)  {
+          return;
+        } else if (this.helpKey === 'SHIFT' && !event.shiftKey) {
+          return;
+        }
+        if (event.code === this.keyCode) {
+          this.handleClick(event);
+          event.preventDefault();
         }
       }
     },
@@ -130,6 +136,13 @@
             }
             break;
         }
+      }
+    },
+    destroyed() {
+      if (this.helpKey === undefined) {
+        document.removeEventListener('keydown', this.documentKeyDown);
+      } else {
+        document.removeEventListener('keydown', this.documentKeyDownWithHelp);
       }
     }
   }

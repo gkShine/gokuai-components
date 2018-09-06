@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { genFiles, rootFile } from './data';
+import { genFiles, rootFile, genData } from './data';
 
 export default {
   bootstrap() {
@@ -20,6 +20,15 @@ export default {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, rootFile]);
+        }, 1000);
+      });
+    });
+
+    mock.onGet('/data').reply(config => {
+      let {size} = config.params;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, genData(size || 200)]);
         }, 1000);
       });
     });

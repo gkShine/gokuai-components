@@ -12,6 +12,7 @@
   export default {
     name: "GkButton",
     props: {
+      'is-actived': Boolean,
       size: String,
       plain: Boolean,
       icon: String,
@@ -23,7 +24,8 @@
     computed: {
       computedClass() {
         let classList = {
-          'gk-button-plain': this.plain || this.$parent.plain
+          'gk-button-plain': this.plain || this.$parent.plain,
+          'gk-button-active': this.isActived
         };
         if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {
           classList['gk-button--' + this.size] = true;

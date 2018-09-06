@@ -44,4 +44,18 @@ let rootFile = {
   "previewUrl": Mock.Random.dataImage()
 };
 
-export {genFiles, rootFile};
+let genData = (length) => {
+  let data = [];
+  for (let i = 0; i < length; i++) {
+    let dat = {
+      "id": Mock.Random.integer(1, 10000),
+      "name": Mock.Random.ctitle(3, 20),
+      "username": Mock.Random.cname(),
+      "date": Mock.Random.datetime(),
+      "pic": Mock.Random.dataImage()
+    };
+    data.push(Mock.mock(dat));
+  }
+  return data;
+};
+export {genFiles, rootFile, genData};

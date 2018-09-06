@@ -15,22 +15,16 @@
                 </gk-dropdown>
 
                 <gk-button-group plain class="gk-finder-view-mode">
-                    <gk-button
-                            :class="{'gk-button-active' : viewMode === 'default'}"
-                            @click.native="handleViewMode('default')" icon="gk-icon-listdetail"></gk-button>
-                    <gk-button
-                            :class="{'gk-button-active' : viewMode === 'list'}"
-                            @click.native="handleViewMode('list')" icon="gk-icon-list"></gk-button>
-                    <gk-button
-                            :class="{'gk-button-active' : viewMode === 'thumbnail'}"
-                            @click.native="handleViewMode('thumbnail')" icon="gk-icon-listgrid"></gk-button>
+                    <gk-button v-for="(view,index) in viewList" :key="index" :is-actived="viewMode === view"
+                               @click.native="handleViewMode(view)" :icon="'gk-icon-'+view"></gk-button>
                 </gk-button-group>
             </div>
         </div>
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
-                <gk-thumbnail ref="table" fit v-if="viewMode === 'thumbnail'" :loading="loading" :data="list"
+                <gk-thumbnail ref="table" shortcut :checkbox="checkbox" fit v-if="viewMode === 'listgrid'"
+                              :loading="loading" :data="list"
                               :border="0" :default-index="selectedIndex" @loadMore="loadMore" @select="selectItem"
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
@@ -41,12 +35,12 @@
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table ref="table" fit :loading="loading" show-checkbox show-header :data="list"
+                <gk-table ref="table" shortcut fit :loading="loading" show-header :data="list"
                           :itemHeight="itemHeight"
                           :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
                           @loadMore="loadMore" @select="selectItem" @dblclick="dblclickItem"
                           @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
-                    <gk-table-column checkbox :width="30" align="center"></gk-table-column>
+                    <gk-table-column :checkbox="checkbox" :width="20" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
@@ -63,11 +57,11 @@
                                      :width="80"></gk-table-column>
                     <gk-table-column width="10%"></gk-table-column>
                 </gk-table>
-                <gk-table ref="table" fit :loading="loading" :data="list" :itemHeight="itemHeight + 20"
+                <gk-table ref="table" shortcut fit :loading="loading" :data="list" :itemHeight="itemHeight + 20"
                           @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                           :more-text="moreText" :show-more="showMore" @loadMore="loadMore" v-else>
-                    <gk-table-column :width="20"></gk-table-column>
+                    <gk-table-column :width="20" :checkbox="checkbox" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
@@ -144,17 +138,19 @@
       },
       'show-more': Boolean,
       'more-text': String,
+      checkbox: Boolean,
       total: Number,
       buttons: Array,
       loading: Boolean,
       previewToolbar: Object,
       translate: Object,
-      getPreviewUrl: Function
+      getPreviewUrl: Function,
+      views: Array
     },
     data() {
       let [sort, order] = this.defaultSort.split(' ');
       return {
-        viewMode: 'default',
+        viewMode: this.views && this.views[0] || 'listdetail',
         sort: sort || '',
         order: order || '',
         preview: false,
@@ -168,6 +164,15 @@
       list: 'loadSuccess',
       value: 'openFile',
       previewFile: 'changeFile'
+    },
+    computed: {
+      viewList() {
+        let views = ['listdetail', 'list', 'listgrid'];
+        if (this.views instanceof Array) {
+          return views.filter(v => this.views.includes(v));
+        }
+        return views;
+      }
     },
     methods: {
       gettext(value) {

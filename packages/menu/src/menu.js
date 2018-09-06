@@ -23,7 +23,8 @@ export default {
       menu: null,
       position: null,
       visible: false,
-      timer: 0
+      timer: 0,
+      timer2: 0
     }
   },
   render(h) {
@@ -138,9 +139,9 @@ export default {
       let {topTop, bottomTop, startLeft, centerLeft, endLeft} = {
         topTop: position.top + window.pageYOffset - this.menu.clientHeight - parseInt(menuStyle.marginTop) - parseInt(menuStyle.marginBottom),
         bottomTop: position.top + window.pageYOffset + position.height,
-        startLeft: position.left,
-        centerLeft: position.left - (this.menu.clientWidth - position.width) / 2,
-        endLeft: position.left - this.menu.clientWidth + position.width
+        startLeft: position.left + window.pageXOffset,
+        centerLeft: position.left + window.pageXOffset - (this.menu.clientWidth - position.width) / 2,
+        endLeft: position.left + window.pageXOffset - this.menu.clientWidth + position.width
       };
       switch (placement) {
         case 'top':
@@ -227,16 +228,18 @@ export default {
           };
           break;
       }
-
-      let timer = 0;
-      window.addEventListener('resize', () => {
-        if (this.visible) {
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            this.setPosition();
-          }, 100);
-        }
-      });
+      window.addEventListener('resize', this.windowResize);
+    },
+    windowResize() {
+      if (this.visible) {
+        clearTimeout(this.timer2);
+        this.timer2 = setTimeout(() => {
+          this.setPosition();
+        }, 100);
+      }
+    },
+    bodyClick() {
+      this.visible && this.hideMenu();
     }
   },
   mounted() {
@@ -256,8 +259,10 @@ export default {
       }
     });
 
-    document.body.addEventListener('click', () => {
-      this.visible && this.hideMenu();
-    });
+    document.body.addEventListener('click', this.bodyClick);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.windowResize);
+    document.body.removeEventListener('click', this.bodyClick);
   }
 }

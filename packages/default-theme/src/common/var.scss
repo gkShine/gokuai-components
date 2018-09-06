@@ -1,3 +1,9 @@
+$--default-color: #FFFFFF !default;
+$--default-hover-color: #EBF5FC !default;
+$--default-active-color: #EBF5FC !default;
+$--default-border-color: #DCDFE6 !default;
+$--default-hover-border-color: #C2E1F5 !default;
+
 $--primary-color: #4B7FEF !default;
 $--primary-hover-color: #66B1FF !default;
 $--primary-active-color: #3A8EE6 !default;
@@ -18,8 +24,6 @@ $--danger-color: #f56c6c !default;
 $--danger-hover-color: #f78989 !default;
 $--danger-active-color: #dd6161 !default;
 
-
-
 $--disabled-color: #9F9F9F !default;
 
 $--font-size: 14px !default;
@@ -36,7 +40,7 @@ $--breadcrumb-item-width: 100px !default;
 --------------------------*/
 $--table-head-height: 36px !default;
 $--table-head-font-color: #8C95A4 !default;
-$--table-hover-color: $--primary-hover-color !default;
+$--table-hover-color: $--default-hover-color !default;
 $--table-active-color: $--primary-color !default;
 $--table-head-background-color: #f0f0f0 !default;
 $--table-body-background-color: #FFFFFF !default;
@@ -48,8 +52,7 @@ $--table-more-background: rgba(255,255,255,0.8) !default;
 
 /* Button
 --------------------------*/
-$--button-border-color: #DCDFE6 !default;
-$--button-background-color: #FFFFFF !default;
+$--button-border-color: $--default-border-color !default;
 $--button-padding: 12px 20px !default;
 $--button-border-radius: 4px !default;
 
@@ -67,7 +70,7 @@ $--slide-toolbar-background-color: #2b2d32 !default;
 /* Menu
 --------------------------*/
 $--menu-background-color: #FFFFFF !default;
-$--menu-hover-color: $--primary-hover-color !default;
+$--menu-hover-color: $--default-hover-color !default;
 $--menu-active-color: $--primary-color !default;
 $--menu-disabled-font-color: $--disabled-color !default;
 $--menu-item-height: 26px !default;

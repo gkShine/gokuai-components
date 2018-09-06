@@ -7,3 +7,7 @@ export const getFileList = params => {
 export const getFile = params => {
   return axios.get('/file', {params: params}).then(res => res.data);
 };
+
+export const getData = params => {
+  return axios.get('/data', {params: params}).then(res => res.data);
+};
