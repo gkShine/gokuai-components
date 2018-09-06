@@ -9,7 +9,7 @@
         <div class="gk-uploader-body">
             <gk-table :fit="fit || dialog" ref="table" :data="list" :show-header="showCheck" :show-checkbox="showCheck"
                       :height="height"
-                      @check="updateHeadLabel" :beforeSelect="() => false">
+                      @check="updateHeadLabel" :before-select="() => false">
                 <gk-table-column :checkbox="showCheck" :width="30" align="center"></gk-table-column>
                 <gk-table-column property="name" :label="headLabel">
                     <template slot-scope="props">
@@ -56,11 +56,11 @@
         type: Number,
         default: 400
       },
-      headTpl: {
+      'head-tpl': {
         type: String,
         default: 'selected :d'
       },
-      emptyContentWidth: {
+      'empty-content-width': {
         type: Number,
         default: 500
       },

@@ -47,8 +47,10 @@
       loading: Boolean,
       fit: Boolean,
       shortcut: Boolean,
-      beforeSelect: Function,
+      'before-select': Function,
+      'right-selected': Boolean,
       'show-checkbox': Boolean,
+
       checkbox: Boolean,
       'select-on-check': {
         type: Boolean,
@@ -84,7 +86,7 @@
         this.selected = intersect(this.selected, this.data);
       },
       loadMore() {
-        this.$emit('loadMore');
+        this.$emit('load-more');
       },
       handleSelect(item, index, event) {
         if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
@@ -161,6 +163,9 @@
       handleContextmenu(item, index, event) {
         if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
           return;
+        }
+        if (this.rightSelected) {
+          this.handleSelect(item, index, event);
         }
         this.$emit('contextmenu', item, index, event);
         event.stopPropagation();

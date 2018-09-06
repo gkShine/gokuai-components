@@ -23,9 +23,10 @@
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
-                <gk-thumbnail ref="table" shortcut :checkbox="checkbox" fit v-if="viewMode === 'listgrid'"
+                <gk-thumbnail ref="table" shortcut context-selected :checkbox="checkbox" fit
+                              v-if="viewMode === 'listgrid'"
                               :loading="loading" :data="list"
-                              :border="0" :default-index="selectedIndex" @loadMore="loadMore" @select="selectItem"
+                              :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
@@ -35,10 +36,10 @@
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table ref="table" shortcut fit :loading="loading" show-header :data="list"
-                          :itemHeight="itemHeight"
+                <gk-table ref="table" shortcut fit context-selected show-header :loading="loading" :data="list"
+                          :item-height="itemHeight"
                           :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
-                          @loadMore="loadMore" @select="selectItem" @dblclick="dblclickItem"
+                          @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
                           @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
@@ -57,10 +58,11 @@
                                      :width="80"></gk-table-column>
                     <gk-table-column width="10%"></gk-table-column>
                 </gk-table>
-                <gk-table ref="table" shortcut fit :loading="loading" :data="list" :itemHeight="itemHeight + 20"
+                <gk-table ref="table" shortcut fit context-selected :loading="loading" :data="list"
+                          :item-height="itemHeight + 20"
                           @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
-                          :more-text="moreText" :show-more="showMore" @loadMore="loadMore" v-else>
+                          :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
                     <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
@@ -142,9 +144,11 @@
       total: Number,
       buttons: Array,
       loading: Boolean,
-      previewToolbar: Object,
+      'preview-toolbar': Object,
       translate: Object,
-      getPreviewUrl: Function,
+      'get-preview-url': Function,
+      'before-enter': Function,
+      'before-contextmenu': Function,
       views: Array
     },
     data() {
@@ -201,6 +205,9 @@
         this.$emit('select', file);
       },
       dblclickItem(file, index) {
+        if (this.beforeEnter && this.beforeEnter(file, event) === false) {
+          return;
+        }
         this.selectedIndex = [index];
         this.navList.push(file);
         this.$emit('input', file);
@@ -208,14 +215,16 @@
         this.openFile(file);
       },
       rightClickItem(file, index, event) {
-        if (!this.buttons) {
+        if (!this.buttons || !this.buttons.length) {
           return;
         }
-        this.selectItem(file, index);
+        if (this.beforeContextmenu && this.beforeContextmenu(file, event) === false) {
+          return;
+        }
         this.$refs.contextmenu.show(event);
       },
-      commandFile(item) {
-        this.$emit('command', this.getSelected(), item.command);
+      commandFile(command) {
+        this.$emit('command', this.getSelected(), command);
       },
       clickBreadcrumb(value, file, index) {
         this.navList = this.navList.slice(0, index + 1);

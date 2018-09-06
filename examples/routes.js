@@ -1,3 +1,4 @@
+import Home from './pages/Home.vue'
 import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
 import Button from './pages/Button.vue'
@@ -7,7 +8,7 @@ import Thumbnail from './pages/Thumbnail.vue'
 let routes = [
   {
     path: '/',
-    component: Finder,
+    component: Home,
     name: '介绍'
   },
   {

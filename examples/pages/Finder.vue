@@ -5,7 +5,7 @@
         </h3>
         <div class="demo-block" style="height: 768px; width: 1024px">
             <gk-finder v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading"
-                       :default-sort="sort" :sort-list="sortList" @loadMore="getMore" :show-more="locked" :more-text="moreText"
+                       :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             ></gk-finder>
         </div>
     </div>

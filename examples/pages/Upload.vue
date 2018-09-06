@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </gk-table>
-            <gk-uploader :before-check="checkSize" :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" :height="400" @success="uploadSuccess">
+            <gk-uploader :before-check="checkSize" :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" server="http://yunku.goukuai.test/index/test_upload" head-tpl="已选择:d个" :height="400" @success="uploadSuccess">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
