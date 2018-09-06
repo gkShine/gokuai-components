@@ -85,15 +85,22 @@
         if (!this.toolbar) {
           return 0;
         }
+        let nodeValue = typeof this.value === 'string' ? this.value : this.id === undefined ? JSON.stringify(this.value) : this.value[this.id];
         for (let i = 0; i < this.list.length; i++) {
           let value = this.list[i];
           if (typeof value === 'string') {
-            if (value === this.value) {
+            if (value === nodeValue) {
               return i;
             }
           } else {
-            if (value[this.id] === this.value[this.id]) {
-              return i;
+            if (this.id !== undefined) {
+              if (value[this.id] === nodeValue) {
+                return i;
+              }
+            } else {
+              if (JSON.stringify(value) === nodeValue) {
+                return i;
+              }
             }
           }
         }
