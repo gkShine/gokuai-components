@@ -40,7 +40,7 @@
                           :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
                           @loadMore="loadMore" @select="selectItem" @dblclick="dblclickItem"
                           @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
-                    <gk-table-column :checkbox="checkbox" :width="20" align="center"></gk-table-column>
+                    <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
@@ -61,7 +61,7 @@
                           @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                           :more-text="moreText" :show-more="showMore" @loadMore="loadMore" v-else>
-                    <gk-table-column :width="20" :checkbox="checkbox" align="center"></gk-table-column>
+                    <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')" sortable>
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
@@ -89,7 +89,7 @@
             </gk-slide>
         </div>
 
-        <gk-menu ref="contextmenu" v-if="buttons" :data="buttons"></gk-menu>
+        <gk-menu ref="contextmenu" v-if="buttons" :data="buttons" @command="commandFile"></gk-menu>
     </div>
 </template>
 
@@ -155,6 +155,7 @@
         order: order || '',
         preview: false,
         previewFile: this.value,
+        rightFile: {},
         navList: this.initNavs(this.value),
         selectedIndex: [],
         fileList: []
@@ -211,7 +212,11 @@
         if (!this.buttons) {
           return;
         }
+        this.rightFile = file;
         this.$refs.contextmenu.show(event);
+      },
+      commandFile(item) {
+        this.$emit('command', this.rightFile, item.command);
       },
       clickBreadcrumb(value, file, index) {
         this.navList = this.navList.slice(0, index + 1);

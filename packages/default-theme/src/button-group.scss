@@ -5,8 +5,7 @@
   display: inline-block;
   vertical-align: middle;
 
-  & > .gk-button,
-  & > .gk-uploader-buttons {
+  & > .gk-button {
     float: left;
 
     &:not(:first-child) {
@@ -18,6 +17,26 @@
     &:not(:last-child) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+    }
+  }
+
+  & > .gk-uploader-buttons,
+  & > .gk-dropdown {
+    float: left;
+
+    &:not(:first-child) {
+      margin-left: -1px;
+      .gk-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &:not(:last-child) {
+      .gk-button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
   }
 
