@@ -23,7 +23,7 @@
 
         <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
             <template v-show="!preview">
-                <gk-thumbnail ref="table" shortcut context-selected :checkbox="checkbox" fit
+                <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="checkbox" fit
                               v-if="viewMode === 'listgrid'"
                               :loading="loading" :data="list"
                               :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
@@ -36,7 +36,7 @@
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table ref="table" shortcut fit context-selected show-header :loading="loading" :data="list"
+                <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading" :data="list"
                           :item-height="itemHeight"
                           :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
                           @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
@@ -58,7 +58,7 @@
                                      :width="80"></gk-table-column>
                     <gk-table-column width="10%"></gk-table-column>
                 </gk-table>
-                <gk-table ref="table" shortcut fit context-selected :loading="loading" :data="list"
+                <gk-table ref="table" shortcut fit scroll-on-check context-selected :loading="loading" :data="list"
                           :item-height="itemHeight + 20"
                           @select="selectItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
@@ -245,7 +245,7 @@
         if (this.fileList.length === this.total) {
           return;
         }
-        this.$emit('loadMore', this.value);
+        this.$emit('load-more', this.value);
       },
       handleSort(command) {
         if (this.sort === command) {

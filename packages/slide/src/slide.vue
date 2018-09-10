@@ -31,17 +31,14 @@
     props: {
       fit: Boolean,
       toolbar: Boolean,
-      list: {
-        type: Array,
-        required: true
-      },
+      list: Array,
       options: {
         type: Object,
         default() {
           return {};
         }
       },
-      value: Object,
+      value: Object | String,
       id: String
     },
     computed: {

@@ -3,7 +3,10 @@ import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
 import Button from './pages/Button.vue'
 import Table from './pages/Table.vue'
+import Menu from './pages/Menu.vue'
 import Thumbnail from './pages/Thumbnail.vue'
+import Dropdown from './pages/Dropdown.vue'
+import Slide from './pages/Slide.vue'
 
 let routes = [
   {
@@ -18,7 +21,7 @@ let routes = [
   },
   {
     path: '/menu',
-    component: Finder,
+    component: Menu,
     name: '菜单'
   },
   {
@@ -28,12 +31,12 @@ let routes = [
   },
   {
     path: '/slide',
-    component: Finder,
+    component: Slide,
     name: '预览'
   },
   {
     path: '/dropdown',
-    component: Finder,
+    component: Dropdown,
     name: '下拉框'
   },
   {

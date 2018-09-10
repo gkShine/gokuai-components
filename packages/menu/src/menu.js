@@ -1,9 +1,10 @@
-import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
+import GkMenuMixin from "gokuai-components/packages/menu/src/menu-mixin";
 import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
 
 export default {
   name: "GkMenu",
-  components: {GkMenuItem, GkSubmenu},
+  mixins: [GkMenuMixin],
+  components: {GkSubmenu},
   props: {
     target: String,
     'show-arrow': Boolean,
@@ -14,52 +15,17 @@ export default {
     placement: {
       type: String,
       default: 'bottom-start'
-    },
-    data: Array
+    }
   },
   data() {
     return {
       dom: null,
-      menu: null,
       position: null,
-      visible: false,
-      timer: 0,
       timer2: 0
     }
   },
   render(h) {
-    let list = [];
-    if (this.data !== undefined) {
-      this.data.forEach((node) => {
-        if (node.divided) {
-          list.push(h('li', {
-            'class': 'gk-menu-divided'
-          }));
-        }
-        if (typeof node.children === 'object') {
-          list.push(h('gk-menu-item', {
-            props: node
-          }, [node.label, h('gk-submenu', {
-            props: {
-              data: node.children
-            }
-          })]));
-        } else {
-          list.push(h('gk-menu-item', {
-            props: node
-          }, node.label));
-        }
-      });
-    } else {
-      this.$slots.default && this.$slots.default.forEach((vnode) => {
-        if (vnode.componentOptions && vnode.componentOptions.propsData.divided !== undefined) {
-          list.push(h('li', {
-            'class': 'gk-menu-divided'
-          }));
-        }
-        list.push(vnode);
-      });
-    }
+    let list = this.renderList(h);
     if (this.showArrow) {
       list.push(h('div', {
         'class': 'gk-menu-arrow',
@@ -190,46 +156,6 @@ export default {
       }
       return {left, top}
     },
-    bind() {
-      switch (this.trigger) {
-        case 'click':
-          this.dom.onclick = (event) => {
-            if (this.visible) {
-              this.hideMenu();
-            } else {
-              this.showMenu();
-            }
-            event.stopPropagation();
-          };
-          break;
-        case 'contextmenu':
-          this.dom.oncontextmenu = (event) => {
-            this.showMenu();
-            event.preventDefault();
-          };
-          break;
-        case 'hover':
-          this.dom.onmouseenter = () => {
-            clearTimeout(this.timer);
-            this.showMenu();
-          };
-          this.dom.onmouseleave = () => {
-            this.timer = setTimeout(() => {
-              this.hideMenu();
-            }, 100);
-          };
-          this.menu.onmouseenter = () => {
-            clearTimeout(this.timer);
-          };
-          this.menu.onmouseleave = () => {
-            this.timer = setTimeout(() => {
-              this.hideMenu();
-            }, 100);
-          };
-          break;
-      }
-      window.addEventListener('resize', this.windowResize);
-    },
     windowResize() {
       if (this.visible) {
         clearTimeout(this.timer2);
@@ -237,9 +163,6 @@ export default {
           this.setPosition();
         }, 100);
       }
-    },
-    bodyClick() {
-      this.visible && this.hideMenu();
     }
   },
   mounted() {
@@ -251,6 +174,7 @@ export default {
     }
     if (this.dom) {
       this.bind();
+      window.addEventListener('resize', this.windowResize);
     }
 
     this.menu.addEventListener('transitionend', () => {
@@ -259,10 +183,8 @@ export default {
       }
     });
 
-    document.body.addEventListener('click', this.bodyClick);
   },
   destroyed() {
     window.removeEventListener('resize', this.windowResize);
-    document.body.removeEventListener('click', this.bodyClick);
   }
 }

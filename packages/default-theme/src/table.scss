@@ -36,6 +36,7 @@
 
   .gk-table-virtual {
     background-color: $--table-body-background-color;
+    user-select: none;
 
     .gk-table-body {
       background-color: $--table-body-background-color;

@@ -1,55 +1,20 @@
-import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
+import GkMenuMixin from "gokuai-components/packages/menu/src/menu-mixin";
 
 export default {
   name: "GkSubmenu",
-  components: {GkMenuItem},
+  mixins: [GkMenuMixin],
   props: {
     trigger: {
       type: String,
       default: 'hover'
-    },
-    data: Array
+    }
   },
   data() {
     return {
-      menu: null,
-      visible: false,
-      timer: 0
     }
   },
   render(h) {
-    let list = [];
-    if (this.data !== undefined) {
-      this.data.forEach((node) => {
-        if (node.divided) {
-          list.push(h('li', {
-            'class': 'gk-menu-divided'
-          }));
-        }
-        if (typeof node.children === 'object') {
-          list.push(h('gk-menu-item', {
-            props: node
-          }, [node.label, h('gk-submenu', {
-            props: {
-              data: node.children
-            }
-          })]));
-        } else {
-          list.push(h('gk-menu-item', {
-            props: node
-          }, node.label));
-        }
-      });
-    } else {
-      this.$slots.default.forEach((vnode) => {
-        if (vnode.componentOptions.propsData.divided !== undefined) {
-          list.push(h('li', {
-            'class': 'gk-menu-divided'
-          }));
-        }
-        list.push(vnode);
-      });
-    }
+    let list = this.renderList(h);
     return h('ul', {
       'class': 'gk-menu gk-sub-menu'
     }, list);
@@ -96,42 +61,6 @@ export default {
         top -= overtop;
         this.menu.style.top = top + 'px';
       }
-    },
-    bind() {
-      switch (this.trigger) {
-        case 'click':
-          this.dom.onclick = (event) => {
-            if (this.visible) {
-              this.hideMenu();
-            } else {
-              this.showMenu();
-            }
-            event.stopPropagation();
-          };
-          break;
-        case 'hover':
-          this.dom.onmouseenter = () => {
-            clearTimeout(this.timer);
-            this.showMenu();
-          };
-          this.dom.onmouseleave = () => {
-            this.timer = setTimeout(() => {
-              this.hideMenu();
-            }, 100);
-          };
-          this.menu.onmouseenter = () => {
-            clearTimeout(this.timer);
-          };
-          this.menu.onmouseleave = () => {
-            this.timer = setTimeout(() => {
-              this.hideMenu();
-            }, 100);
-          };
-          break;
-      }
-    },
-    bodyClick() {
-      this.visible && this.hideMenu();
     }
   },
   mounted() {
@@ -144,10 +73,5 @@ export default {
         this.menu.style.display = 'none';
       }
     });
-
-    document.body.addEventListener('click', this.bodyClick);
-  },
-  destroyed() {
-    document.body.removeEventListener('click', this.bodyClick);
   }
 }

@@ -6,6 +6,8 @@
   margin: 0;
   overflow-y: auto;
   background-color: $--thumbnail-background-color;
+  user-select: none;
+
   @include clearfix;
 
   &.gk-thumbnail-fit {
