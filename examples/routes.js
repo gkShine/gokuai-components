@@ -33,7 +33,7 @@ let routes = [
   {
     path: '/slide',
     component: Slide,
-    name: '预览'
+    name: '幻灯片'
   },
   {
     path: '/dropdown',

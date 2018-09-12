@@ -1,19 +1,19 @@
 <template>
     <div class="container">
         <h3 class="demo-title">
-            单文件预览
+            单文件幻灯片
         </h3>
         <div class="demo-block" style="height: 400px; width: 600px">
             <gk-slide fit v-if="images.length" v-model="images[2]"></gk-slide>
         </div>
         <h3 class="demo-title">
-            多文件预览
+            多文件幻灯片
         </h3>
         <div class="demo-block" style="height: 400px; width: 600px">
             <gk-slide fit v-if="images.length" :list="images" toolbar v-model="images[1]"></gk-slide>
         </div>
         <h3 class="demo-title">
-            图文预览
+            图文幻灯片
         </h3>
         <div class="demo-block" style="height: 400px; width: 600px">
             <gk-slide fit v-if="data.length" :list="data" toolbar >
