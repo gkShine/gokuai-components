@@ -14,7 +14,7 @@ export default {
       el = el.querySelector(option.selector);
     }
     let check = () => {
-      if (el.clientHeight && el.scrollTop + el.clientHeight + option.distance >= el.scrollHeight) {
+      if (el.scrollTop && el.scrollTop + el.clientHeight + option.distance >= el.scrollHeight) {
         if (typeof binding.value === 'function') {
           binding.value();
         }

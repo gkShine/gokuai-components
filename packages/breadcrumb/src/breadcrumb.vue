@@ -6,7 +6,7 @@
         </gk-button-group>
 
         <ul ref="list" class="gk-breadcrumb-list" :class="mode === 'full' ? 'gk-breadcrumb-full' : 'gk-breadcrumb-hidden'">
-            <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in navs">
+            <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in data">
                 <template v-if="idx < data.length - 1">
                     <a href="javascript:void(0)" :title="item[label]" @click="handelClick(item, $event)">{{item[label]}}</a>
                     <i class="gk-icon-angleright"></i>
@@ -59,10 +59,7 @@
         default: 'value'
       },
       'show-nav': Boolean,
-      'index': {
-        type: String,
-        default: '$_i'
-      }
+      id: String
     },
     data() {
       return {
@@ -70,32 +67,21 @@
         mode: 'normal',
         list: [],
         menu: [],
-        history: [],
         current: '',
         input: '',
         timer: 0
       };
     },
     watch: {
-      navs: 'change'
-    },
-    computed: {
-      navs() {
-        let navs = [];
-        this.data.forEach((nav, index) => {
-          nav[this.index] = index;
-          navs.push(nav);
-        });
-        return navs;
-      }
+      data: 'change'
     },
     methods: {
-      change(data) {
-        if (!data.length) {
+      change() {
+        if (!this.data.length) {
           return;
         }
-        this.input = this.current = data[data.length - 1][this.value];
-        let _data = Array.from(data);
+        this.input = this.current = this.data[this.data.length - 1][this.value];
+        let _data = Array.from(this.data);
 
         setTimeout(() => {
           let children = this.$refs.list.children;
@@ -115,16 +101,13 @@
         if (item[this.input] === this.current) {
           return;
         }
-        this.history.push(this.current);
-        let index = item[this.index];
-        this.$emit('navigator', item[this.value], this.data[index], index, event);
+        this.$emit('navigator', item[this.value], item, this.findIndex(item), event);
       },
       handleGoto() {
         this.changeMode('normal');
         if (this.input === this.current) {
           return;
         }
-        this.history.push(this.value);
         this.$emit('goto', this.value);
       },
       handlePrevNext(offset) {
@@ -133,6 +116,22 @@
         } else {
           this.$emit('prev');
         }
+      },
+      findIndex(item) {
+        if (this.id) {
+          for (let i = 0; i < this.data.length; i++) {
+            if (this.data[i][this.id] === item[this.id]) {
+              return i;
+            }
+          }
+        } else {
+          for (let i = 0; i < this.data.length; i++) {
+            if (JSON.stringify(this.data[i]) === JSON.stringify(item)) {
+              return i;
+            }
+          }
+        }
+        return -1;
       },
       changeMode(mode, event) {
         switch (mode) {
@@ -154,7 +153,7 @@
         if (this.mode === 'normal') {
           clearTimeout(this.timer);
           this.timer = setTimeout(() => {
-            this.change(this.navs);
+            this.change();
           }, 500);
         }
       },
@@ -167,7 +166,7 @@
       if (this.showNav) {
         this.width = this.width - this.$refs.ops.$el.clientWidth;
       }
-      this.change(this.navs);
+      this.change();
       document.addEventListener('click', this.documentClick);
       window.addEventListener('resize', this.windowResize);
     },

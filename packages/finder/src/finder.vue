@@ -1,7 +1,7 @@
 <template>
     <div class="gk-finder">
         <div class="gk-finder-toolbar">
-            <gk-breadcrumb :data="navList" @navigator="clickBreadcrumb" label="filename"
+            <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
                            value="fullpath"></gk-breadcrumb>
 
             <div class="gk-finder-show-ops" v-show="!preview">
@@ -42,7 +42,7 @@
                           @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
                           @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
-                    <gk-table-column property="filename" :label="gettext('filename')" sortable>
+                    <gk-table-column property="filename" :label="gettext('filename')">
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
                                 <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20"
@@ -52,9 +52,8 @@
                         </template>
                     </gk-table-column>
                     <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate"
-                                     sortable
                                      :width="180"></gk-table-column>
-                    <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize" sortable
+                    <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize"
                                      :width="80"></gk-table-column>
                     <gk-table-column width="10%"></gk-table-column>
                 </gk-table>
@@ -64,7 +63,7 @@
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                           :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
                     <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
-                    <gk-table-column property="filename" :label="gettext('filename')" sortable>
+                    <gk-table-column property="filename" :label="gettext('filename')">
                         <template slot-scope="props">
                             <div class="gk-finder-filename-column">
                                 <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
@@ -242,7 +241,7 @@
         this.preview = false;
       },
       loadMore() {
-        if (this.fileList.length === this.total) {
+        if (this.list.length === this.total) {
           return;
         }
         this.$emit('load-more', this.value);

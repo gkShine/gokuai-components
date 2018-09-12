@@ -1,6 +1,7 @@
 import Home from './pages/Home.vue'
 import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
+import Fileicon from './pages/Fileicon.vue'
 import Button from './pages/Button.vue'
 import Table from './pages/Table.vue'
 import Menu from './pages/Menu.vue'
@@ -38,6 +39,11 @@ let routes = [
     path: '/dropdown',
     component: Dropdown,
     name: '下拉框'
+  },
+  {
+    path: '/fileicon',
+    component: Fileicon,
+    name: '文件图标'
   },
   {
     path: '/upload',

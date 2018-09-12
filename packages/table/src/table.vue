@@ -112,6 +112,9 @@
       }
     },
     methods: {
+      handleSort(property, order) {
+        this.$emit('sort-by', property, order);
+      },
       refreshCheckAllState() {
         let headCheckbox = this.getHeadCheckbox();
         if (headCheckbox !== undefined) {
@@ -167,6 +170,9 @@
         this.setScrollbar();
       });
       window.addEventListener('resize', this.windowResize);
+    },
+    updated() {
+      this.setScrollbar();
     },
     destroyed() {
       window.removeEventListener('resize', this.windowResize);
