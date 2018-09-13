@@ -23,7 +23,13 @@
     },
     computed: {
       isPlain() {
-        return this.plain || this.$parent.plain || this.$parent.$parent.plain;
+        let parent = this;
+        while (parent) {
+          if (parent.plain) {
+            return true;
+          }
+          parent = parent.$parent;
+        }
       },
       computedClass() {
         let classList = {
