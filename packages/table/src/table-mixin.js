@@ -57,7 +57,7 @@ export default {
             selected[index] = item;
             this.lastSelectedIndex = index;
             this.selected = selected;
-            this.$emit('select', Object.value(selected), event);
+            this.$emit('select', this.getSelected(), event);
           } else {
             delete selected[index];
             this.selected = selected;
@@ -75,7 +75,7 @@ export default {
             }
             this.selected[index] = item;
             this.lastSelectedIndex = index;
-            this.$emit('select', Object.value(this.selected), event);
+            this.$emit('select', this.getSelected(), event);
           }
         }
         this.clickItem = false;
@@ -109,7 +109,7 @@ export default {
         delete this.checked[index];
       }
       this.refreshCheckAllState();
-      this.$emit('check', Object.values(this.checked), event);
+      this.$emit('check', this.getChecked(), event);
       if (this.checkOnSelect || this.selectOnCheck) {
         this.updateSelected(index);
         event.stopPropagation();
