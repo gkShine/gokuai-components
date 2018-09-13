@@ -57,11 +57,9 @@ export default {
             selected[index] = item;
             this.lastSelectedIndex = index;
             this.selected = selected;
-            this.$emit('select', this.getSelected(), event);
           } else {
             delete selected[index];
             this.selected = selected;
-            this.$emit('select', null, event);
           }
         } else {
           this.selected = {};
@@ -75,12 +73,12 @@ export default {
             }
             this.selected[index] = item;
             this.lastSelectedIndex = index;
-            this.$emit('select', this.getSelected(), event);
           }
         }
         this.clickItem = false;
         this.lastIndex = index;
         this.updateChecked();
+        this.$emit('select', this.getSelected(), event);
       }, 20);
     },
     handleCancelSelect(event) {
@@ -89,8 +87,8 @@ export default {
       }
       this.selected = {};
       this.lastIndex = -1;
-      this.$emit('select', null, event);
       this.updateChecked();
+      this.$emit('select', null, event);
     },
     handleSelectAll() {
       this.selected = Object.assign({}, this.data);
@@ -109,11 +107,11 @@ export default {
         delete this.checked[index];
       }
       this.refreshCheckAllState();
-      this.$emit('check', this.getChecked(), event);
       if (this.checkOnSelect || this.selectOnCheck) {
         this.updateSelected(index);
         event.stopPropagation();
       }
+      this.$emit('check', this.getChecked(), event);
     },
     handleContextmenu(item, index, event) {
       if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
