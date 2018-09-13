@@ -7,21 +7,19 @@
   .gk-finder-toolbar {
     padding: 10px 0;
     .gk-breadcrumb {
-      margin-right: 180px;
       height: 28px;
     }
 
     .gk-finder-show-ops {
       float: right;
       text-align: right;
-      width: 200px;
       margin-top: -$--breadcrumb-button-size;
 
       .gk-finder-sort-button {
+        padding: 0;
         font-size: 16px;
         height: $--breadcrumb-button-size;
         width: $--breadcrumb-button-size;
-        margin-right: 10px;
       }
 
       .gk-finder-view-mode {
@@ -30,6 +28,7 @@
         margin-top: -4px;
 
         button {
+          padding: 0;
           font-size: 16px;
           height: $--breadcrumb-button-size;
           width: $--breadcrumb-button-size;

@@ -83,7 +83,7 @@ export default {
         this.updateChecked();
       }, 20);
     },
-    handleCancelSelect() {
+    handleCancelSelect(event) {
       if (this.clickItem) {
         return;
       }

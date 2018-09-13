@@ -2,9 +2,10 @@
     <div class="gk-finder">
         <div class="gk-finder-toolbar">
             <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
-                           value="fullpath"></gk-breadcrumb>
+                           value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
-            <div class="gk-finder-show-ops" v-show="!preview">
+            <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
+                <slot name="breadcrumb"></slot>
                 <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
                     <gk-button icon="gk-icon-sort" class="gk-finder-sort-button" plain></gk-button>
                     <gk-dropdown-menu slot="dropdown" show-arrow>
@@ -15,7 +16,7 @@
                 </gk-dropdown>
 
                 <gk-button-group plain class="gk-finder-view-mode">
-                    <gk-button v-for="(view,index) in viewList" :key="index" :is-actived="viewMode === view"
+                    <gk-button v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
                                @click.native="handleViewMode(view)" :icon="'gk-icon-'+view"></gk-button>
                 </gk-button-group>
             </div>
@@ -160,7 +161,8 @@
         previewFile: this.value,
         navList: this.initNavs(this.value),
         selectedIndex: [],
-        fileList: []
+        fileList: [],
+        opsWidth: '150px',
       };
     },
     watch: {
@@ -298,6 +300,9 @@
       }
     },
     mounted() {
+      this.$nextTick(() => {
+        this.opsWidth = this.$refs.ops.clientWidth + 'px';
+      });
       if (this.value && Object.keys(this.value).length) {
         this.openFile(this.value);
       }
