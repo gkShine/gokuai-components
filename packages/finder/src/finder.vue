@@ -1,101 +1,104 @@
 <template>
-    <div class="gk-finder">
-        <div class="gk-finder-toolbar">
-            <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
-                           value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
+  <div class="gk-finder">
+    <slot name="before" ></slot>
+    <div class="gk-finder-toolbar">
+      <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
+                     value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
-            <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
-                <slot name="breadcrumb"></slot>
-                <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
-                    <gk-button icon="gk-icon-sort" class="gk-finder-sort-button" plain></gk-button>
-                    <gk-dropdown-menu slot="dropdown" show-arrow>
-                        <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
-                                          :command="sort.value" :key="idx">{{sort.label}}
-                        </gk-dropdown-item>
-                    </gk-dropdown-menu>
-                </gk-dropdown>
+      <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
+        <slot name="breadcrumb"></slot>
+        <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
+          <gk-button icon="gk-icon-sort" class="gk-finder-sort-button" plain></gk-button>
+          <gk-dropdown-menu slot="dropdown" show-arrow>
+            <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
+                              :command="sort.value" :key="idx">{{sort.label}}
+            </gk-dropdown-item>
+          </gk-dropdown-menu>
+        </gk-dropdown>
 
-                <gk-button-group plain class="gk-finder-view-mode">
-                    <gk-button v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
-                               @click.native="handleViewMode(view)" :icon="'gk-icon-'+view"></gk-button>
-                </gk-button-group>
-            </div>
-        </div>
-
-        <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
-            <template v-show="!preview">
-                <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="checkbox" fit
-                              v-if="viewMode === 'listgrid'"
-                              :loading="loading" :data="list"
-                              :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
-                              @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                              @dblclick="dblclickItem" @contextmenu="rightClickItem">
-                    <template slot-scope="props">
-                        <p>
-                            <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128"
-                                         :folder="!!props.dir"></gk-fileicon>
-                        </p>
-                        <p class="gk-finder-filename">{{props.filename}}</p>
-                    </template>
-                </gk-thumbnail>
-                <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
-                          :data="list"
-                          :item-height="itemHeight"
-                          :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
-                          @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
-                          @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                          @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
-                    <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
-                    <gk-table-column property="filename" :label="gettext('filename')">
-                        <template slot-scope="props">
-                            <div class="gk-finder-filename-column">
-                                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20"
-                                             :folder="!!props.dir"></gk-fileicon>
-                                {{props.filename}}
-                            </div>
-                        </template>
-                    </gk-table-column>
-                    <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate"
-                                     :width="180"></gk-table-column>
-                    <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize"
-                                     :width="80"></gk-table-column>
-                    <gk-table-column width="10%"></gk-table-column>
-                </gk-table>
-                <gk-table ref="table" shortcut fit scroll-on-check context-selected :loading="loading" :data="list"
-                          :item-height="itemHeight + 20"
-                          @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                          @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
-                          :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
-                    <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
-                    <gk-table-column property="filename" :label="gettext('filename')">
-                        <template slot-scope="props">
-                            <div class="gk-finder-filename-column">
-                                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
-                                             :folder="!!props.dir"></gk-fileicon>
-                                <div>
-                                    <p>{{props.filename}}</p>
-                                    <p>
-                                        <span>{{props.last_member_name}}</span>
-                                        <span>{{formatDate(props.last_dateline)}}</span>
-                                        <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </template>
-                    </gk-table-column>
-                    <gk-table-column width="20%"></gk-table-column>
-                </gk-table>
-            </template>
-
-            <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
-                <template slot-scope="props">
-                    <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
-                </template>
-            </gk-slide>
-        </div>
-
-        <gk-menu ref="contextmenu" v-if="buttons" :data="buttons" @command="commandFile"></gk-menu>
+        <gk-button-group plain class="gk-finder-view-mode">
+          <gk-button v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
+                     @click.native="handleViewMode(view)" :icon="'gk-icon-'+view"></gk-button>
+        </gk-button-group>
+      </div>
     </div>
+
+    <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
+      <template v-show="!preview">
+        <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="checkbox" fit
+                      v-if="viewMode === 'listgrid'"
+                      :loading="loading" :data="list"
+                      :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
+                      @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
+                      @dblclick="dblclickItem" @contextmenu="rightClickItem">
+          <template slot-scope="props">
+            <p>
+              <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128"
+                           :folder="!!props.dir"></gk-fileicon>
+            </p>
+            <p class="gk-finder-filename">{{props.filename}}</p>
+          </template>
+        </gk-thumbnail>
+        <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
+                  :data="list"
+                  :item-height="itemHeight"
+                  :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
+                  @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
+                  @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
+                  @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
+          <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
+          <gk-table-column property="filename" :label="gettext('filename')">
+            <template slot-scope="props">
+              <div class="gk-finder-filename-column">
+                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20"
+                             :folder="!!props.dir"></gk-fileicon>
+                {{props.filename}}
+              </div>
+            </template>
+          </gk-table-column>
+          <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate"
+                           :width="180"></gk-table-column>
+          <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize"
+                           :width="80"></gk-table-column>
+          <gk-table-column width="10%"></gk-table-column>
+        </gk-table>
+        <gk-table ref="table" shortcut fit scroll-on-check context-selected :loading="loading" :data="list"
+                  :item-height="itemHeight + 20"
+                  @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
+                  @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
+                  :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
+          <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
+          <gk-table-column property="filename" :label="gettext('filename')">
+            <template slot-scope="props">
+              <div class="gk-finder-filename-column">
+                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
+                             :folder="!!props.dir"></gk-fileicon>
+                <div>
+                  <p>{{props.filename}}</p>
+                  <p>
+                    <span>{{props.last_member_name}}</span>
+                    <span>{{formatDate(props.last_dateline)}}</span>
+                    <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
+                  </p>
+                </div>
+              </div>
+            </template>
+          </gk-table-column>
+          <gk-table-column width="20%"></gk-table-column>
+        </gk-table>
+      </template>
+
+      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
+        <template slot-scope="props">
+          <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
+        </template>
+      </gk-slide>
+    </div>
+
+    <gk-menu ref="contextmenu" v-if="buttons" :data="buttons" @command="commandFile"></gk-menu>
+
+    <slot name="before" ></slot>
+  </div>
 </template>
 
 <script>
