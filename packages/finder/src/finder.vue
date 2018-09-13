@@ -1,6 +1,6 @@
 <template>
   <div class="gk-finder">
-    <slot name="before" ></slot>
+    <slot name="header"></slot>
     <div class="gk-finder-toolbar">
       <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
                      value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
@@ -97,7 +97,7 @@
 
     <gk-menu ref="contextmenu" v-if="buttons" :data="buttons" @command="commandFile"></gk-menu>
 
-    <slot name="before" ></slot>
+    <slot name="footer"></slot>
   </div>
 </template>
 
