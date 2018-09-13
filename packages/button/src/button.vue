@@ -22,9 +22,12 @@
       }
     },
     computed: {
+      isPlain() {
+        return this.plain || this.$parent.plain || this.$parent.$parent.plain;
+      },
       computedClass() {
         let classList = {
-          'gk-button-plain': this.plain || this.$parent.plain,
+          'gk-button-plain': this.isPlain,
           'gk-button-active': this.isActived
         };
         if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {
