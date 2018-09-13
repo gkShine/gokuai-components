@@ -95,8 +95,8 @@ export default {
     handleSelectAll() {
       this.selected = Object.assign({}, this.data);
       this.lastIndex = this.data.length - 1;
-      this.$emit('selectAll', event);
       this.updateChecked();
+      this.$emit('selectAll', event);
     },
     handleDblclick(data, event) {
       clearTimeout(this.clickTimer);
@@ -146,8 +146,8 @@ export default {
       } else {
         this.checked = [];
       }
-      this.$emit('checkAll', event);
       this.updateSelected(this.checked.length - 1);
+      this.$emit('checkAll', event);
     },
     handleShortcut(e) {
       if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
