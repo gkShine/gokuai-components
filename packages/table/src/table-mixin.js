@@ -57,11 +57,11 @@ export default {
             selected[index] = item;
             this.lastSelectedIndex = index;
             this.selected = selected;
-            this.$emit('select', item, index, event);
+            this.$emit('select', Object.value(selected), event);
           } else {
             delete selected[index];
             this.selected = selected;
-            this.$emit('select', null, null, event);
+            this.$emit('select', null, event);
           }
         } else {
           this.selected = {};
@@ -75,7 +75,7 @@ export default {
             }
             this.selected[index] = item;
             this.lastSelectedIndex = index;
-            this.$emit('select', item, index, event);
+            this.$emit('select', Object.value(this.selected), event);
           }
         }
         this.clickItem = false;
@@ -89,17 +89,18 @@ export default {
       }
       this.selected = {};
       this.lastIndex = -1;
-      this.$emit('select', null, null, event);
+      this.$emit('select', null, event);
       this.updateChecked();
     },
     handleSelectAll() {
       this.selected = Object.assign({}, this.data);
       this.lastIndex = this.data.length - 1;
+      this.$emit('selectAll', event);
       this.updateChecked();
     },
-    handleDblclick(data, index, event) {
+    handleDblclick(data, event) {
       clearTimeout(this.clickTimer);
-      this.$emit('dblclick', data, index, event);
+      this.$emit('dblclick', data, event);
     },
     handleCheck(item, index, event) {
       if (event.target.checked) {
@@ -107,9 +108,8 @@ export default {
       } else {
         delete this.checked[index];
       }
-      let checked = Object.values(this.checked);
       this.refreshCheckAllState();
-      this.$emit('check', checked, event);
+      this.$emit('check', Object.values(this.checked), event);
       if (this.checkOnSelect || this.selectOnCheck) {
         this.updateSelected(index);
         event.stopPropagation();
@@ -122,7 +122,7 @@ export default {
       if (this.rightSelected && this.selected[index] === undefined) {
         this.handleSelect(item, index, event);
       }
-      this.$emit('contextmenu', item, index, event);
+      this.$emit('contextmenu', this.getSelected(), event);
       event.stopPropagation();
       event.preventDefault();
     },
@@ -146,7 +146,7 @@ export default {
       } else {
         this.checked = [];
       }
-      this.$emit('check', Object.values(this.checked), event);
+      this.$emit('checkAll', event);
       this.updateSelected(this.checked.length - 1);
     },
     handleShortcut(e) {

@@ -28,6 +28,7 @@
                               v-if="viewMode === 'listgrid'"
                               :loading="loading" :data="list"
                               :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
+                              @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                               @dblclick="dblclickItem" @contextmenu="rightClickItem">
                     <template slot-scope="props">
                         <p>
@@ -37,10 +38,12 @@
                         <p class="gk-finder-filename">{{props.filename}}</p>
                     </template>
                 </gk-thumbnail>
-                <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading" :data="list"
+                <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
+                          :data="list"
                           :item-height="itemHeight"
                           :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
                           @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
+                          @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                           @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
                     <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
                     <gk-table-column property="filename" :label="gettext('filename')">
@@ -60,7 +63,7 @@
                 </gk-table>
                 <gk-table ref="table" shortcut fit scroll-on-check context-selected :loading="loading" :data="list"
                           :item-height="itemHeight + 20"
-                          @select="selectItem"
+                          @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                           @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                           :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
                     <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
@@ -201,25 +204,32 @@
         this.viewMode = mode;
         this.$refs.table.checked = {};
       },
-      selectItem(file, index) {
-        this.selectedIndex = [index];
-        this.$emit('select', file);
+      selectItem(files, event) {
+        this.$emit('select', files, event);
       },
-      dblclickItem(file, index) {
+      selectAllItem(event) {
+        this.$emit('selectAll', event);
+      },
+      checkItem(files, event) {
+        this.$emit('check', files, event);
+      },
+      checkAllItem(event) {
+        this.$emit('checkAll', event);
+      },
+      dblclickItem(file) {
         if (this.beforeEnter && this.beforeEnter(file, event) === false) {
           return;
         }
-        this.selectedIndex = [index];
         this.navList.push(file);
         this.$emit('input', file);
-        this.$emit('enter', file, index);
+        this.$emit('enter', file);
         this.openFile(file);
       },
-      rightClickItem(file, index, event) {
+      rightClickItem(files, event) {
         if (!this.buttons || !this.buttons.length) {
           return;
         }
-        if (this.beforeContextmenu && this.beforeContextmenu(file, event) === false) {
+        if (this.beforeContextmenu && this.beforeContextmenu(files, event) === false) {
           return;
         }
         this.$refs.contextmenu.show(event);
