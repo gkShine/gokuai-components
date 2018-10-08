@@ -1,6 +1,6 @@
 {
   "name": "@gokuai/gokuai-default-theme",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Gokuai component default theme.",
   "main": "lib/index.css",
   "style": "lib/index.css",

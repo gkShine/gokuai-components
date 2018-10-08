@@ -1,9 +1,9 @@
 <template>
-  <section class="gk-thumbnail gk-scrollbar" :class="{'gk-thumbnail-fit': fit}">
+  <section class="gk-thumbnail">
     <template v-if="data.length">
-      <ul ref="thumbnail" class="gk-thumbnail-list" @click="handleCancelSelect"
+      <ul ref="thumbnail" class="gk-thumbnail-list gk-scrollbar" @click="handleCancelSelect"
           @contextmenu="handleContextmenu(null, null, $event)"
-          :class="{'gk-thumbnail-checkbox': showCheckbox}" v-loading="loading"
+          :class="{'gk-thumbnail-fit': fit, 'gk-thumbnail-checkbox': showCheckbox}" v-loading="loading"
           v-scroll-load="loadMore">
         <gk-thumbnail-item
             :checkbox="checkbox"
@@ -26,8 +26,10 @@
         <span class="gk-thumbnail-more-text">{{moreText}}</span>
       </div>
     </template>
-    <div v-else class="gk-thumbnail-empty">
-      <slot name="empty"></slot>
+    <div v-else :class="{'gk-thumbnail-fit': fit}">
+      <div class="gk-thumbnail-empty">
+        <slot name="empty"></slot>
+      </div>
     </div>
   </section>
 </template>

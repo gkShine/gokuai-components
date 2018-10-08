@@ -2,11 +2,10 @@
 @import "./mixins/utils.scss";
 
 .gk-thumbnail {
-  overflow-y: auto;
-
   .gk-thumbnail-list {
     padding: 10px;
     margin: 0;
+    overflow-y: auto;
     background-color: $--thumbnail-background-color;
     user-select: none;
 
@@ -75,7 +74,7 @@
     background: $--table-more-background;
   }
 
-  &.gk-thumbnail-fit {
+  .gk-thumbnail-fit {
     @include fit-window;
   }
 }
