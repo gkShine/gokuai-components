@@ -1,6 +1,6 @@
 {
-  "name": "gokuai-default-theme",
-  "version": "1.0.0",
+  "name": "@gokuai/gokuai-default-theme",
+  "version": "1.0.1",
   "description": "Gokuai component default theme.",
   "main": "lib/index.css",
   "style": "lib/index.css",
@@ -16,7 +16,7 @@
     "url": "git+https://repo.gokuai.cn/Gokuai-components/default-theme.git"
   },
   "keywords": [
-    "element",
+    "gokuai",
     "theme"
   ],
   "author": "ls@gokuai.cn",
@@ -28,5 +28,8 @@
     "gulp-cssmin": "^0.2.0",
     "gulp-sass": "^4.0.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "directories": {
+    "lib": "lib"
+  }
 }

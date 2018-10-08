@@ -14,7 +14,7 @@
                 <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
             </li>
         </ul>
-        <input ref="input" v-show="mode === 'input'" @click.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.enter="handleGoto" />
+        <input ref="input" v-show="mode === 'input'" autofocus @click.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.enter="handleGoto" />
         <ul v-show="mode === 'normal'" class="gk-breadcrumb-list">
             <template v-for="(item, idx) in list">
                 <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item" >
@@ -85,11 +85,11 @@
 
         setTimeout(() => {
           let children = this.$refs.list.children;
-          let width = children[0].clientWidth;
+          let width = children[0].clientWidth + 38;
           this.menu = [];
           for (let i = children.length - 1; i > 0; i--) {
             width += children[i].clientWidth;
-            if (width > this.width && i !== children.length - 1) {
+            if (width >= this.width && i !== children.length - 1) {
               this.menu = _data.splice(1, i);
               break;
             }
@@ -98,17 +98,18 @@
         }, 100);
       },
       handelClick(item, event) {
-        if (item[this.input] === this.current) {
+        if (item[this.value] === this.current) {
           return;
         }
         this.$emit('navigator', item[this.value], item, this.findIndex(item), event);
+        this.$emit('click', item[this.value], item, this.findIndex(item), event);
       },
-      handleGoto() {
+      handleGoto(event) {
         this.changeMode('normal');
         if (this.input === this.current) {
           return;
         }
-        this.$emit('goto', this.value);
+        this.$emit('navigator', this.input, {[this.value]: this.input}, event);
       },
       handlePrevNext(offset) {
         if (offset > 0) {
@@ -136,7 +137,7 @@
       changeMode(mode, event) {
         switch (mode) {
           case 'input':
-            if (Object.keys(this.$listeners).indexOf('goto') > -1) {
+            if (Object.keys(this.$listeners).indexOf('navigator') > -1) {
               this.mode = mode;
             }
             break;

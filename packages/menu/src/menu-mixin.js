@@ -62,6 +62,12 @@ export default {
           break;
         case 'contextmenu':
           this.dom.oncontextmenu = (event) => {
+            this.position = {
+              left: event.clientX,
+              top: event.clientY,
+              height: 0,
+              width: 0
+            };
             this.showMenu();
             event.preventDefault();
           };

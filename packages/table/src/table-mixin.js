@@ -28,6 +28,14 @@ export default {
     }
   },
   data() {
+    let selected = getSelected(this.defaultIndex, this.data);
+    let checked = getSelected(this.defaultCheckedIndex, this.data);
+    if (this.checkOnSelect) {
+      selected = Object.assign(selected, checked);
+    }
+    if (this.selectOnCheck) {
+      checked = Object.assign(checked, selected);
+    }
     return {
       scrollCheckAll: false,
       scrollSelectAll: false,
@@ -35,8 +43,8 @@ export default {
       lastIndex: -1,
       clickTimer: false,
       clickItem: false,
-      selected: getSelected(this.defaultIndex, this.data),
-      checked: getSelected(this.defaultCheckedIndex, this.data)
+      selected: selected,
+      checked: checked
     }
   },
   watch: {

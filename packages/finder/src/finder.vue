@@ -205,7 +205,6 @@
       handleViewMode(mode) {
         this.selectedIndex = this.$refs.table.getSelectedIndex();
         this.viewMode = mode;
-        this.$refs.table.checked = {};
       },
       selectItem(files, event) {
         this.$emit('select', files, event);

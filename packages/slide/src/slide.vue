@@ -29,6 +29,10 @@
     name: "gkSlide",
     directives: {tooltip},
     props: {
+      shortcut: {
+        type: Boolean,
+        default: true
+      },
       fit: Boolean,
       toolbar: Boolean,
       list: Array,
@@ -116,7 +120,24 @@
         }
         this.selected = this.list[++this.selectedIndex];
         this.$emit('input', this.selected);
+      },
+      handleDocumentKeydown(event) {
+        if (event.code === 'ArrowLeft') {
+          this.handlePrev();
+          event.preventDefault();
+        } else if (event.code === 'ArrowRight') {
+          this.handleNext();
+          event.preventDefault();
+        }
       }
+    },
+    mounted() {
+      if (this.shortcut && this.list.length) {
+        document.addEventListener('keydown', this.handleDocumentKeydown)
+      }
+    },
+    destroyed() {
+      document.removeEventListener('keydown', this.handleDocumentKeydown)
     }
   }
 </script>

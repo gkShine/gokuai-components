@@ -11,6 +11,10 @@ export default {
 
       let box = document.createElement('div');
       box.className = 'gk-loading-wrapper';
+      box.style.top = el.scrollTop + 'px';
+      box.style.left = el.scrollLeft + 'px';
+      box.style.bottom = -el.scrollTop + 'px';
+      box.style.right = -el.scrollLeft + 'px';
       if (this.options.bg !== false) {
         box.style.backgroundColor = this.options.bg;
       }

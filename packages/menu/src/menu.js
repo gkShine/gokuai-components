@@ -82,7 +82,7 @@ export default {
       this.$emit('visible-change', false);
     },
     setPosition() {
-      if (this.dom) {
+      if (this.dom && this.trigger !== 'contextmenu') {
         this.position = this.dom.getBoundingClientRect();
       }
       let {left, top} = this.getPosition(this.placement);
