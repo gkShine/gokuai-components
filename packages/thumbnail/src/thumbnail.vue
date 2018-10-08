@@ -1,25 +1,35 @@
 <template>
-    <ul ref="thumbnail" class="gk-thumbnail gk-scrollbar" @click="handleCancelSelect"
-        @contextmenu="handleContextmenu(null, null, $event)"
-        :class="{'gk-thumbnail-fit': fit, 'gk-thumbnail-checkbox': showCheckbox}" v-loading="loading"
-        v-scroll-load="loadMore">
+  <section class="gk-thumbnail gk-scrollbar" :class="{'gk-thumbnail-fit': fit}">
+    <template v-if="data.length">
+      <ul ref="thumbnail" class="gk-thumbnail-list" @click="handleCancelSelect"
+          @contextmenu="handleContextmenu(null, null, $event)"
+          :class="{'gk-thumbnail-checkbox': showCheckbox}" v-loading="loading"
+          v-scroll-load="loadMore">
         <gk-thumbnail-item
-                :checkbox="checkbox"
-                @click.native="handleSelect(item, index, $event)"
-                @dblclick.native="handleDblclick(item, index, $event)"
-                @contextmenu.native="handleContextmenu(item, index, $event)"
-                @change-checked="handleCheck(item, index, $event)"
-                v-for="(item, index) in data"
-                :key="index"
-                :data="item"
-                :render="$scopedSlots.default"
-                :property="property"
-                :size="size"
-                :is-checked="checked[index] !== undefined"
-                :class="{'gk-thumbnail-active-item':selected[index] !== undefined}"
-                :style="style"
+            :checkbox="checkbox"
+            @click.native="handleSelect(item, index, $event)"
+            @dblclick.native="handleDblclick(item, index, $event)"
+            @contextmenu.native="handleContextmenu(item, index, $event)"
+            @change-checked="handleCheck(item, index, $event)"
+            v-for="(item, index) in data"
+            :key="index"
+            :data="item"
+            :render="$scopedSlots.default"
+            :property="property"
+            :size="size"
+            :is-checked="checked[index] !== undefined"
+            :class="{'gk-thumbnail-active-item':selected[index] !== undefined}"
+            :style="style"
         ></gk-thumbnail-item>
-    </ul>
+      </ul>
+      <div v-if="showMore" class="gk-thumbnail-more">
+        <span class="gk-thumbnail-more-text">{{moreText}}</span>
+      </div>
+    </template>
+    <div v-else class="gk-thumbnail-empty">
+      <slot name="empty"></slot>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -31,6 +41,11 @@
     mixins: [GkTableMixin],
     components: {GkThumbnailItem},
     props: {
+      'show-more': Boolean,
+      'more-text': {
+        type: String,
+        default: 'loading...'
+      },
       data: Array,
       property: String,
       border: Number,

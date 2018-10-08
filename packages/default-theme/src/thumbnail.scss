@@ -2,62 +2,80 @@
 @import "./mixins/utils.scss";
 
 .gk-thumbnail {
-  padding: 10px;
-  margin: 0;
   overflow-y: auto;
-  background-color: $--thumbnail-background-color;
-  user-select: none;
 
-  @include clearfix;
-
-  &.gk-thumbnail-fit {
-    @include fit-window;
-  }
-
-  & > .gk-thumbnail-item {
-    position: relative;
-    list-style: none;
-    float: left;
-    border: 1px solid #f0f0f0;
-    margin: 10px;
+  .gk-thumbnail-list {
     padding: 10px;
-    text-align: center;
-    color: $--font-color;
-    font-size: $--font-size;
+    margin: 0;
+    background-color: $--thumbnail-background-color;
+    user-select: none;
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      vertical-align: middle;
-    }
+    @include clearfix;
 
-    .gk-thumbnail-checkbox {
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      display: none;
+    & > .gk-thumbnail-item {
+      position: relative;
+      list-style: none;
+      float: left;
+      border: 1px solid #f0f0f0;
+      margin: 10px;
+      padding: 10px;
+      text-align: center;
+      color: $--font-color;
+      font-size: $--font-size;
 
-      &.gk-checkbox-checked {
-        display: inline;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: middle;
+      }
+
+      .gk-thumbnail-checkbox {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        display: none;
+
+        &.gk-checkbox-checked {
+          display: inline;
+        }
+      }
+
+      &:hover {
+        background-color: $--thumbnail-hover-color;
+        .gk-thumbnail-checkbox {
+          display: inline;
+        }
+      }
+
+      &.gk-thumbnail-active-item {
+        background-color: $--thumbnail-active-color;
+        color: #FFFFFF;
       }
     }
 
-    &:hover {
-      background-color: $--thumbnail-hover-color;
+    &.gk-thumbnail-checkbox {
       .gk-thumbnail-checkbox {
         display: inline;
       }
     }
-
-    &.gk-thumbnail-active-item {
-      background-color: $--thumbnail-active-color;
-      color: #FFFFFF;
-    }
   }
 
-  &.gk-thumbnail-checkbox {
-    .gk-thumbnail-checkbox {
-      display: inline;
-    }
+  .gk-thumbnail-empty {
+    @include fit-dom;
+  }
+
+  .gk-thumbnail-more {
+    @include fit-window;
+    top: auto;
+    text-align: center;
+    font-size: $--table-more-font-size;
+    height: $--table-more-height;
+    line-height: $--table-more-height;
+    color: $--table-more-font-color;
+    background: $--table-more-background;
+  }
+
+  &.gk-thumbnail-fit {
+    @include fit-window;
   }
 }

@@ -11,6 +11,9 @@
                     <gk-button size="mini">上传</gk-button>
                     <gk-button size="mini">下载</gk-button>
                 </gk-button-group>
+              <div>
+                我是空空空的
+              </div>
             </gk-finder>
         </div>
     </div>

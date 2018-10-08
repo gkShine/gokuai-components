@@ -4,7 +4,7 @@
 
 ## Installation
 ```shell
-npm i gokuai-default-theme -S
+npm i @gokuai/gokuai-default-theme -S
 ```
 
 ## Usage

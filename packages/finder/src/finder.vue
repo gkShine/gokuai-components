@@ -26,7 +26,7 @@
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
       <template v-show="!preview">
         <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="checkbox" fit
-                      v-if="viewMode === 'listgrid'"
+                      v-if="viewMode === 'listgrid'" :show-more="showMore" :more-text="moreText"
                       :loading="loading" :data="list"
                       :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
                       @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
@@ -38,6 +38,9 @@
             </p>
             <p class="gk-finder-filename">{{props.filename}}</p>
           </template>
+          <div slot="empty" class="gk-finder-empty">
+            <slot></slot>
+          </div>
         </gk-thumbnail>
         <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
                   :data="list"
@@ -61,6 +64,9 @@
           <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize"
                            :width="80"></gk-table-column>
           <gk-table-column width="10%"></gk-table-column>
+          <div slot="empty" class="gk-finder-empty">
+            <slot></slot>
+          </div>
         </gk-table>
         <gk-table ref="table" shortcut fit scroll-on-check context-selected :loading="loading" :data="list"
                   :item-height="itemHeight + 20"
@@ -85,6 +91,9 @@
             </template>
           </gk-table-column>
           <gk-table-column width="20%"></gk-table-column>
+          <div slot="empty" class="gk-finder-empty">
+            <slot></slot>
+          </div>
         </gk-table>
       </template>
 
