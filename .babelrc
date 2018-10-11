@@ -1,18 +1,10 @@
 {
-  "presets": ["env"],
-  "env": {
+  "presets": [["env", {
     "targets": {
       "browsers": ["last 2 versions", "ie >= 9"]
-    },
-    "utils": {
-      "plugins": [
-        ["module-resolver", {
-          "root": ["gokuai-components"],
-          "alias": {
-            "gokuai-components/src": "gokuai-components/lib"
-          }
-        }]
-      ]
     }
-  }
+  }]],
+  "plugins": [
+    "transform-runtime"
+  ]
 }
