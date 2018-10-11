@@ -1,6 +1,9 @@
 {
   "presets": ["env"],
   "env": {
+    "targets": {
+      "browsers": ["last 2 versions", "ie >= 9"]
+    },
     "utils": {
       "plugins": [
         ["module-resolver", {
