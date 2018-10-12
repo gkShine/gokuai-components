@@ -308,7 +308,8 @@
         }
       },
       webUpload(picker) {
-        document.querySelector(picker.id).addEventListener('mouseenter', () => {
+        let button = document.querySelector(picker.id);
+        button.length && button.addEventListener('mouseenter', () => {
           this.uploader.refresh();
         });
         if (this.uploader !== false) {
@@ -449,9 +450,9 @@
                 let inputs = document.querySelectorAll(`.${button.class} input[type=file]`);
 
                 if (inputs.length > 0) {
-                  inputs.forEach((input) => {
-                    input.setAttribute('webkitdirectory', '');
-                  });
+                  for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].setAttribute('webkitdirectory', '');
+                  }
                   clearInterval(timer);
                 }
               }, 10);
