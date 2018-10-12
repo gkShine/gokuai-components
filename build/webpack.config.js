@@ -10,7 +10,7 @@ module.exports = merge(baseConfig, {
   mode: 'production',
 
   entry: {
-    app: ['babel-polyfill', './src/index.js']
+    app: ['@babel/polyfill', './src/index.js']
   },
 
   output: {

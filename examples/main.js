@@ -7,7 +7,7 @@ import routes from './routes'
 // import GkComponent from 'gokuai-components/lib';
 import 'gokuai-components/packages/default-theme/src/index.scss';
 import 'font-awesome/scss/font-awesome.scss';
-import GkComponent from 'gokuai-components/src';
+import GkComponent from 'gokuai-components/src/index-es6';
 
 Vue.use(GkComponent);
 Vue.use(VueRouter);
