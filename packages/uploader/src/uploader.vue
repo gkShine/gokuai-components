@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import "mdn-polyfills/NodeList.prototype.forEach";
   import WebUploader from 'webuploader';
   import swgimg from 'webuploader/dist/Uploader.swf';
   import GkTable from "gokuai-components/packages/table/src/table";
@@ -309,7 +310,7 @@
       },
       webUpload(picker) {
         let button = document.querySelector(picker.id);
-        button.length && button.addEventListener('mouseenter', () => {
+        button && button.addEventListener('mouseenter', () => {
           this.uploader.refresh();
         });
         if (this.uploader !== false) {

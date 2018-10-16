@@ -1,3 +1,5 @@
+import "mdn-polyfills/Node.prototype.remove";
+
 export default {
   name: 'gk-tooltip',
   get(el) {
@@ -57,9 +59,13 @@ export default {
     } else {
       this.position(el, tooltip, placement);
     }
-    window.requestAnimationFrame(() => {
-      tooltip.style.opacity = '0.9';
-    });
+    if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(() => {
+            tooltip.style.opacity = '0.9';
+        });
+    } else {
+        tooltip.style.opacity = '0.9';
+    }
   },
 
   hide(el) {
@@ -67,10 +73,11 @@ export default {
     if (!tooltip) {
       return;
     }
-    tooltip.addEventListener('transitionend', () => {
+
+    tooltip.style.opacity = '0.01';
+    tooltip.addEvent('transitionend', () => {
       tooltip.remove();
     });
-    tooltip.style.opacity = '0.01';
   },
 
   bind(el, binding) {

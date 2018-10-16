@@ -70,6 +70,7 @@
     },
     data() {
       return {
+        columns: [],
         timer: 0,
         page: 1,
         hasScrollbar: false
@@ -100,18 +101,6 @@
           style.height = this.height + 'px';
         }
         return style;
-      },
-      columns() {
-        let columns = [];
-        this.$children.forEach((column) => {
-          if (column.isTableColumn) {
-            columns.push(Object.assign({
-              columnStyle: Object.assign({height: this.itemHeight + 'px'}, column.columnStyle),
-              render: column.$scopedSlots.default
-            }, column.$props));
-          }
-        });
-        return columns;
       }
     },
     methods: {
@@ -132,7 +121,7 @@
       },
       getCheckboxes() {
         let checkboxes = [];
-        this.$refs.table.$children.forEach((child) => {
+        this.$children.forEach((child) => {
           if (child.$el.className.indexOf('gk-table-checkbox') > -1) {
             checkboxes.push(child.$children[0]);
           }
@@ -165,9 +154,22 @@
           this.handleDblclick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
           e.preventDefault();
         }
+      },
+      getColumns() {
+        let columns = [];
+        this.$children.forEach((column) => {
+          if (column.isTableColumn) {
+            columns.push(Object.assign({
+              columnStyle: Object.assign({height: this.itemHeight + 'px'}, column.columnStyle),
+              render: column.$scopedSlots.default
+            }, column.$props));
+          }
+        });
+        return columns;
       }
     },
     mounted() {
+      this.columns = this.getColumns();
       this.$nextTick(() => {
         this.setScrollbar();
       });

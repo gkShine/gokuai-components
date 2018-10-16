@@ -109,6 +109,10 @@ export function isIE() {
   if (isIE) {
     return ua.match(/msie ([\d.]+)/)[1];
   }
+  let isIE11 = ua.indexOf("rv:11.0") > -1;
+  if (isIE11) {
+    return 11.0;
+  }
   return false;
 }
 

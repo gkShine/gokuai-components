@@ -1,3 +1,4 @@
+import "mdn-polyfills/Node.prototype.remove";
 import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
 
 export default {
@@ -101,6 +102,7 @@ export default {
     document.addEventListener('click', this.bodyClick);
   },
   destroyed() {
+    this.menu.remove();
     document.removeEventListener('click', this.bodyClick);
   }
 }

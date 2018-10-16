@@ -38,16 +38,13 @@
       return {};
     },
     computed: {
-      isIE() {
-        return isIE();
-      },
       list() {
         let list = [];
         if (this.buttons === undefined) {
           list = Object.values(this.defaultButtons);
         } else {
           this.buttons.forEach((button) => {
-            if (button.type === 'folder' && this.isIE) {
+            if (button.type === 'folder' && isIE()) {
               return;
             }
             list.push(Object.assign(this.defaultButtons[button.type], button));
@@ -56,7 +53,7 @@
         return list;
       },
       defaultButtons() {
-        return {
+        let buttons = {
           delete: {
             type: 'delete',
             class: 'gk-uploader-delete',
@@ -66,13 +63,16 @@
             type: 'file',
             class: 'gk-uploader-file',
             label: this.gettext('upload file')
-          },
-          folder: {
+          }
+        };
+        if (!isIE()) {
+          buttons['folder'] = {
             type: 'folder',
             class: 'gk-uploader-folder',
             label: this.gettext('upload folder')
           }
-        };
+        }
+        return buttons;
       }
     },
     methods: {

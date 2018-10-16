@@ -132,7 +132,7 @@
       }
     },
     mounted() {
-      if (this.shortcut && this.list.length) {
+      if (this.shortcut && this.list && this.list.length) {
         document.addEventListener('keydown', this.handleDocumentKeydown)
       }
     },

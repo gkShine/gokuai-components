@@ -1,3 +1,5 @@
+import "mdn-polyfills/Node.prototype.remove";
+
 export default {
   name: 'gk-loading',
   show(el) {
@@ -39,13 +41,15 @@ export default {
     }
     this.exist = true;
     window.requestAnimationFrame(() => {
-      this.box.style.opacity = '1';
+        this.box.style.opacity = '1';
     });
   },
 
   hide(el) {
     el.classList.remove('gk-loading-scope');
-    this.box.addEventListener('transitionend', () => {
+
+    this.box.style.opacity = '0.01';
+    this.box.addEvent('transitionend', () => {
       this.box.remove();
       this.box = null;
       this.exist = false;
@@ -54,8 +58,6 @@ export default {
         el.style.removeProperty('position');
       }
     });
-
-    this.box.style.opacity = '0.01';
   },
 
   bind(el, binding) {
