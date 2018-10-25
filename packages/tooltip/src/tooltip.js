@@ -75,7 +75,7 @@ export default {
     }
 
     tooltip.style.opacity = '0.01';
-    tooltip.addEvent('transitionend', () => {
+    tooltip.addEventOnce('transitionend', () => {
       tooltip.remove();
     });
   },

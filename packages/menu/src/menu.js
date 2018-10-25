@@ -79,7 +79,7 @@ export default {
     hideMenu() {
       this.visible = false;
       this.menu.style.opacity = '0.01';
-      this.menu.addEvent('transitionend', () => {
+      this.menu.addEventOnce('transitionend', () => {
         this.menu.style.display = 'none';
       });
       this.$emit('visible-change', false);

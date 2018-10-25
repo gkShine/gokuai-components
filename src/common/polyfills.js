@@ -36,6 +36,25 @@ if ("document" in window.self) {
       }
     };
 
+    HTMLElement.prototype.addEventOnce = function(type, fn, capture) {
+      var el = this;
+      if (type === 'transitionend' && animationName === false) {
+        fn.call(el);
+      } else if (window.addEventListener) {
+        var handle = function(e) {
+          fn.call(el, e);
+          el.removeEventListener(type, handle);
+        };
+        el.addEventListener(type, handle, capture);
+      } else if (window.attachEvent) {
+        var handle = function(e) {
+          fn.call(el, e);
+          el.removeEvent('on' + type, handle);
+        };
+        el.attachEvent('on' + type, handle);
+      }
+    };
+
     if (!("requestAnimationFrame" in window)) {
       window.requestAnimationFrame = function (fn) {
         return setTimeout(fn, 1000 / 60)

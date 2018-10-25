@@ -49,7 +49,7 @@ export default {
     el.classList.remove('gk-loading-scope');
 
     this.box.style.opacity = '0.01';
-    this.box.addEvent('transitionend', () => {
+    this.box.addEventOnce('transitionend', () => {
       this.box.remove();
       this.box = null;
       this.exist = false;
