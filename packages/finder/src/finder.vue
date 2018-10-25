@@ -317,7 +317,7 @@
         this.navList = navs;
       },
       getSelected() {
-        return this.$refs.table.getSelected();
+        return this.$refs.table ? this.$refs.table.getSelected() : [];
       }
     },
     mounted() {
