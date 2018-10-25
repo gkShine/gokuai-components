@@ -95,6 +95,9 @@
         });
       },
       changeOpenFile() {
+        if (!this.openFile.dir) {
+          return;
+        }
         this.getFiles(this.openFile.fullpath);
       }
     },

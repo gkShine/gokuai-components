@@ -24,7 +24,13 @@
     </div>
 
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
-      <template v-show="!preview">
+      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
+        <template slot-scope="props">
+          <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
+        </template>
+      </gk-slide>
+
+      <template v-else>
         <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="checkbox" fit
                       v-if="viewMode === 'listgrid'" :show-more="showMore" :more-text="moreText"
                       :loading="loading" :data="list"
@@ -96,12 +102,6 @@
           </div>
         </gk-table>
       </template>
-
-      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
-        <template slot-scope="props">
-          <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
-        </template>
-      </gk-slide>
     </div>
 
     <gk-menu ref="contextmenu" v-if="buttons" :data="buttons" @command="commandFile"></gk-menu>
