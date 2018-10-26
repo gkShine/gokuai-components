@@ -156,14 +156,14 @@ export default {
       this.$emit('checkAll', event);
     },
     handleShortcut(e) {
-      if ((e.ctrlKey || e.metaKey) && e.code === 'KeyA') {
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 65) { //ctrl+a || meta+a
         this.handleSelectAll();
         e.preventDefault();
         return false;
-      } else if (e.code === 'PgUp') {
+      } else if (e.keyCode === 33) { //PgUp
         this.handleSelect(this.data[0], 0, e);
         e.preventDefault();
-      } else if (e.code === 'End' || e.code === 'PgDn') {
+      } else if (e.keyCode === 35 || e.keyCode === 34) { //End || PgDn
         this.handleSelect(this.data[this.data.length - 1], this.data.length - 1, e);
         e.preventDefault();
       }

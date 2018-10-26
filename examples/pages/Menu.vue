@@ -7,7 +7,7 @@
 
         </div>
         <gk-menu ref="contextmenu">
-            <gk-menu-item>菜单一</gk-menu-item>
+            <gk-menu-item keymap="ctrl+66">菜单一</gk-menu-item>
             <gk-menu-item>菜单二</gk-menu-item>
             <gk-menu-item>菜单三</gk-menu-item>
             <gk-menu-item>菜单四

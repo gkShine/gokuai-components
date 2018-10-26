@@ -85,19 +85,19 @@
         if (this.handleShortcut(e) === false) {
           return false;
         }
-        if (e.code === 'ArrowLeft') {
-          this.handleSelectPrevNext(-1, e)
+        if (e.keyCode === 37) { //arrow left
+          this.handleSelectPrevNext(-1, e);
           e.preventDefault();
-        } else if (e.code === 'ArrowRight') {
-          this.handleSelectPrevNext(+1, e)
+        } else if (e.keyCode === 39) { //arrow right
+          this.handleSelectPrevNext(+1, e);
           e.preventDefault();
-        } else if (e.code === 'ArrowUp') {
+        } else if (e.keyCode === 38) { //arrow up
           this.handleSelectPrevNext(-this.getLineSize(), e);
           e.preventDefault();
-        } else if (e.code === 'ArrowDown') {
+        } else if (e.keyCode === 40) { //arrow down
           this.handleSelectPrevNext(+this.getLineSize(), e);
           e.preventDefault();
-        } else if (e.code === 'Enter') {
+        } else if (e.keyCode === 13) { //enter
           this.handleDbclick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
           e.preventDefault();
         }

@@ -144,13 +144,13 @@
         if (this.handleShortcut(e) === false) {
           return false;
         }
-        if (e.code === 'ArrowUp') {
+        if (e.keyCode === 38) { //arrow up
           this.handleSelectPrevNext(-1, e);
           e.preventDefault();
-        } else if (e.code === 'ArrowDown') {
+        } else if (e.keyCode === 40) { //arrow down
           this.handleSelectPrevNext(+1, e);
           e.preventDefault();
-        } else if (e.code === 'Enter') {
+        } else if (e.keyCode === 13) { //enter
           this.handleDblclick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
           e.preventDefault();
         }
