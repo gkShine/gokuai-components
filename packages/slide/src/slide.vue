@@ -122,10 +122,10 @@
         this.$emit('input', this.selected);
       },
       handleDocumentKeydown(event) {
-      if (event.keyCode === 37) { //arrow left
+        if (event.keyCode === 37) { //arrow left
           this.handlePrev();
           event.preventDefault();
-      } else if (event.keyCode === 39) { //arrow right
+        } else if (event.keyCode === 39) { //arrow right
           this.handleNext();
           event.preventDefault();
         }

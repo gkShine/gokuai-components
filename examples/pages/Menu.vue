@@ -6,8 +6,8 @@
         <div class="demo-block" style="height: 400px; width: 600px" @contextmenu="handleRight">
 
         </div>
-        <gk-menu ref="contextmenu">
-            <gk-menu-item keymap="ctrl+66">菜单一</gk-menu-item>
+        <gk-menu ref="contextmenu" @command="handleCommand">
+            <gk-menu-item keymap="alt+66" command="菜单一">菜单一</gk-menu-item>
             <gk-menu-item>菜单二</gk-menu-item>
             <gk-menu-item>菜单三</gk-menu-item>
             <gk-menu-item>菜单四
@@ -26,6 +26,9 @@
       handleRight(event) {
         this.$refs.contextmenu.show(event);
         event.preventDefault();
+      },
+      handleCommand(value) {
+        console.log(value)
       }
     }
   }
