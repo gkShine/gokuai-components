@@ -49,15 +49,21 @@ export default {
     el.classList.remove('gk-loading-scope');
 
     this.box.style.opacity = '0.01';
-    this.box.addEventOnce('transitionend', () => {
-      this.box.remove();
-      this.box = null;
-      this.exist = false;
 
-      if (this.static) {
-        el.style.removeProperty('position');
-      }
-    });
+    let handle = () => {
+        this.box.remove();
+        this.box = null;
+        this.exist = false;
+
+        if (this.static) {
+            el.style.removeProperty('position');
+        }
+    };
+    if (!("AnimationEvent" in window)) {
+        handle();
+    } else {
+        this.box.addEventListener('transitionend', handle);
+    }
   },
 
   bind(el, binding) {

@@ -79,9 +79,15 @@ export default {
     hideMenu() {
       this.visible = false;
       this.menu.style.opacity = '0.01';
-      this.menu.addEventOnce('transitionend', () => {
-        this.menu.style.display = 'none';
-      });
+      if (!("AnimationEvent" in window)) {
+          this.menu.style.display = 'none';
+      } else {
+          const handle = () => {
+              this.menu.style.display = 'none';
+              this.menu.removeEventListener('transitionend', handle)
+          };
+          this.menu.addEventListener('transitionend', handle);
+      }
       this.$emit('visible-change', false);
     },
     setPosition() {

@@ -59,13 +59,9 @@ export default {
     } else {
       this.position(el, tooltip, placement);
     }
-    if (window.requestAnimationFrame) {
-        window.requestAnimationFrame(() => {
-            tooltip.style.opacity = '0.9';
-        });
-    } else {
+    window.requestAnimationFrame(() => {
         tooltip.style.opacity = '0.9';
-    }
+    });
   },
 
   hide(el) {
@@ -75,9 +71,13 @@ export default {
     }
 
     tooltip.style.opacity = '0.01';
-    tooltip.addEventOnce('transitionend', () => {
-      tooltip.remove();
-    });
+    if (!("AnimationEvent" in window)) {
+        tooltip.remove();
+    } else {
+        tooltip.addEventListener('transitionend', () => {
+            tooltip.remove();
+        });
+    }
   },
 
   bind(el, binding) {
