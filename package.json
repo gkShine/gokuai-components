@@ -21,7 +21,6 @@
   "dependencies": {
     "jquery": "^3.3.1",
     "mdn-polyfills": "^5.13.0",
-    "raf": "^3.4.0",
     "webuploader": "^0.1.8"
   },
   "peerDependencies": {
@@ -41,6 +40,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "classlist-polyfill": "^1.2.0",
+    "raf": "^3.4.0",
     "css-loader": "^1.0.1",
     "eslint": "^5.8.0",
     "eslint-loader": "^2.1.1",
