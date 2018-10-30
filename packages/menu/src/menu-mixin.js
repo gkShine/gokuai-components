@@ -99,6 +99,11 @@ export default {
     }
   },
   mounted() {
+    this.$el.addEventListener('transitionend', () => {
+        if (this.visible === false) {
+            this.menu.style.display = 'none';
+        }
+    });
     document.addEventListener('click', this.bodyClick);
   },
   destroyed() {

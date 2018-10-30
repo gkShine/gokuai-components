@@ -40,6 +40,9 @@ export default {
     hideMenu() {
       this.visible = false;
       this.menu.style.opacity = '0.01';
+      if (!("AnimationEvent" in window)) {
+          this.menu.style.display = 'none';
+      }
     },
     setPosition() {
       let menuStyle = window.getComputedStyle(this.menu);
@@ -67,11 +70,5 @@ export default {
     this.dom = this.$parent.$el;
     this.menu = this.$el;
     this.bind();
-
-    this.menu.addEventListener('transitionend', () => {
-      if (this.visible === false) {
-        this.menu.style.display = 'none';
-      }
-    });
   }
 }

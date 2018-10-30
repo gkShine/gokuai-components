@@ -81,12 +81,6 @@ export default {
       this.menu.style.opacity = '0.01';
       if (!("AnimationEvent" in window)) {
           this.menu.style.display = 'none';
-      } else {
-          const handle = () => {
-              this.menu.style.display = 'none';
-              this.menu.removeEventListener('transitionend', handle)
-          };
-          this.menu.addEventListener('transitionend', handle);
       }
       this.$emit('visible-change', false);
     },
@@ -185,13 +179,6 @@ export default {
       this.bind();
       window.addEventListener('resize', this.windowResize);
     }
-
-    this.menu.addEventListener('transitionend', () => {
-      if (this.visible === false) {
-        this.menu.style.display = 'none';
-      }
-    });
-
   },
   destroyed() {
     window.removeEventListener('resize', this.windowResize);
