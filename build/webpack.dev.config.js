@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
   mode: 'development',
 
   entry: {
-    app: ['classlist-polyfill', '@babel/polyfill', './examples/main.js']
+    app: ['./examples/main.js']
   },
 
   module: {

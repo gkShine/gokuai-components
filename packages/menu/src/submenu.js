@@ -67,8 +67,8 @@ export default {
     }
   },
   mounted() {
-    this.dom = this.$parent.$el;
     this.menu = this.$el;
+    this.dom = this.$parent.$el;
     this.bind();
   }
 }

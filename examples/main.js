@@ -1,4 +1,6 @@
-// import babelpolyfill from 'babel-polyfill'
+import '@babel/polyfill'
+import 'classlist-polyfill'
+import 'raf/polyfill'
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
