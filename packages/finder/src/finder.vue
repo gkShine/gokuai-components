@@ -50,7 +50,6 @@
         </gk-thumbnail>
         <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
                   :data="list"
-                  :item-height="itemHeight"
                   :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
                   @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
                   @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
@@ -74,8 +73,7 @@
             <slot></slot>
           </div>
         </gk-table>
-        <gk-table ref="table" shortcut fit scroll-on-check context-selected :loading="loading" :data="list"
-                  :item-height="itemHeight + 20"
+        <gk-table ref="table" shortcut fit scroll-on-check right-selected :loading="loading" :data="list"
                   @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                   @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                   :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
@@ -144,10 +142,6 @@
         required: true
       },
       root: Object, //根文件夹或库
-      'item-height': {
-        type: Number,
-        default: 42
-      },
       'sort-list': Array,
       'default-sort': {
         type: String,

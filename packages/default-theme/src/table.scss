@@ -79,11 +79,11 @@
     }
   }
 
-  .gk-table-virtual {
+  .gk-table-body {
     background-color: $--table-body-background-color;
     user-select: none;
 
-    .gk-table-body {
+    & > table {
       width: 100%;
       background-color: $--table-body-background-color;
       color: $--font-color;
@@ -94,6 +94,7 @@
       tr.gk-table-item {
         td {
           border-top: 1px solid $--table-border-color;
+          padding: 10px 0;
         }
 
         &:hover {
@@ -140,13 +141,13 @@
   &.gk-table-fit {
     @include fit-window;
 
-    .gk-table-virtual {
+    .gk-table-body {
       @include fit-window;
     }
   }
 
   &.gk-table-with-header {
-    .gk-table-virtual {
+    .gk-table-body {
       top: $--table-head-height;
     }
   }

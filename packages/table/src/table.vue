@@ -13,9 +13,9 @@
       <div @contextmenu.native="handleContextmenu(null, null, $event)"
            :style="computedStyle"
            v-scroll-load="loadMore" v-loading="loading" ref="table"
-           class="gk-table-virtual gk-scrollbar"
+           class="gk-table-body gk-scrollbar"
            @click.native="handleCancelSelect()">
-        <table class="gk-table-body">
+        <table>
           <tbody>
           <tr
               v-for="(item, index) in data"
@@ -62,10 +62,6 @@
       'more-text': {
         type: String,
         default: 'loading...'
-      },
-      'item-height': {
-        type: Number,
-        default: 42
       }
     },
     data() {
@@ -132,7 +128,8 @@
         if (!this.$refs.table) {
           return;
         }
-        this.hasScrollbar = this.itemHeight * this.data.length > this.$refs.table.clientHeight;
+        let table = this.$refs.table;
+        this.hasScrollbar = table.children[0].clientHeight > table.clientHeight;
       },
       windowResize() {
         clearTimeout(this.timer);
@@ -160,22 +157,27 @@
         this.$children.forEach((column) => {
           if (column.isTableColumn) {
             columns.push(Object.assign({
-              columnStyle: Object.assign({height: this.itemHeight + 'px'}, column.columnStyle),
+              columnStyle: column.columnStyle,
               render: column.$scopedSlots.default
             }, column.$props));
+          } else {
+            return false;
           }
         });
-        return columns;
+        if (JSON.stringify(this.columns) !== JSON.stringify(columns)) {
+          this.columns = columns;
+        }
       }
     },
     mounted() {
-      this.columns = this.getColumns();
+      this.getColumns();
       this.$nextTick(() => {
         this.setScrollbar();
       });
       window.addEventListener('resize', this.windowResize);
     },
     updated() {
+      this.getColumns();
       this.setScrollbar();
     },
     destroyed() {
