@@ -1,5 +1,5 @@
 <template>
-    <section ref="uploader" class="gk-uploader" :class="{'gk-uploader-dialog': dialog}"
+    <section ref="uploader" class="gk-uploader" :class="{'gk-uploader-dialog': dialog, 'gk-uploader-fit': fit, 'gk-mobile-uploader': isMobile}"
              :style="{display: hidden ? 'none' : 'block'}">
         <div class="gk-uploader-head" v-if="dialog">
             <h2>{{dialogTitle()}}</h2>
@@ -10,17 +10,17 @@
             <gk-table :fit="fit || dialog" ref="table" :data="list" :show-header="showCheck" :show-checkbox="showCheck"
                       :height="height"
                       @check="updateHeadLabel" :before-select="() => false">
-                <gk-table-column :checkbox="showCheck" :width="30" align="center"></gk-table-column>
+                <gk-table-column :checkbox="showCheck" :width="20" align="center"></gk-table-column>
                 <gk-table-column property="name" :label="headLabel">
                     <template slot-scope="props">
                         <gk-fileicon :filename="props.name" :size="24"></gk-fileicon>
                         {{props.name}}
                     </template>
                 </gk-table-column>
-                <gk-table-column property="size" :width="80" :formatter="formatSize"></gk-table-column>
-                <gk-table-column property="percent" :width="130" :formatter="formatState"></gk-table-column>
+                <gk-table-column property="size" width="5%" :formatter="formatSize"></gk-table-column>
+                <gk-table-column property="percent" width="15%" :formatter="formatState"></gk-table-column>
                 <gk-table-column property="state" :formatter="formatOption" align="center"
-                                 :width="100"></gk-table-column>
+                                 width="10%"></gk-table-column>
                 <div slot="empty" class="gk-uploader-empty">
                     <div ref="emptyContent" class="gk-uploader-empty-content" :style="emptyContentStyle">
                         <slot></slot>
@@ -39,6 +39,7 @@
   import GkTableColumn from "gokuai-components/packages/table/src/table-column";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import {isIE, bitSize} from "gokuai-components/src/common/util";
+  import { device } from 'device.js';
 
   export default {
     name: "GkUploader",
@@ -84,6 +85,7 @@
         headLabel: this.headTpl.replace(':d', 0),
         list: [],
         relation: {},
+        isMobile: device.mobile,
         finishFiles: [],
         uploader: false,
         deleteButtons: [],
@@ -416,11 +418,19 @@
       },
       updateEmptyStyle() {
         let position = this.$refs.emptyContent.getBoundingClientRect();
-        this.emptyContentStyle = {
-          width: this.emptyContentWidth + 'px',
-          'margin-left': -this.emptyContentWidth / 2 + 'px',
-          'margin-top': -position.height / 2 + 'px'
-        };
+        if (this.emptyContentWidth > window.innerWidth) {
+          this.emptyContentStyle = {
+            width: '96%',
+            'margin-left': '-48%',
+            'margin-top': '-24%'
+          };
+        } else {
+          this.emptyContentStyle = {
+            width: this.emptyContentWidth + 'px',
+            'margin-left': -this.emptyContentWidth / 2 + 'px',
+            'margin-top': -position.height / 2 + 'px'
+          };
+        }
       },
       upload() {
         this.uploader.upload();

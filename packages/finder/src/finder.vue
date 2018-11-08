@@ -1,5 +1,5 @@
 <template>
-  <div class="gk-finder">
+  <div class="gk-finder" :class="{'gk-mobile-finder': isMobile}">
     <slot name="header"></slot>
     <div class="gk-finder-toolbar">
       <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
@@ -7,7 +7,7 @@
 
       <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
         <slot name="breadcrumb"></slot>
-        <gk-dropdown v-if="sortList" style="display: inline-block" @command="handleSort">
+        <gk-dropdown v-if="sortList" style="display: inline-block; vertical-align: middle;" @command="handleSort">
           <gk-button icon="gk-icon-sort" class="gk-finder-sort-button" plain></gk-button>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -31,12 +31,12 @@
       </gk-slide>
 
       <template v-else>
-        <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="checkbox" fit
+        <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="showCheckbox" fit
                       v-if="viewMode === 'listgrid'" :show-more="showMore" :more-text="moreText"
                       :loading="loading" :data="list"
                       :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
                       @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                      @dblclick="dblclickItem" @contextmenu="rightClickItem">
+                      @dblclick="dblclickItem" @contextmenu="rightClickItem" @tap="dblclickItem">
           <template slot-scope="props">
             <p>
               <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128"
@@ -54,7 +54,7 @@
                   @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
                   @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                   @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
-          <gk-table-column :checkbox="checkbox" :width="25" align="center"></gk-table-column>
+          <gk-table-column :checkbox="showCheckbox" :width="25" align="center"></gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="props">
               <div class="gk-finder-filename-column">
@@ -77,24 +77,30 @@
                   @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                   @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
                   :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
-          <gk-table-column :width="25" :checkbox="checkbox" align="center"></gk-table-column>
+          <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
+          <gk-table-column :width="40" valign="top">
+            <template slot-scope="props">
+              <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
+                           :folder="!!props.dir"></gk-fileicon>
+            </template>
+          </gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="props">
               <div class="gk-finder-filename-column">
-                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
-                             :folder="!!props.dir"></gk-fileicon>
-                <div>
-                  <p>{{props.filename}}</p>
-                  <p>
-                    <span>{{props.last_member_name}}</span>
-                    <span>{{formatDate(props.last_dateline)}}</span>
-                    <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
-                  </p>
-                </div>
+                <p>{{props.filename}}</p>
+                <p>
+                  <span>{{props.last_member_name}}</span>
+                  <span>{{formatDate(props.last_dateline)}}</span>
+                  <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
+                </p>
               </div>
             </template>
           </gk-table-column>
-          <gk-table-column width="20%"></gk-table-column>
+          <gk-table-column width="5%">
+            <template slot-scope="props">
+              <i class="gk-icon-caretdown"></i>
+            </template>
+          </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
             <slot></slot>
           </div>
@@ -125,6 +131,7 @@
   import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
+  import { device } from 'device.js';
 
   export default {
     name: 'GkFinder',
@@ -171,7 +178,7 @@
         navList: this.initNavs(this.value),
         selectedIndex: [],
         fileList: [],
-        opsWidth: '150px',
+        opsWidth: '150px'
       };
     },
     watch: {
@@ -186,6 +193,12 @@
           return views.filter(v => this.views.includes(v));
         }
         return views;
+      },
+      isMobile() {
+        return device.mobile;
+      },
+      showCheckbox() {
+        return !this.isMobile && this.checkbox
       }
     },
     methods: {
@@ -210,6 +223,10 @@
         this.viewMode = mode;
       },
       selectItem(files, event) {
+        if (this.isMobile) {
+          this.dblclickItem(files[0]);
+          return;
+        }
         this.$emit('select', files, event);
       },
       selectAllItem(event) {

@@ -3,11 +3,11 @@
         <h3 class="demo-title">
             文件管理器
         </h3>
-        <div class="demo-block" style="height: 768px; width: 1024px">
+        <div class="demo-block" style="height: 768px;">
             <gk-finder checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading"
                        :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             >
-                <gk-button-group slot="breadcrumb" plain style="margin-top: -4px;">
+                <gk-button-group slot="breadcrumb" plain >
                     <gk-button size="mini">上传</gk-button>
                     <gk-button size="mini">下载</gk-button>
                 </gk-button-group>

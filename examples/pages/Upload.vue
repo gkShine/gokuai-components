@@ -3,11 +3,11 @@
         <h3 class="demo-title">
             文件上传
         </h3>
-        <div class="demo-block" style="width: 800px">
+        <div class="demo-block" style="height: 600px">
             <div class="demo-toolbar">
                 <gk-uploader-buttons :buttons="autoButtons" dropdown>上传</gk-uploader-buttons>
             </div>
-            <gk-uploader dnd :buttons="autoButtons" style="height: 400px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit >
+            <gk-uploader style="top: 60px" dnd :buttons="autoButtons" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit >
                 <h3>可直接拖拽文件到这里上传，最大文件不超过1GB</h3>
                 <div>
                     <h4>温馨提示:</h4>
@@ -21,12 +21,12 @@
         <h3 class="demo-title">
             文件手动上传
         </h3>
-        <div class="demo-block" style="width: 1024px">
+        <div class="demo-block" style="height: 600px">
             <div class="demo-toolbar">
                 <gk-uploader-buttons :translate="translate"></gk-uploader-buttons>
                 <gk-button @click.native="startUpload">开始上传</gk-button>
             </div>
-            <gk-uploader :before-check="checkSize" style="height: 600px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false" :form-data="formData">
+            <gk-uploader :before-check="checkSize" style="top: 60px" ref="uploader" server="http://yunku.goukuai.test/index/test_upload" headTpl="已选择:d个" fit :auto="false" :form-data="formData">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>
@@ -39,19 +39,19 @@
         <h3 class="demo-title">
             弹出式上传
         </h3>
-        <div class="demo-block" style="width: 1024px; height: 660px">
+        <div class="demo-block" style="height: 660px">
             <div class="demo-toolbar">
                 <gk-button-group>
                     <gk-uploader-buttons :buttons="dialogButtons" dropdown>上传</gk-uploader-buttons>
                     <gk-button>下载</gk-button>
                 </gk-button-group>
             </div>
-            <gk-table :data="list" :height="600" class="file-list">
+            <gk-table :data="list" fit class="file-list" style="top: 60px">
                 <gk-table-column width="40"></gk-table-column>
                 <gk-table-column property="name" label="文件名"></gk-table-column>
                 <gk-table-column property="size" width="120" :formatter="formatSize" label="文件大小"></gk-table-column>
                 <div slot="empty" class="gk-uploader-empty">
-                    <div class="gk-uploader-empty-content" style="margin-left: -234px; margin-top: -71px;">
+                    <div class="gk-uploader-empty-content" :style="$device.mobile ? {marginLeft: '-50%', marginTop: '-50%'} : {marginLeft: '-234px', marginTop: '-71px'}">
                         <h3>可直接拖拽文件到这里上传，最大文件不超过1GB</h3>
                         <div>
                             <h4>温馨提示:</h4>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </gk-table>
-            <gk-uploader :before-check="checkSize" :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog style="width: 600px;right: 20px;bottom: 0" server="http://yunku.goukuai.test/index/test_upload" head-tpl="已选择:d个" :height="400" @success="uploadSuccess">
+            <gk-uploader :before-check="checkSize" :buttons="dialogButtons" :translate="translate" dnd=".file-list" dialog :style="$device.mobile ? {width: '100%', height: '100%', right: 0, bottom: 0} : {width: '600px', right: '20px', bottom: 0}" server="http://yunku.goukuai.test/index/test_upload" head-tpl="已选择:d个" :height="400" @success="uploadSuccess">
                 <div>
                     <h4>温馨提示:</h4>
                     <ul>

@@ -26,7 +26,6 @@
       .gk-finder-view-mode {
         display: inline-block;
         vertical-align: middle;
-        margin-top: -4px;
 
         button {
           padding: 0;
@@ -54,13 +53,6 @@
 
     &.gk-finder-view-listdetail {
       .gk-finder-filename-column {
-        display: flex;
-
-        img, i {
-          margin-right: 10px;
-          float: left;
-        }
-
         span {
           color: #999999;
           font-size: 12px;
@@ -94,6 +86,17 @@
         white-space: nowrap;
         margin-top: 6px;
       }
+    }
+  }
+
+  &.gk-mobile-finder {
+    .gk-finder-toolbar {
+      display: none;
+    }
+
+    .gk-finder-content {
+      top: 0;
+      margin-top: 0;
     }
   }
 }

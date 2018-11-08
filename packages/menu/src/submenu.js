@@ -1,4 +1,5 @@
 import GkMenuMixin from "gokuai-components/packages/menu/src/menu-mixin";
+import { device } from 'device.js';
 
 export default {
   name: "GkSubmenu",
@@ -6,7 +7,7 @@ export default {
   props: {
     trigger: {
       type: String,
-      default: 'hover'
+      default: device.mobile ? 'click' : 'hover'
     }
   },
   data() {

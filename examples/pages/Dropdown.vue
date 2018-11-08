@@ -9,7 +9,7 @@
                 <gk-dropdown-menu show-arrow slot="dropdown">
                     <gk-dropdown-item>下拉项一</gk-dropdown-item>
                     <gk-dropdown-item>下拉项二</gk-dropdown-item>
-                    <gk-dropdown-item>下拉项三</gk-dropdown-item>
+                    <gk-dropdown-item divided>下拉项三</gk-dropdown-item>
                     <gk-dropdown-item>下拉项四</gk-dropdown-item>
                 </gk-dropdown-menu>
             </gk-dropdown>

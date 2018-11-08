@@ -1,5 +1,6 @@
 import GkMenuMixin from "gokuai-components/packages/menu/src/menu-mixin";
 import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
+import { device } from 'device.js';
 
 export default {
   name: "GkMenu",
@@ -21,7 +22,8 @@ export default {
     return {
       dom: null,
       position: null,
-      timer2: 0
+      timer2: 0,
+      isMobile: device.mobile
     }
   },
   render(h) {
@@ -70,15 +72,23 @@ export default {
         document.body.appendChild(this.menu);
       }
       this.menu.style.display = 'block';
-      this.setPosition();
+      !this.isMobile && this.setPosition();
       window.requestAnimationFrame(() => {
-        this.menu.style.opacity = '1';
+        if (this.isMobile) {
+          this.menu.style.bottom = '0';
+        } else {
+          this.menu.style.opacity = '1';
+        }
       });
       this.$emit('visible-change', true);
     },
     hideMenu() {
       this.visible = false;
-      this.menu.style.opacity = '0.01';
+      if (this.isMobile) {
+        this.menu.style.bottom = '-100%';
+      } else {
+        this.menu.style.opacity = '0.01';
+      }
       if (!("AnimationEvent" in window)) {
           this.menu.style.display = 'none';
       }
@@ -170,6 +180,9 @@ export default {
   },
   mounted() {
     this.menu = this.$el;
+    if (device.mobile) {
+      this.menu.classList.add('gk-mobile-menu');
+    }
     if (this.target) {
       this.dom = this.$parent.$refs[this.target].$el;
     } else if (this.$parent.btn) {

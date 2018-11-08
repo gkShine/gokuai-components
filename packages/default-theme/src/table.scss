@@ -124,7 +124,7 @@
   }
 
   .gk-table-empty {
-    @include fit-dom;
+    @include fit-window;
   }
 
   .gk-table-more {
@@ -147,7 +147,7 @@
   }
 
   &.gk-table-with-header {
-    .gk-table-body {
+    .gk-table-body, .gk-table-empty {
       top: $--table-head-height;
     }
   }

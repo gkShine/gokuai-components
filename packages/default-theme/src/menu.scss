@@ -43,7 +43,7 @@
 
   .gk-menu-item {
     @include clearfix;
-    height: $--menu-item-height;
+    min-height: $--menu-item-height;
     color: $--font-color;
     font-size: $--font-size;
     line-height: $--menu-item-height;
@@ -84,6 +84,7 @@
     }
 
     &.gk-menu-item-active {
+      color: $--default-hover-color;
       background-color: $--menu-active-color;
     }
 
@@ -93,4 +94,55 @@
     }
   }
 
+  &.gk-mobile-menu {
+    opacity: 1;
+    bottom: -100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    box-shadow: 0 -6px 12px rgba(0,0,0,.075);
+    transition-property: bottom;
+    transition-duration: .6s;
+
+    .gk-menu-item {
+      min-height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid $--button-border-color;
+
+      &:hover {
+        background-color: transparent;
+      }
+
+      .gk-menu-item-right {
+        margin-right: 0;
+      }
+
+      .gk-sub-menu {
+        position: static;
+        box-shadow: none;
+        border-top: 1px solid $--button-border-color;
+        margin: 0 -25px;
+        padding: 0 0 0 25px;
+
+        .gk-menu-item {
+          transition-property: height;
+          transition-duration: 0s;
+
+          &:last-child {
+            border-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .gk-menu-divided {
+      margin: -1px 0;
+      height: 8px;
+    }
+
+    .gk-menu-arrow {
+      display: none;
+    }
+  }
 }

@@ -10,9 +10,13 @@ import routes from './routes'
 import 'gokuai-components/packages/default-theme/src/index.scss';
 import 'font-awesome/scss/font-awesome.scss';
 import GkComponent from 'gokuai-components/src/index-es6';
+import { device } from 'device.js';
+
+device.addClasses(document.documentElement);
 
 Vue.use(GkComponent);
 Vue.use(VueRouter);
+Vue.prototype.$device = device;
 
 import Mock from './mock'
 Mock.bootstrap();

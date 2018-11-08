@@ -58,6 +58,16 @@
 .gk-uploader {
   position: relative;
 
+  &.gk-uploader-fit {
+    @include fit-window;
+  }
+
+  &.gk-mobile-uploader {
+    i[class*=gk-icon-window] {
+      display: none;
+    }
+  }
+
   .gk-uploader-body {
     @include fit-window;
 

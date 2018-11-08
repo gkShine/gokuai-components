@@ -1,9 +1,9 @@
 <template>
   <li class="gk-menu-item" :class="{'gk-menu-item-disabled':disabled}" @click="handleClick" :aria-disabled="disabled">
     <i v-if="icon" :class="icon"></i>
-    <slot></slot>
     <span class="gk-menu-item-right" v-if="showRight"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><i
         v-if="hasSub" class="gk-icon-caretright"></i></span>
+    <slot></slot>
   </li>
 </template>
 
@@ -121,7 +121,7 @@
     },
     methods: {
       handleClick(event) {
-        if (!this.command) {
+        if (this.command === undefined) {
           return;
         }
         event.stopPropagation();

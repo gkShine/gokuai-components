@@ -26,10 +26,8 @@
       checkbox: Boolean,
       property: String,
       sortable: Boolean|String,
-      align: {
-        type: String,
-        default: 'left'
-      },
+      align: String,
+      valign: String,
       formatter: Function
     },
     computed: {
@@ -40,10 +38,16 @@
         };
       },
       columnStyle() {
-        return {
-          width: typeof this.width === 'number' ? this.width + 'px' : this.width,
-          'text-align': this.align
+        let style = {
+          width: typeof this.width === 'number' ? this.width + 'px' : this.width
+        };
+        if (this.align !== null) {
+          style['text-align'] = this.align;
         }
+        if (this.valign !== null) {
+          style['vertical-align'] = this.valign;
+        }
+        return style;
       },
       showSort() {
         return this.sortable !== undefined;
