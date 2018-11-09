@@ -4,7 +4,7 @@ export default {
   name: 'gk-loading',
   show(el) {
     if (!this.exist) {
-      let position = window.getComputedStyle(el).position;
+      let position = window.getComputedStyle(el).getPropertyValue('position');
       if (position === 'static' || position === '') {
         this.static = true;
         el.style.position = 'relative';
@@ -41,7 +41,7 @@ export default {
     }
     this.exist = true;
     window.requestAnimationFrame(() => {
-        this.box.style.opacity = '1';
+      this.box.style.opacity = '1';
     });
   },
 
@@ -51,24 +51,25 @@ export default {
     this.box.style.opacity = '0.01';
 
     let handle = () => {
-        this.box.remove();
-        this.box = null;
-        this.exist = false;
+      this.box && this.box.remove();
+      this.box = null;
+      this.exist = false;
 
-        if (this.static) {
-            el.style.removeProperty('position');
-        }
+      if (this.static) {
+        el.style.removeProperty('position');
+      }
     };
     if (!("AnimationEvent" in window)) {
-        handle();
+      handle();
     } else {
-        this.box.addEventListener('transitionend', handle);
+      this.box.addEventListener('transitionend', handle);
     }
   },
 
   bind(el, binding) {
     let self = binding.def;
     self.box = null;
+    self.init = true;
     self.static = self.exist = false;
     self.options = {
       bg: el.getAttribute('gk-loading-background') || false,
@@ -78,7 +79,7 @@ export default {
 
   update(el, binding) {
     let self = binding.def;
-    if (binding.oldValue === binding.value) {
+    if (!self.init && binding.oldValue === binding.value) {
       return;
     }
     if (binding.value) {

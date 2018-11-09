@@ -96,9 +96,9 @@
               </div>
             </template>
           </gk-table-column>
-          <gk-table-column width="5%">
+          <gk-table-column width="8%">
             <template slot-scope="props">
-              <i class="gk-icon-caretdown"></i>
+              <i class="gk-icon-caretdown" v-if="isMobile && buttons" @click="rightClickItem([props], $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -255,6 +255,7 @@
           return;
         }
         this.$refs.contextmenu.show(event);
+        event.stopPropagation();
       },
       commandFile(command) {
         this.$emit('command', this.getSelected(), command);

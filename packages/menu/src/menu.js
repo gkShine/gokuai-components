@@ -1,6 +1,6 @@
 import GkMenuMixin from "gokuai-components/packages/menu/src/menu-mixin";
 import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
-import { device } from 'device.js';
+import {device} from 'device.js';
 
 export default {
   name: "GkMenu",
@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       dom: null,
+      wrapper: null,
       position: null,
       timer2: 0,
       isMobile: device.mobile
@@ -72,7 +73,11 @@ export default {
         document.body.appendChild(this.menu);
       }
       this.menu.style.display = 'block';
-      !this.isMobile && this.setPosition();
+      if (this.isMobile) {
+        this.afterWrapper();
+      } else {
+        this.setPosition();
+      }
       window.requestAnimationFrame(() => {
         if (this.isMobile) {
           this.menu.style.bottom = '0';
@@ -85,12 +90,13 @@ export default {
     hideMenu() {
       this.visible = false;
       if (this.isMobile) {
+        this.wrapper.style.display = 'none';
         this.menu.style.bottom = '-100%';
       } else {
         this.menu.style.opacity = '0.01';
       }
       if (!("AnimationEvent" in window)) {
-          this.menu.style.display = 'none';
+        this.menu.style.display = 'none';
       }
       this.$emit('visible-change', false);
     },
@@ -169,6 +175,16 @@ export default {
       }
       return {left, top}
     },
+    afterWrapper() {
+      if (this.wrapper === null) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('gk-menu-wrapper');
+        document.body.appendChild(wrapper);
+        this.wrapper = wrapper;
+      } else {
+        this.wrapper.style.display = 'block';
+      }
+    },
     windowResize() {
       if (this.visible) {
         clearTimeout(this.timer2);
@@ -180,7 +196,7 @@ export default {
   },
   mounted() {
     this.menu = this.$el;
-    if (device.mobile) {
+    if (this.isMobile) {
       this.menu.classList.add('gk-mobile-menu');
     }
     if (this.target) {
@@ -195,5 +211,8 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.windowResize);
+    if (this.isMobile && this.wrapper !== null) {
+      this.wrapper.remove();
+    }
   }
 }

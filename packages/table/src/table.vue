@@ -1,44 +1,42 @@
 <template>
   <section class="gk-table" :style="tableStyle"
            :class="{'gk-table-with-header':showHeader, 'gk-table-fit': fit, 'gk-table-show-checkbox': showCheckbox}">
-    <template v-show="data.length">
-      <table ref="thead" class="gk-table-header" v-show="showHeader">
-        <thead>
-        <tr>
-          <slot></slot>
-          <th v-if="hasScrollbar" class="gk-table-header-last"></th>
+    <table ref="thead" class="gk-table-header" v-show="showHeader">
+      <thead>
+      <tr>
+        <slot></slot>
+        <th v-if="hasScrollbar" class="gk-table-header-last"></th>
+      </tr>
+      </thead>
+    </table>
+    <div @contextmenu.native="handleContextmenu(null, null, $event)"
+         :style="computedStyle"
+         v-scroll-load="loadMore" v-loading="loading" ref="table"
+         class="gk-table-body gk-scrollbar"
+         @click.native="handleCancelSelect()">
+      <table v-if="data.length || loading">
+        <tbody>
+        <tr
+            v-for="(item, index) in data"
+            :key="index"
+            class="gk-table-item"
+            :class="{'gk-table-item-active':selected[index] !== undefined}"
+            @click="handleSelect(item, index, $event)"
+            @dblclick="handleDblclick(item, index, $event)"
+            @contextmenu="handleContextmenu(item, index, $event)"
+        >
+          <gk-table-cell @check="handleCheck" :is-checked="checked[index] !== undefined"
+                         :index="index" :data="item" :column="column"
+                         v-for="(column, idx) in columns" :key="idx"/>
         </tr>
-        </thead>
+        </tbody>
       </table>
-      <div @contextmenu.native="handleContextmenu(null, null, $event)"
-           :style="computedStyle"
-           v-scroll-load="loadMore" v-loading="loading" ref="table"
-           class="gk-table-body gk-scrollbar"
-           @click.native="handleCancelSelect()">
-        <table>
-          <tbody>
-          <tr
-              v-for="(item, index) in data"
-              :key="index"
-              class="gk-table-item"
-              :class="{'gk-table-item-active':selected[index] !== undefined}"
-              @click="handleSelect(item, index, $event)"
-              @dblclick="handleDblclick(item, index, $event)"
-              @contextmenu="handleContextmenu(item, index, $event)"
-          >
-            <gk-table-cell @check="handleCheck" :is-checked="checked[index] !== undefined"
-                           :index="index" :data="item" :column="column"
-                           v-for="(column, idx) in columns" :key="idx"/>
-          </tr>
-          </tbody>
-        </table>
+      <div v-else class="gk-table-empty">
+        <slot name="empty"></slot>
       </div>
-      <div v-if="showMore" class="gk-table-more">
-        <span class="gk-table-more-text">{{moreText}}</span>
-      </div>
-    </template>
-    <div v-if="!data.length" class="gk-table-empty">
-      <slot name="empty"></slot>
+    </div>
+    <div v-if="showMore" class="gk-table-more">
+      <span class="gk-table-more-text">{{moreText}}</span>
     </div>
   </section>
 </template>

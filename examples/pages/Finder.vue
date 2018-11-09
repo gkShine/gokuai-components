@@ -4,7 +4,13 @@
             文件管理器
         </h3>
         <div class="demo-block" style="height: 768px;">
-            <gk-finder checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading"
+            <gk-finder checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading" :buttons="[{
+            label: '下载',
+            command: 'download'
+          }, {
+              label: '保存到库',
+              command: 'saveto'
+            }]" @command="fileCommand"
                        :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             >
                 <gk-button-group slot="breadcrumb" plain >
@@ -99,6 +105,9 @@
           return;
         }
         this.getFiles(this.openFile.fullpath);
+      },
+      fileCommand(command) {
+
       }
     },
     mounted() {

@@ -146,3 +146,9 @@
     }
   }
 }
+
+.gk-menu-wrapper {
+  @include fit-window;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9000;
+}
