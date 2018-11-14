@@ -28,7 +28,9 @@
     "gulp-cssmin": "^0.2.0",
     "gulp-sass": "^4.0.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "natives": "^1.1.6"
+  },
   "directories": {
     "lib": "lib"
   }

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "device.js": "^2.3.0",
+    "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
     "mdn-polyfills": "^5.13.0",
     "webuploader": "^0.1.8"

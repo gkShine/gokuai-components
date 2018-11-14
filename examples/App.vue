@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <gk-dropdown v-if="$device.mobile" class="mobile-menu-button">
+    <gk-dropdown v-if="isMobile" class="mobile-menu-button">
       <gk-button><i class="fa fa-list-ul"></i></gk-button>
       <gk-dropdown-menu @command="handleCommand">
         <gk-dropdown-item :command="route.path" :class="{'gk-menu-item-active':route.path === $route.path}" v-for="(route, index) in $router.options.routes" :key="index" v-if="!route.hidden" >{{route.name}}</gk-dropdown-item>
@@ -12,7 +12,7 @@
       </li>
     </ul>
     <router-view/>
-    <gk-menu ref="menus" v-if="$device.mobile" @command="handleSwitch" :data="menus"></gk-menu>
+    <gk-menu ref="menus" v-if="isMobile" @command="handleSwitch" :data="menus"></gk-menu>
   </div>
 </template>
 
@@ -28,12 +28,17 @@
     watch: {
       '$route': 'changeRoute'
     },
+    computed: {
+      isMobile() {
+        return this.$device.mobile || this.$device.tablet
+      }
+    },
     methods: {
       handleCommand(value) {
         this.$router.push(value);
       },
       handleSwitch(index) {
-        if (!this.$device.mobile) {
+        if (!this.isMobile) {
           return;
         }
         for (let i = 0; i < this.titles.length; i++) {
@@ -104,7 +109,7 @@
       padding-right: 20px;
     }
 
-    &.mobile {
+    &.touch {
       .aside {
 
       }
@@ -151,7 +156,7 @@
     padding: 10px;
   }
 
-  .mobile {
+  .touch {
     .demo-title {
       width: 100%;
       text-indent: 10px;

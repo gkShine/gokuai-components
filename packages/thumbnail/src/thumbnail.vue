@@ -8,9 +8,10 @@
         <gk-thumbnail-item
             :checkbox="checkbox"
             @click.native="handleSelect(item, index, $event)"
-            @dblclick.native="handleDblclick(item, index, $event)"
+            @dblclick.native="handleDoubleClick(item, index, $event)"
             @contextmenu.native="handleContextmenu(item, index, $event)"
             @change-checked="handleCheck(item, index, $event)"
+            v-touch:tap.stop.prevent="($event) => handleTap(item, index, $event)"
             v-for="(item, index) in data"
             :key="index"
             :data="item"
@@ -37,10 +38,12 @@
 <script>
   import GkTableMixin from "gokuai-components/packages/table/src/table-mixin";
   import GkThumbnailItem from "gokuai-components/packages/thumbnail/src/thumbnail-item";
+  import touch from 'gokuai-components/packages/touch/src/touch';
 
   export default {
     name: "GkThumbnail",
     mixins: [GkTableMixin],
+    directives: {touch},
     components: {GkThumbnailItem},
     props: {
       'show-more': Boolean,

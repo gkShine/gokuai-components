@@ -1,6 +1,6 @@
 <template>
     <section class="gk-slide" :class="{'gk-slide-fit': fit, 'gk-slide-with-toolbar': toolbar}">
-        <div class="gk-slide-content">
+        <div class="gk-slide-content" v-touch:swiperight="handlePrev" v-touch:swipeleft="handleNext">
             <slot :item="selected" v-if="Object.keys($scopedSlots).length"></slot>
             <div v-else class="gk-slide-images">
                 <img :src="selected" />
@@ -24,10 +24,11 @@
 
 <script>
   import tooltip from 'gokuai-components/packages/tooltip/src/tooltip';
+  import touch from 'gokuai-components/packages/touch/src/touch';
 
   export default {
     name: "gkSlide",
-    directives: {tooltip},
+    directives: {tooltip, touch},
     props: {
       shortcut: {
         type: Boolean,
@@ -108,6 +109,9 @@
         return 0;
       },
       handlePrev() {
+        if (!this.list) {
+          return;
+        }
         if (this.selectedIndex === 0) {
           return;
         }
@@ -115,6 +119,9 @@
         this.$emit('input', this.selected);
       },
       handleNext() {
+        if (!this.list) {
+          return;
+        }
         if (this.selectedIndex === (this.list.length - 1)) {
           return;
         }

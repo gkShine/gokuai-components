@@ -21,6 +21,7 @@ import TableColumn from '../packages/table-column/index.js';
 import Thumbnail from '../packages/thumbnail/index.js';
 import ThumbnailItem from '../packages/thumbnail-item/index.js';
 import Tooltip from '../packages/tooltip/index.js';
+import Touch from '../packages/touch/index.js';
 import Uploader from '../packages/uploader/index.js';
 import UploaderButtons from '../packages/uploader-buttons/index.js';
 const components = [
@@ -50,6 +51,7 @@ const install = function(Vue, opts = {}) {
   });
   Vue.directive(Tooltip.name, Tooltip);
   Vue.directive(Loading.name, Loading);
+  Vue.directive(Touch.name, Touch);
   Vue.directive(ScrollLoad.name, ScrollLoad);
   Vue.prototype[Permissions.name] = Permissions;
   Vue.prototype[AdvancedPermissions.name] = AdvancedPermissions;

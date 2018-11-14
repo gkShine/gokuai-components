@@ -36,7 +36,7 @@
                       :loading="loading" :data="list"
                       :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
                       @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                      @dblclick="dblclickItem" @contextmenu="rightClickItem" @tap="dblclickItem">
+                      @doubleClick="doubleClickItem" @contextmenu="contextItem" @tap="doubleClickItem">
           <template slot-scope="props">
             <p>
               <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128"
@@ -51,9 +51,9 @@
         <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
                   :data="list"
                   :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
-                  @load-more="loadMore" @select="selectItem" @dblclick="dblclickItem"
+                  @load-more="loadMore" @select="selectItem" @doubleClick="doubleClickItem"
                   @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                  @contextmenu="rightClickItem" v-else-if="viewMode === 'list'">
+                  @contextmenu="contextItem" @tap="doubleClickItem" v-else-if="viewMode === 'list'">
           <gk-table-column :checkbox="showCheckbox" :width="25" align="center"></gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="props">
@@ -75,7 +75,7 @@
         </gk-table>
         <gk-table ref="table" shortcut fit scroll-on-check right-selected :loading="loading" :data="list"
                   @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                  @dblclick="dblclickItem" @contextmenu="rightClickItem" :default-index="selectedIndex"
+                  @doubleClick="doubleClickItem" @tap="doubleClickItem" @contextmenu="contextItem" :default-index="selectedIndex"
                   :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
           <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
           <gk-table-column :width="40" valign="top">
@@ -98,7 +98,7 @@
           </gk-table-column>
           <gk-table-column width="8%">
             <template slot-scope="props">
-              <i class="gk-icon-caretdown" v-if="isMobile && buttons" @click="rightClickItem([props], $event)"></i>
+              <i class="gk-icon-caretdown" v-if="isMobile && buttons" @click="contextItem([props], $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -195,7 +195,7 @@
         return views;
       },
       isMobile() {
-        return device.mobile;
+        return device.mobile || device.tablet;
       },
       showCheckbox() {
         return !this.isMobile && this.checkbox
@@ -223,10 +223,6 @@
         this.viewMode = mode;
       },
       selectItem(files, event) {
-        if (this.isMobile) {
-          this.dblclickItem(files[0]);
-          return;
-        }
         this.$emit('select', files, event);
       },
       selectAllItem(event) {
@@ -238,7 +234,7 @@
       checkAllItem(event) {
         this.$emit('checkAll', event);
       },
-      dblclickItem(file) {
+      doubleClickItem(file) {
         if (this.beforeEnter && this.beforeEnter(file, event) === false) {
           return;
         }
@@ -247,7 +243,7 @@
         this.$emit('enter', file);
         this.openFile(file);
       },
-      rightClickItem(files, event) {
+      contextItem(files, event) {
         if (!this.buttons || !this.buttons.length) {
           return;
         }

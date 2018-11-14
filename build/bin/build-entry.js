@@ -19,6 +19,7 @@ const install = function(Vue, opts = {}) {
   });
   Vue.directive(Tooltip.name, Tooltip);
   Vue.directive(Loading.name, Loading);
+  Vue.directive(Touch.name, Touch);
   Vue.directive(ScrollLoad.name, ScrollLoad);
   Vue.prototype[Permissions.name] = Permissions;
   Vue.prototype[AdvancedPermissions.name] = AdvancedPermissions;
@@ -41,7 +42,7 @@ ComponentNames.forEach(name => {
     package: name
   }));
 
-  if (['Loading', 'Tooltip', 'ScrollLoad', 'Permissions', 'AdvancedPermissions'].indexOf(componentName) === -1) {
+  if (['Touch', 'Loading', 'Tooltip', 'ScrollLoad', 'Permissions', 'AdvancedPermissions'].indexOf(componentName) === -1) {
     installTemplate.push(render(INSTALL_COMPONENT_TEMPLATE, {
       name: componentName,
       component: name

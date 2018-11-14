@@ -1,6 +1,7 @@
 import loading from "gokuai-components/packages/loading/src/loading";
 import scrollLoad from 'gokuai-components/packages/scroll-load/src/scroll-load';
 import {intersect, getSelected} from "gokuai-components/src/common/util";
+import touch from 'gokuai-components/packages/touch/src/touch';
 
 export default {
   directives: {loading, scrollLoad},
@@ -51,7 +52,17 @@ export default {
     data: 'updateData'
   },
   methods: {
+    handleTap(item, index, event) {
+      if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
+        return false;
+      }
+      clearTimeout(this.clickTimer);
+      this.$emit('tap', item, event);
+    },
     handleSelect(item, index, event) {
+      if (Object.keys(this.$listeners).indexOf('tap') > -1 && touch.enable) {
+        return false;
+      }
       if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
         return false;
       }
@@ -104,9 +115,9 @@ export default {
       this.updateChecked();
       this.$emit('selectAll', event);
     },
-    handleDblclick(data, event) {
+    handleDoubleClick(item, index, event) {
       clearTimeout(this.clickTimer);
-      this.$emit('dblclick', data, event);
+      this.$emit('doubleClick', item, event);
     },
     handleCheck(item, index, event) {
       if (event.target.checked) {

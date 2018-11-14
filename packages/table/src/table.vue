@@ -9,11 +9,11 @@
       </tr>
       </thead>
     </table>
-    <div @contextmenu.native="handleContextmenu(null, null, $event)"
+    <div @contextmenu="handleContextmenu(null, null, $event)"
          :style="computedStyle"
          v-scroll-load="loadMore" v-loading="loading" ref="table"
          class="gk-table-body gk-scrollbar"
-         @click.native="handleCancelSelect()">
+         @click="handleCancelSelect()">
       <table v-if="data.length || loading">
         <tbody>
         <tr
@@ -22,8 +22,9 @@
             class="gk-table-item"
             :class="{'gk-table-item-active':selected[index] !== undefined}"
             @click="handleSelect(item, index, $event)"
-            @dblclick="handleDblclick(item, index, $event)"
+            @dblclick="handleDoubleClick(item, index, $event)"
             @contextmenu="handleContextmenu(item, index, $event)"
+            v-touch:tap.stop.prevent="($event) => handleTap(item, index, $event)"
         >
           <gk-table-cell @check="handleCheck" :is-checked="checked[index] !== undefined"
                          :index="index" :data="item" :column="column"
@@ -44,10 +45,12 @@
 <script>
   import GkTableMixin from "gokuai-components/packages/table/src/table-mixin";
   import GkTableCell from "gokuai-components/packages/table/src/table-cell";
+  import touch from 'gokuai-components/packages/touch/src/touch';
 
   export default {
     name: "GkTable",
     mixins: [GkTableMixin],
+    directives: {touch},
     components: {GkTableCell},
     props: {
       height: Number,
