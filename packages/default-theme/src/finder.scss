@@ -97,6 +97,10 @@
     .gk-finder-content {
       top: 0;
       margin-top: 0;
+
+      .gk-finder-item-dropdown {
+        padding: 5px;
+      }
     }
   }
 }

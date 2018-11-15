@@ -98,7 +98,7 @@
           </gk-table-column>
           <gk-table-column width="8%">
             <template slot-scope="props">
-              <i class="gk-icon-caretdown" v-if="isMobile && buttons" @click="contextItem([props], $event)"></i>
+              <i class="gk-icon-caretdown gk-finder-item-dropdown" v-if="isMobile && buttons" @click="contextItem([props], $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -234,7 +234,10 @@
       checkAllItem(event) {
         this.$emit('checkAll', event);
       },
-      doubleClickItem(file) {
+      doubleClickItem(file, event) {
+        if (event.target.className.indexOf('gk-finder-item-dropdown') > -1) {
+          return;
+        }
         if (this.beforeEnter && this.beforeEnter(file, event) === false) {
           return;
         }
