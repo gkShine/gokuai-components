@@ -51,6 +51,60 @@
       background-color: #FFFFFF;
     }
 
+    .gk-finder-main-column {
+      overflow: hidden;
+
+      & > div {
+        float: left;
+      }
+
+      & > ul {
+        float: left;
+        display: none;
+        line-height: 40px;
+        width: 50%;
+        overflow: hidden;
+        padding: 0 5%;
+        text-align: right;
+        white-space: nowrap;
+        li {
+          line-height: 24px;
+          margin: 0 10px;
+          display: inline-block;
+          color: $--primary-color;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .gk-table-item-active {
+      .gk-finder-main-column > ul {
+        li {
+          color: $--font-reverse-color;
+        }
+      }
+    }
+
+    .gk-table-item:hover {
+      .gk-finder-main-column {
+        & > div {
+          width: 50%;
+
+          p {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+        & > ul {
+          display: block;
+        }
+      }
+    }
+
     &.gk-finder-view-listdetail {
       .gk-finder-filename-column {
         span {
@@ -97,6 +151,36 @@
     .gk-finder-content {
       top: 0;
       margin-top: 0;
+
+      .gk-table-item:hover {
+        td {
+          background-color: transparent;
+        }
+
+        .gk-finder-main-column {
+          & > div {
+            width: auto;
+
+            p {
+              white-space: normal;
+            }
+          }
+        }
+      }
+
+      .gk-finder-item-buttons {
+        background-color: $--primary-color;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: center;
+
+        & > li {
+          margin: 10px 5%;
+          color: $--font-reverse-color;
+        }
+      }
 
       .gk-finder-item-dropdown {
         padding: 5px;

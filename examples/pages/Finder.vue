@@ -10,7 +10,7 @@
           }, {
               label: '保存到库',
               command: 'saveto'
-            }]" @command="fileCommand"
+            }]" @command="fileCommand" :item-buttons="[{label: '下载'}]"
                        :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             >
                 <gk-button-group slot="breadcrumb" plain >

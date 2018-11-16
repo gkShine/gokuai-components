@@ -60,7 +60,7 @@
               <div class="gk-finder-filename-column">
                 <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20"
                              :folder="!!props.dir"></gk-fileicon>
-                {{props.filename}}
+                <p>{{props.filename}}</p>
               </div>
             </template>
           </gk-table-column>
@@ -86,19 +86,25 @@
           </gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="props">
-              <div class="gk-finder-filename-column">
-                <p>{{props.filename}}</p>
-                <p>
-                  <span>{{props.last_member_name}}</span>
-                  <span>{{formatDate(props.last_dateline)}}</span>
-                  <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
-                </p>
+              <div class="gk-finder-main-column">
+                <div class="gk-finder-filename-column">
+                  <p>{{props.filename}}</p>
+                  <p>
+                    <span>{{props.last_member_name}}</span>
+                    <span>{{formatDate(props.last_dateline)}}</span>
+                    <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
+                  </p>
+                </div>
+                <ul v-if="!isMobile && itemButtons">
+                  <li v-for="(button,index) in itemButtons" :key="index" @click="handleItemButton(button.command, props, $event)">{{button.label}}</li>
+                  <li v-if="buttons" @click="handleItemButton('more', props, $event)">{{gettext('more')}}</li>
+                </ul>
               </div>
             </template>
           </gk-table-column>
-          <gk-table-column width="8%">
+          <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)" >
             <template slot-scope="props">
-              <i class="gk-icon-caretdown gk-finder-item-dropdown" v-if="isMobile && buttons" @click="contextItem([props], $event)"></i>
+              <i class="gk-icon-caretdown gk-finder-item-dropdown" @click="handleItemDropdown(props, $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -159,6 +165,7 @@
       checkbox: Boolean,
       total: Number,
       buttons: Array,
+      'item-buttons': Array,
       loading: Boolean,
       'preview-toolbar': Object,
       translate: Object,
@@ -199,11 +206,72 @@
       },
       showCheckbox() {
         return !this.isMobile && this.checkbox
+      },
+      itemButtonsDom() {
+        if (!this.isMobile) {
+          return false;
+        }
+        let tr = document.createElement('tr');
+        let td = document.createElement('td');
+        td.setAttribute('colspan', 4);
+        let ul = document.createElement('ul');
+        ul.classList.add('gk-finder-item-buttons');
+        this.itemButtons.map((button) => {
+          let li = document.createElement('li');
+          li.innerText = button.label;
+          li.addEventListener('click', (event) => {
+            console.log(event);
+          });
+          ul.appendChild(li);
+        });
+        if (this.buttons) {
+          let li = document.createElement('li');
+          li.innerText = this.gettext('more');
+          li.addEventListener('click', (event) => {
+            console.log(event);
+          });
+          ul.appendChild(li);
+        }
+        td.appendChild(ul);
+        tr.appendChild(td);
+        return tr;
       }
     },
     methods: {
       gettext(value) {
         return this.translate && this.translate[value] || value;
+      },
+      afterItem(targetElement) {
+        const parent = targetElement.parentNode;
+        if (parent.lastChild === targetElement) {
+          parent.appendChild(this.itemButtonsDom);
+        }
+        else {
+          parent.insertBefore(this.itemButtonsDom, targetElement.nextSibling);
+        }
+      },
+      handleItemDropdown(file, event) {
+        if (this.itemButtons) {
+          if (event.target.className.indexOf('gk-icon-caretup') > -1) {
+            const openButtons = this.$el.querySelector('.gk-icon-caretup');
+            if (openButtons) {
+              openButtons.classList.remove('gk-icon-caretup');
+            }
+            this.itemButtonsDom.remove();
+          } else {
+            event.target.classList.add('gk-icon-caretup');
+            this.afterItem(event.target.parentNode.parentNode);
+          }
+        } else {
+          this.contextItem([file], event);
+        }
+      },
+      handleItemButton(command, file, event) {
+        if (command === 'more') {
+          this.contextItem([file], event);
+        } else {
+          this.$emit('command', file, command);
+        }
       },
       getSortIcon(key) {
         let icon = '';
@@ -254,7 +322,6 @@
           return;
         }
         this.$refs.contextmenu.show(event);
-        event.stopPropagation();
       },
       commandFile(command) {
         this.$emit('command', this.getSelected(), command);
@@ -292,6 +359,10 @@
         this.$emit('input', file);
       },
       openFile(file) {
+        if (this.isMobile) {
+
+          this.itemButtonsDom.remove();
+        }
         if (!file.dir) {
           this.previewFile = file;
           this.preview = true;
