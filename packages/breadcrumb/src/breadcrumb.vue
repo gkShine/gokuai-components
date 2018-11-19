@@ -84,6 +84,9 @@
         let _data = Array.from(this.data);
 
         setTimeout(() => {
+          if (this.$refs.list === undefined) {
+            return;
+          }
           let children = this.$refs.list.children;
           let width = children[0].clientWidth + 38;
           this.menu = [];

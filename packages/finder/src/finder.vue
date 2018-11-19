@@ -208,7 +208,7 @@
         return !this.isMobile && this.checkbox
       },
       itemButtonsDom() {
-        if (!this.isMobile) {
+        if (!this.isMobile || !this.itemButtons) {
           return false;
         }
         let tr = document.createElement('tr');
@@ -242,7 +242,7 @@
         return this.translate && this.translate[value] || value;
       },
       showMobileMenuItem(targetElement) {
-        if (!this.isMobile) {
+        if (!this.itemButtonsDom) {
           return;
         }
         const parent = targetElement.parentNode;
@@ -254,7 +254,7 @@
         }
       },
       hideMobileMenuItem() {
-        if (!this.isMobile) {
+        if (!this.itemButtonsDom) {
           return;
         }
         const openButtons = this.$el.querySelector('.gk-icon-caretup');
