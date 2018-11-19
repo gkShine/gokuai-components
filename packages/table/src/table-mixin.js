@@ -101,7 +101,7 @@ export default {
       }, 20);
     },
     handleCancelSelect(event) {
-      if (this.clickItem) {
+      if (this.clickItem || touch.enable) {
         return;
       }
       this.selected = {};
@@ -220,6 +220,15 @@ export default {
         this.selected = this.data;
       }
       this.refreshCheckAllState();
+    },
+    select(item, index) {
+      if (this.selected[index] !== undefined) {
+        return;
+      }
+      this.selected = {};
+      this.selected[index] = item;
+      this.lastSelectedIndex = index;
+      this.updateChecked();
     },
     getSelected() {
       return Object.values(this.selected);

@@ -149,7 +149,7 @@
           this.handleSelectPrevNext(+1, e);
           e.preventDefault();
         } else if (e.keyCode === 13) { //enter
-          this.handleDblclick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
+          this.handleDoubleClick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
           e.preventDefault();
         }
       },

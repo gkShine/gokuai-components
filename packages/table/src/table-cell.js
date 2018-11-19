@@ -13,7 +13,10 @@ export default {
     let column = this.column;
     let content;
     if (column.render) {
-      content = this.column.render(this.data);
+      content = this.column.render({
+        row: this.data,
+        index: this.index
+      });
     } else if (column.checkbox) {
       content = h('gk-checkbox', {
         props: {

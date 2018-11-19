@@ -25,8 +25,8 @@
 
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
       <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
-        <template slot-scope="props">
-          <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(props.item)"></iframe>
+        <template slot-scope="scope">
+          <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(scope.item)"></iframe>
         </template>
       </gk-slide>
 
@@ -37,12 +37,12 @@
                       :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
                       @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                       @doubleClick="doubleClickItem" @contextmenu="contextItem" @tap="doubleClickItem">
-          <template slot-scope="props">
+          <template slot-scope="scope">
             <p>
-              <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="128"
-                           :folder="!!props.dir"></gk-fileicon>
+              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="128"
+                           :folder="!!scope.row.dir"></gk-fileicon>
             </p>
-            <p class="gk-finder-filename">{{props.filename}}</p>
+            <p class="gk-finder-filename">{{scope.row.filename}}</p>
           </template>
           <div slot="empty" class="gk-finder-empty">
             <slot></slot>
@@ -56,11 +56,11 @@
                   @contextmenu="contextItem" @tap="doubleClickItem" v-else-if="viewMode === 'list'">
           <gk-table-column :checkbox="showCheckbox" :width="25" align="center"></gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
-            <template slot-scope="props">
+            <template slot-scope="scope">
               <div class="gk-finder-filename-column">
-                <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="20"
-                             :folder="!!props.dir"></gk-fileicon>
-                <p>{{props.filename}}</p>
+                <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="20"
+                             :folder="!!scope.row.dir"></gk-fileicon>
+                <p>{{scope.row.filename}}</p>
               </div>
             </template>
           </gk-table-column>
@@ -79,32 +79,32 @@
                   :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
           <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
           <gk-table-column :width="40" valign="top">
-            <template slot-scope="props">
-              <gk-fileicon :thumbnail="props.thumbnail" :filename="props.filename" :size="32"
-                           :folder="!!props.dir"></gk-fileicon>
+            <template slot-scope="scope">
+              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="32"
+                           :folder="!!scope.row.dir"></gk-fileicon>
             </template>
           </gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
-            <template slot-scope="props">
+            <template slot-scope="scope">
               <div class="gk-finder-main-column">
                 <div class="gk-finder-filename-column">
-                  <p>{{props.filename}}</p>
+                  <p>{{scope.row.filename}}</p>
                   <p>
-                    <span>{{props.last_member_name}}</span>
-                    <span>{{formatDate(props.last_dateline)}}</span>
-                    <span v-if="props.filesize">{{formatSize(props.filesize, props)}}</span>
+                    <span>{{scope.row.last_member_name}}</span>
+                    <span>{{formatDate(scope.row.last_dateline)}}</span>
+                    <span v-if="scope.row.filesize">{{formatSize(scope.row.filesize, scope.row)}}</span>
                   </p>
                 </div>
                 <ul v-if="!isMobile && itemButtons">
-                  <li v-for="(button,index) in itemButtons" :key="index" @click="handleItemButton(button.command, props, $event)">{{button.label}}</li>
-                  <li v-if="buttons" @click="handleItemButton('more', props, $event)">{{gettext('more')}}</li>
+                  <li v-for="(button,index) in itemButtons" :key="index" @click="handleItemButton(button.command, scope.row, scope.index, $event)">{{button.label}}</li>
+                  <li v-if="buttons" @click="handleItemButton('more', scope.row, scope.index, $event)">{{gettext('more')}}</li>
                 </ul>
               </div>
             </template>
           </gk-table-column>
           <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)" >
-            <template slot-scope="props">
-              <i class="gk-icon-caretdown gk-finder-item-dropdown" @click="handleItemDropdown(props, $event)"></i>
+            <template slot-scope="scope">
+              <i class="gk-icon-caretdown gk-finder-item-dropdown" @click="handleItemDropdown(scope.row, scope.index, $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -219,16 +219,16 @@
         this.itemButtons.map((button) => {
           let li = document.createElement('li');
           li.innerText = button.label;
-          li.addEventListener('click', (event) => {
-            console.log(event);
+          li.addEventListener('click', () => {
+            this.$emit('command', this.getSelected(), button.command);
           });
           ul.appendChild(li);
         });
         if (this.buttons) {
           let li = document.createElement('li');
-          li.innerText = this.gettext('more');
+          li.innerHTML = '<i class="gk-icon-ellipsisv"></i>' + this.gettext('more');
           li.addEventListener('click', (event) => {
-            console.log(event);
+            this.contextItem(this.getSelected(), event);
           });
           ul.appendChild(li);
         }
@@ -241,7 +241,10 @@
       gettext(value) {
         return this.translate && this.translate[value] || value;
       },
-      afterItem(targetElement) {
+      showMobileMenuItem(targetElement) {
+        if (!this.isMobile) {
+          return;
+        }
         const parent = targetElement.parentNode;
         if (parent.lastChild === targetElement) {
           parent.appendChild(this.itemButtonsDom);
@@ -250,27 +253,36 @@
           parent.insertBefore(this.itemButtonsDom, targetElement.nextSibling);
         }
       },
-      handleItemDropdown(file, event) {
+      hideMobileMenuItem() {
+        if (!this.isMobile) {
+          return;
+        }
+        const openButtons = this.$el.querySelector('.gk-icon-caretup');
+        if (openButtons) {
+          openButtons.classList.remove('gk-icon-caretup');
+        }
+        this.itemButtonsDom.remove();
+      },
+      handleItemDropdown(file, index, event) {
+        this.$refs.table.select(file, index);
         if (this.itemButtons) {
           if (event.target.className.indexOf('gk-icon-caretup') > -1) {
-            const openButtons = this.$el.querySelector('.gk-icon-caretup');
-            if (openButtons) {
-              openButtons.classList.remove('gk-icon-caretup');
-            }
-            this.itemButtonsDom.remove();
+            this.hideMobileMenuItem();
           } else {
+            this.hideMobileMenuItem();
             event.target.classList.add('gk-icon-caretup');
-            this.afterItem(event.target.parentNode.parentNode);
+            this.showMobileMenuItem(event.target.parentNode.parentNode);
           }
         } else {
           this.contextItem([file], event);
         }
       },
-      handleItemButton(command, file, event) {
+      handleItemButton(command, file, index, event) {
         if (command === 'more') {
+          this.$refs.table.select(file, index);
           this.contextItem([file], event);
         } else {
-          this.$emit('command', file, command);
+          this.$emit('command', [file], command);
         }
       },
       getSortIcon(key) {
@@ -322,6 +334,7 @@
           return;
         }
         this.$refs.contextmenu.show(event);
+        event.stopPropagation();
       },
       commandFile(command) {
         this.$emit('command', this.getSelected(), command);
@@ -359,10 +372,7 @@
         this.$emit('input', file);
       },
       openFile(file) {
-        if (this.isMobile) {
-
-          this.itemButtonsDom.remove();
-        }
+        this.hideMobileMenuItem();
         if (!file.dir) {
           this.previewFile = file;
           this.preview = true;

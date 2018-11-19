@@ -14,7 +14,10 @@ export default {
   render(h) {
     let content;
     if (this.render) {
-      content = this.render(this.data);
+      content = this.render({
+        row: this.data,
+        index: this.index
+      });
     } else {
       let src = '';
       if (typeof this.data === 'object') {

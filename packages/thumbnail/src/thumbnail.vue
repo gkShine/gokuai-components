@@ -101,7 +101,7 @@
           this.handleSelectPrevNext(+this.getLineSize(), e);
           e.preventDefault();
         } else if (e.keyCode === 13) { //enter
-          this.handleDbclick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
+          this.handleDoubleClick(Object.values(this.selected)[0], Object.keys(this.selected)[0], e);
           e.preventDefault();
         }
       }

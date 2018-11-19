@@ -10,7 +10,7 @@
           }, {
               label: '保存到库',
               command: 'saveto'
-            }]" @command="fileCommand" :item-buttons="[{label: '下载'}]"
+            }]" @command="fileCommand" :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]"
                        :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             >
                 <gk-button-group slot="breadcrumb" plain >
@@ -106,8 +106,8 @@
         }
         this.getFiles(this.openFile.fullpath);
       },
-      fileCommand(command) {
-
+      fileCommand(file, command) {
+        console.log(file, command);
       }
     },
     mounted() {
