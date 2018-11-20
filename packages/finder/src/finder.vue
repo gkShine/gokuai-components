@@ -104,7 +104,7 @@
           </gk-table-column>
           <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)" >
             <template slot-scope="scope">
-              <i class="gk-icon-caretdown gk-finder-item-dropdown" @click="handleItemDropdown(scope.row, scope.index, $event)"></i>
+              <i class="gk-icon-caretdown gk-finder-item-dropdown" v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -136,6 +136,7 @@
   import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
   import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
+  import touch from 'gokuai-components/packages/touch/src/touch';
   import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
   import { device } from 'device.js';
 
@@ -145,6 +146,7 @@
       GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail,
       GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb, GkFileicon
     },
+    directives: {touch},
     props: {
       list: { //当前文件列表
         type: Array,

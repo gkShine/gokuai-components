@@ -3,7 +3,7 @@
     <template v-show="data.length">
       <ul ref="thumbnail" class="gk-thumbnail-list gk-scrollbar" @click="handleCancelSelect"
           @contextmenu="handleContextmenu(null, null, $event)"
-          :class="{'gk-thumbnail-fit': fit, 'gk-thumbnail-checkbox': showCheckbox}" v-loading="loading"
+          :class="{'gk-thumbnail-fit': fit, 'gk-thumbnail-checkbox': showCheckbox, 'gk-no-scrollbar': touchEnable}" v-loading="loading"
           v-scroll-load="loadMore">
         <gk-thumbnail-item
             :checkbox="checkbox"
@@ -63,7 +63,9 @@
       }
     },
     data() {
-      return {};
+      return {
+        touchEnable: touch.enable
+      };
     },
     computed: {
       style() {

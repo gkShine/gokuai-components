@@ -55,7 +55,7 @@ module.exports = merge(baseConfig, {
     hot: true,
     contentBase: 'dist',
     compress: true,
-    host: 'localhost',
+    host: '0.0.0.0',
     port: '8081',
     open: true,
     overlay: {warnings: false, errors: true},

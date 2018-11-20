@@ -1,4 +1,5 @@
 import "mdn-polyfills/Node.prototype.remove";
+import touch from 'gokuai-components/packages/touch/src/touch';
 
 export default {
   name: 'gk-tooltip',
@@ -81,6 +82,9 @@ export default {
   },
 
   bind(el, binding) {
+    if (touch.enable) {
+      return;
+    }
     let self = binding.def;
     self.index = 2000;
     el.onmouseenter = ({target}) => {

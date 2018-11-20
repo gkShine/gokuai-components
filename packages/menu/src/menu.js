@@ -1,5 +1,6 @@
 import GkMenuMixin from "gokuai-components/packages/menu/src/menu-mixin";
 import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
+import touch from "gokuai-components/packages/touch/src/touch"
 import {device} from 'device.js';
 
 export default {
@@ -180,6 +181,10 @@ export default {
         const wrapper = document.createElement('div');
         wrapper.classList.add('gk-menu-wrapper');
         document.body.appendChild(wrapper);
+        touch.bindEl(wrapper, 'tap', (e) => {
+          this.bodyClick();
+          e.preventDefault();
+        });
         this.wrapper = wrapper;
       } else {
         this.wrapper.style.display = 'block';

@@ -10,7 +10,7 @@
     name: 'GkDropdown',
     computed: {
       btn() {
-        return this.$children[0].$el;
+        return this.$el.childNodes[0];
       }
     }
   }

@@ -12,7 +12,7 @@
     <div @contextmenu="handleContextmenu(null, null, $event)"
          :style="computedStyle"
          v-scroll-load="loadMore" v-loading="loading" ref="table"
-         class="gk-table-body gk-scrollbar"
+         class="gk-table-body gk-scrollbar" :class="{'gk-no-scrollbar': touchEnable}"
          @click="handleCancelSelect()">
       <table v-if="data.length || loading">
         <tbody>
@@ -67,6 +67,7 @@
     },
     data() {
       return {
+        touchEnable: touch.enable,
         columns: [],
         timer: 0,
         page: 1,

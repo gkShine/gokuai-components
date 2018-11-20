@@ -23,5 +23,12 @@ export default {
         e.srcEvent.preventDefault();
       }
     });
+  },
+
+  bindEl(el, event, callback) {
+    let hammer = new Hammer(el, {
+      enable: this.enable
+    });
+    hammer.on(event, callback);
   }
 };
