@@ -74,7 +74,14 @@
         selectedIndex: this.getIndex()
       }
     },
+    watch: {
+      value: 'updateSelected'
+    },
     methods: {
+      updateSelected(value) {
+        this.selected = value;
+        this.selectedIndex = this.getIndex();
+      },
       formatText(text) {
         return text.replace('[index]', this.selectedIndex + 1).replace('[count]', this.list.length);
       },

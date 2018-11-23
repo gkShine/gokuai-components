@@ -24,7 +24,7 @@
     </div>
 
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
-      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" :list="fileList" v-model="previewFile">
+      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" id="fullpath" :list="fileList" v-model="previewFile">
         <template slot-scope="scope">
           <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(scope.item)"></iframe>
         </template>
