@@ -26,7 +26,7 @@
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
       <gk-slide v-if="preview" fit toolbar :options="previewToolbar" id="fullpath" :list="fileList" v-model="previewFile">
         <template slot-scope="scope">
-          <iframe v-if="getPreviewUrl" v-bind:src="getPreviewUrl(scope.item)"></iframe>
+          <gk-iframe v-if="getPreviewUrl" :src="getPreviewUrl(scope.item)"></gk-iframe>
         </template>
       </gk-slide>
 
@@ -140,11 +140,37 @@
   import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
   import { device } from 'device.js';
 
+  const GkIframe = {
+    props: {
+      src: String
+    },
+    watch: {
+      src: 'updateIframe'
+    },
+    render(h) {
+      return h('div', {
+        style: {
+          position: 'relative',
+          width: '100%',
+          height: '100%'
+        }
+      });
+    },
+    methods: {
+      updateIframe() {
+        this.$el.innerHTML = '<iframe src="' + this.src + '"></iframe>';
+      }
+    },
+    mounted() {
+      this.updateIframe();
+    }
+  };
+
   export default {
     name: 'GkFinder',
     components: {
       GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail,
-      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb, GkFileicon
+      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb, GkFileicon, GkIframe
     },
     directives: {touch},
     props: {
