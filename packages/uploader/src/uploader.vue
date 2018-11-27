@@ -12,9 +12,9 @@
                       @check="updateHeadLabel" :before-select="() => false">
                 <gk-table-column :checkbox="showCheck" :width="20" align="center"></gk-table-column>
                 <gk-table-column property="name" :label="headLabel">
-                    <template slot-scope="props">
-                        <gk-fileicon :filename="props.name" :size="24"></gk-fileicon>
-                        {{props.name}}
+                    <template slot-scope="scope">
+                        <gk-fileicon :filename="scope.row.name" :size="24"></gk-fileicon>
+                        {{scope.row.name}}
                     </template>
                 </gk-table-column>
                 <gk-table-column property="size" width="5%" :formatter="formatSize"></gk-table-column>
