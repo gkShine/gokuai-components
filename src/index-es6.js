@@ -9,6 +9,7 @@ import DropdownItem from '../packages/dropdown-item/index.js';
 import DropdownMenu from '../packages/dropdown-menu/index.js';
 import Fileicon from '../packages/fileicon/index.js';
 import Finder from '../packages/finder/index.js';
+import Icon from '../packages/icon/index.js';
 import Loading from '../packages/loading/index.js';
 import Menu from '../packages/menu/index.js';
 import MenuItem from '../packages/menu-item/index.js';
@@ -34,6 +35,7 @@ const components = [
   DropdownMenu,
   Fileicon,
   Finder,
+  Icon,
   Menu,
   MenuItem,
   Slide,
@@ -72,6 +74,7 @@ export default {
   DropdownMenu,
   Fileicon,
   Finder,
+  Icon,
   Menu,
   MenuItem,
   Slide,

@@ -9,6 +9,7 @@
   "dropdown-menu": "./packages/dropdown-menu/index.js",
   "fileicon": "./packages/fileicon/index.js",
   "finder": "./packages/finder/index.js",
+  "icon": "./packages/icon/index.js",
   "loading": "./packages/loading/index.js",
   "menu": "./packages/menu/index.js",
   "menu-item": "./packages/menu-item/index.js",

@@ -1,0 +1,29 @@
+@import "./common/var.scss";
+
+.gk-checkbox {
+  span {
+    width: 16px;
+    height: 16px;
+
+    i {
+      font-size: 15px;
+      border-radius: 4px;
+      background-color: #FFFFFF;
+      color: $--default-border-color;
+
+      &:hover {
+        color: $--primary-active-color;
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  &.gk-checkbox-checked {
+    i {
+      color: $--primary-active-color;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import Home from './pages/Home.vue'
 import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
 import Fileicon from './pages/Fileicon.vue'
+import Icon from './pages/Icon.vue'
 import Button from './pages/Button.vue'
 import Table from './pages/Table.vue'
 import Menu from './pages/Menu.vue'
@@ -14,6 +15,11 @@ let routes = [
     path: '/',
     component: Home,
     name: '介绍'
+  },
+  {
+    path: '/icon',
+    component: Icon,
+    name: '图标'
   },
   {
     path: '/button',
