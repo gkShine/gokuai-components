@@ -16,7 +16,7 @@
       list-style: none;
       float: left;
       border: 1px solid #f0f0f0;
-      margin: 10px;
+      margin: 11px 16px;
       padding: 10px;
       text-align: center;
       color: $--font-color;
@@ -40,14 +40,14 @@
       }
 
       &:hover {
-        background-color: $--thumbnail-hover-color;
+        background-color: #F2F7FF;
         .gk-thumbnail-checkbox {
           display: inline;
         }
       }
 
       &.gk-thumbnail-active-item {
-        background-color: $--thumbnail-active-color;
+        background-color: #E5EFFA;
         color: #FFFFFF;
       }
     }

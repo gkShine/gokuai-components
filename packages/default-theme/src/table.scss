@@ -99,7 +99,7 @@
 
         &:hover {
           td {
-            background-color: $--table-hover-color;
+            background-color: #F2F7FF;
           }
 
           .gk-checkbox {
@@ -109,8 +109,8 @@
 
         &.gk-table-item-active {
           td {
-            color: $--font-reverse-color;
-            background-color: $--table-active-color;
+            color: #222222;
+            background-color: #E5EFFA;
           }
         }
 

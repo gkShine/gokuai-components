@@ -39,7 +39,7 @@
                       @doubleClick="doubleClickItem" @contextmenu="contextItem" @tap="doubleClickItem">
           <template slot-scope="scope">
             <p>
-              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="128"
+              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="64"
                            :folder="!!scope.row.dir"></gk-fileicon>
             </p>
             <p class="gk-finder-filename">{{scope.row.filename}}</p>

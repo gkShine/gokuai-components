@@ -58,7 +58,7 @@
       size: {
         type: Object,
         default: () => {
-          return {w: 148, h: 180};
+          return {w: 108, h: 130};
         }
       }
     },
