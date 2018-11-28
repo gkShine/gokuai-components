@@ -327,7 +327,8 @@
           pick: picker,
           formData: this.formData || {},
           dnd: this.dnd === undefined ? undefined : this.dnd ? this.dnd : '.gk-uploader',
-          disableGlobalDnd: this.dnd
+          disableGlobalDnd: this.dnd,
+          timeout: 0
         }, this.options || {}));
 
         uploader.on('fileQueued', (file) => {
