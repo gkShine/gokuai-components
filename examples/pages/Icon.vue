@@ -3,7 +3,7 @@
     <h3 class="demo-title">
       图标
     </h3>
-    <div class="demo-block" style="width: 960px; padding: 20px">
+    <div class="demo-block" style="padding: 20px">
       <ul>
         <li><span>
           <gk-icon icon="user-circle"></gk-icon>
@@ -156,6 +156,8 @@
 
 <style scoped lang="scss">
   .demo-block {
+    width: 960px;
+
     ul {
       overflow: hidden;
       list-style: none;
@@ -191,6 +193,17 @@
             margin-bottom: 15px;
           }
         }
+      }
+    }
+  }
+
+  html.mobile {
+    .demo-block {
+      width: auto;
+      overflow-y: auto;
+
+      li {
+        width: 50%;
       }
     }
   }
