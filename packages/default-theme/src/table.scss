@@ -100,7 +100,15 @@
         &:hover {
           td {
             background-color: #F2F7FF;
+            border-top: 1px solid #CCE8FF;
           }
+
+          & + tr {
+            td {
+              border-top: 1px solid #CCE8FF;
+            }
+          }
+
 
           .gk-checkbox {
             display: inline;
@@ -113,7 +121,14 @@
             background-color: #E5EFFA;
             border-top: 1px solid #CCE8FF;
           }
+
+          & + tr {
+            td {
+              border-top: 1px solid #CCE8FF;
+            }
+          }
         }
+
 
         &:last-child {
           td {
