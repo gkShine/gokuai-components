@@ -38,11 +38,13 @@
                       @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
                       @doubleClick="doubleClickItem" @contextmenu="contextItem" @tap="doubleClickItem">
           <template slot-scope="scope">
-            <p>
-              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="64"
-                           :folder="!!scope.row.dir"></gk-fileicon>
-            </p>
-            <p class="gk-finder-filename">{{scope.row.filename}}</p>
+            <el-tooltip :content="scope.row.filename" placement="bottom" effect="light">
+              <p>
+                <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="64"
+                             :folder="!!scope.row.dir"></gk-fileicon>
+              </p>
+              <p class="gk-finder-filename">{{scope.row.filename}}</p>
+            </el-tooltip>
           </template>
           <div slot="empty" class="gk-finder-empty">
             <slot></slot>
