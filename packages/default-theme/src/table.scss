@@ -85,7 +85,7 @@
 
     & > table {
       width: 100%;
-      background-color: $--table-body-background-color;
+      background-color: #F7F7F7;
       color: $--font-color;
       font-size: $--font-size;
       border-spacing: 0;
@@ -94,7 +94,7 @@
       tr.gk-table-item {
         td {
           border-top: 1px solid $--table-border-color;
-          padding: 10px 0;
+          padding: 12px 0;
         }
 
         &:hover {
@@ -111,6 +111,7 @@
           td {
             color: #222222;
             background-color: #E5EFFA;
+            border-top: 1px solid #CCE8FF;
           }
         }
 
