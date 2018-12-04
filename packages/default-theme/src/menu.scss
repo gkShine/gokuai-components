@@ -3,7 +3,7 @@
 
 .gk-menu {
   z-index: 9001;
-  min-width: 160px;
+  min-width: 120px;
   background: $--menu-background-color;
   position: absolute;
   border-radius: 2px;
@@ -92,6 +92,10 @@
       color: $--menu-disabled-font-color;
       background: none;
     }
+  }
+
+  .gk-menu-item:hover {
+    color: #1378EB;
   }
 
   &.gk-mobile-menu {

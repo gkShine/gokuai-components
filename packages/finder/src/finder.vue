@@ -7,10 +7,11 @@
 
       <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
         <slot name="breadcrumb"></slot>
-        <gk-dropdown v-if="sortList" style="display: inline-block; vertical-align: middle; width: 120px; text-align: center" @command="handleSort">
+        <gk-dropdown v-if="sortList" style="display: inline-block; vertical-align: middle; width: 125px; text-align: center" @command="handleSort">
             <span class="gk-finder-sort-button">
+              <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>
               {{sort}}
-              <i class="gk-icon-angle-down"></i>
+              <i class="gk-icon-Path" style="vertical-align: middle"></i>
             </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -319,7 +320,7 @@
       getSortIcon(key) {
         let icon = '';
         if (key === this.sort) {
-          icon = this.order === 'asc' ? 'gk-icon-longarrowup' : 'gk-icon-longarrowdown';
+          icon = this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down';
         }
         return icon;
       },
