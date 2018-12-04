@@ -7,8 +7,11 @@
 
       <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
         <slot name="breadcrumb"></slot>
-        <gk-dropdown v-if="sortList" style="display: inline-block; vertical-align: middle;" @command="handleSort">
-          <gk-button icon="gk-icon-sort" class="gk-finder-sort-button" plain></gk-button>
+        <gk-dropdown v-if="sortList" style="display: inline-block; vertical-align: middle; width: 120px; text-align: center" @command="handleSort">
+            <span class="gk-finder-sort-button">
+              {{sort}}
+              <i class="gk-icon-angle-down"></i>
+            </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
                               :command="sort.value" :key="idx">{{sort.label}}

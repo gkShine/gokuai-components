@@ -6,7 +6,6 @@
 
   .gk-finder-toolbar {
     padding: 10px 0 10px 25px;
-    background-color: #F7F7F7;
     .gk-breadcrumb {
       height: 28px;
     }
@@ -18,11 +17,9 @@
       margin-right: 28px;
 
       .gk-finder-sort-button {
-        padding: 0;
-        font-size: 16px;
-        height: $--breadcrumb-button-size;
-        width: $--breadcrumb-button-size;
-        margin-right: 10px;
+        font-size: 14px;
+        line-height: 33px;
+        color: #222222;
       }
 
       .gk-finder-view-mode {
@@ -46,7 +43,7 @@
 
     p {
       margin: 0;
-      padding: 6px 0;
+      padding: 0;
       color: #222222;
     }
 
@@ -146,6 +143,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        margin-top: 6px;
       }
     }
   }
