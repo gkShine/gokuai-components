@@ -7,13 +7,13 @@
 
       <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
         <slot name="breadcrumb"></slot>
-        <gk-dropdown v-if="sortList" style="display: inline-block; vertical-align: middle; width: 125px; text-align: center" @command="handleSort">
+        <gk-dropdown v-if="sortList" class="gk-finder-sort-block" @command="handleSort">
             <span class="gk-finder-sort-button">
-              <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>{{sort}}<i class="gk-icon-Path" style="vertical-align: middle"></i>
+              <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-Path" style="vertical-align: middle"></i>
             </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
-                              :command="sort.value" :key="idx">{{sort.label}}
+                              :command="sort" :key="idx">{{sort.label}}
             </gk-dropdown-item>
           </gk-dropdown-menu>
         </gk-dropdown>
@@ -209,6 +209,7 @@
       return {
         viewMode: this.views && this.views[0] || 'listdetail',
         sort: sort || '',
+        sortLabel: '文件名',
         order: order || '',
         preview: false,
         previewFile: this.value,
@@ -391,10 +392,11 @@
         this.$emit('load-more', this.value);
       },
       handleSort(command) {
-        if (this.sort === command) {
-          this.order = this.order === 'desc' ? 'asc' : 'desc';
+         if (this.sort === command.value) {
+         this.order = this.order === 'desc' ? 'asc' : 'desc';
         }
-        this.sort = command;
+        this.sort = command.value;
+        this.sortLabel = command.label;
         this.$emit('sort-change', this.sort, this.order);
       },
       changeFile(file) {

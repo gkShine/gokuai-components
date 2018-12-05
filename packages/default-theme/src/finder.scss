@@ -16,16 +16,24 @@
       margin-top: -$--breadcrumb-button-size;
       margin-right: 28px;
 
-      .gk-finder-sort-button {
-        font-size: 14px;
-        line-height: 33px;
-        color: #222222;
+      .gk-finder-sort-block {
+        display: inline-block;
+        vertical-align: middle;
+        width: 105px;
+        text-align: center;
+
+        .gk-finder-sort-button {
+          font-size: 14px;
+          line-height: 33px;
+          color: #222222;
+        }
+
+        .gk-finder-sort-button:hover {
+          cursor:pointer;
+          color: #1378EB;
+        }
       }
 
-      .gk-finder-sort-button:hover {
-        cursor:pointer;
-        color: #1378EB;
-      }
 
       .gk-finder-view-mode {
         display: inline-block;
@@ -94,9 +102,6 @@
     }
 
     .gk-table-item:hover {
-      p {
-        text-decoration: underline;
-      }
       .gk-finder-main-column {
         & > div {
           width: 50%;
