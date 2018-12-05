@@ -29,7 +29,7 @@
         <gk-button>老二</gk-button>
         <gk-button>老三</gk-button>
         <gk-dropdown>
-          <gk-button>老四有下拉</gk-button>
+          <gk-button>老四有下拉<gk-icon icon="caretdown" placement="right" ></gk-icon></gk-button>
           <gk-dropdown-menu show-arrow slot="dropdown">
             <gk-dropdown-item>老五在此</gk-dropdown-item>
           </gk-dropdown-menu>

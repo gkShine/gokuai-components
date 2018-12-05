@@ -24,6 +24,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.gk-icon--left {
+  position: relative;
+  left: -4px;
+}
+
+.gk-icon--right {
+  position: relative;
+  right: -4px;
+}
+
 .gk-icon-times-circle:before { content: "\e80b"; }
 
 .gk-icon-pause:before { content: "\e713"; }
