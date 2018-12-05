@@ -80,6 +80,7 @@
 
     &:hover {
       background-color: $--menu-hover-color;
+      color: #1378EB;
     }
 
     &.gk-menu-item-active {
@@ -93,9 +94,6 @@
     }
   }
 
-  .gk-menu-item:hover {
-    color: #1378EB;
-  }
 
   &.gk-mobile-menu {
     opacity: 1;
