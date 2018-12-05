@@ -67,6 +67,12 @@
     .gk-finder-main-column {
       overflow: hidden;
 
+      p {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
       & > div {
         float: left;
       }
@@ -105,12 +111,6 @@
       .gk-finder-main-column {
         & > div {
           width: 50%;
-
-          p {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-          }
         }
         & > ul {
           display: block;
