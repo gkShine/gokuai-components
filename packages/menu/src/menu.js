@@ -43,7 +43,7 @@ export default {
   computed: {
     dropdown() {
       let parent = this.$parent;
-      if (parent && parent.$el.className === 'gk-dropdown') {
+      if (parent && parent.$el.className.indexOf('gk-dropdown') > -1) {
         return parent;
       }
       return null;
