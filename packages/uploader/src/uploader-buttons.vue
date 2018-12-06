@@ -1,12 +1,9 @@
 <template>
     <div class="gk-uploader-buttons" :class="{'gk-uploader-buttons-inline':!dropdown}">
         <gk-dropdown v-if="dropdown && list.length > 1">
-            <gk-button :size="size">
-                <slot></slot>
-            </gk-button>
+            <gk-button :size="size"><slot></slot><gk-icon icon="caretdown" placement="right"></gk-icon></gk-button>
             <gk-dropdown-menu slot="dropdown" class="gk-uploader-dropdown">
-                <gk-dropdown-item v-for="(button, index) in list" :key="index" :class="button.class">{{button.label}}
-                </gk-dropdown-item>
+                <gk-dropdown-item v-for="(button, index) in list" :key="index" :class="button.class">{{button.label}}</gk-dropdown-item>
             </gk-dropdown-menu>
         </gk-dropdown>
         <template v-else>
