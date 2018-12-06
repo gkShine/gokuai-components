@@ -96,42 +96,28 @@
           padding: 12px 0;
         }
 
-        &:hover {
-          td {
-            background-color: #F2F7FF;
-            border-top: 1px solid #CCE8FF;
-          }
-
-          & + tr {
-            td {
-              border-top: 1px solid #CCE8FF;
-            }
-          }
-
-
-          .gk-checkbox {
-            display: inline;
-          }
-        }
-
-        &.gk-table-item-active {
-          td {
-            color: #222222;
-            background-color: #E5EFFA;
-            border-top: 1px solid #CCE8FF;
-          }
-
-          & + tr {
-            td {
-              border-top: 1px solid #CCE8FF;
-            }
-          }
-        }
-
-
         &:last-child {
           td {
             border-bottom: 1px solid $--table-border-color;
+          }
+        }
+
+        &:hover,
+        &.gk-table-item-active {
+          td {
+            background-color: #F2F7FF;
+            border-top-color: #CCE8FF;
+            border-bottom-color: #CCE8FF;
+          }
+
+          & + tr {
+            td {
+              border-top-color: #CCE8FF;
+            }
+          }
+
+          .gk-checkbox {
+            display: inline;
           }
         }
       }

@@ -18,8 +18,8 @@
           </gk-dropdown-menu>
         </gk-dropdown>
 
-        <gk-button-group plain class="gk-finder-view-mode">
-          <gk-button v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
+        <gk-button-group plain  class="gk-finder-view-mode">
+          <gk-button :border="false" v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
                      @click.native="handleViewMode(view)" :icon="'gk-icon-'+view"></gk-button>
         </gk-button-group>
       </div>

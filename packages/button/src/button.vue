@@ -13,6 +13,10 @@
     name: "GkButton",
     props: {
       'is-actived': Boolean,
+      border: {
+        type: Boolean,
+        default: true
+      },
       size: String,
       plain: Boolean,
       icon: String,
@@ -34,7 +38,8 @@
       computedClass() {
         let classList = {
           'gk-button-plain': this.isPlain,
-          'gk-button-active': this.isActived
+          'gk-button-active': this.isActived,
+          'gk-button-noborder': !this.border
         };
         if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {
           classList['gk-button--' + this.size] = true;
