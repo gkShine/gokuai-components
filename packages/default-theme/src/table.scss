@@ -7,7 +7,7 @@
   .gk-table-header {
     border-spacing: 0;
     width: 100%;
-    background: $--table-head-background-color;
+
 
     thead {
       tr {
@@ -80,7 +80,6 @@
   }
 
   .gk-table-body {
-    background-color: $--table-body-background-color;
     user-select: none;
 
     & > table {
