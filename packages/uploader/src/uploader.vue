@@ -343,7 +343,10 @@
             speed: 0
           });
           this.relation[file.id] = this.list.length - 1;
-          this.hidden = this.mini = false;
+          this.hidden = false;
+          if (this.dialog) {
+            this.mini = false;
+          }
           if (result !== true) {
             this.finishFiles.push(file);
             file.setStatus('invalid', result);
