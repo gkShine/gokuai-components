@@ -9,6 +9,7 @@ export default {
     loading: Boolean,
     fit: Boolean,
     shortcut: Boolean,
+    translate: Object,
     'right-selected': Boolean,
     'show-checkbox': Boolean,
     'before-select': Function,
@@ -52,6 +53,9 @@ export default {
     data: 'updateData'
   },
   methods: {
+    gettext(value) {
+      return this.translate && this.translate[value] || value;
+    },
     handleTap(item, index, event) {
       if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
         return false;
@@ -109,12 +113,6 @@ export default {
       this.updateChecked();
       this.$emit('select', null, event);
     },
-    handleSelectAll() {
-      this.selected = Object.assign({}, this.data);
-      this.lastIndex = this.data.length - 1;
-      this.updateChecked();
-      this.$emit('selectAll', event);
-    },
     handleDoubleClick(item, index, event) {
       clearTimeout(this.clickTimer);
       this.$emit('doubleClick', item, event);
@@ -153,13 +151,15 @@ export default {
       }
       this.handleSelect(this.data[index], index, event);
     },
+    handleSelectAll() {
+      this.selected = Object.assign({}, this.data);
+      this.lastIndex = this.data.length - 1;
+      this.updateChecked();
+      this.$emit('selectAll', event);
+    },
     handleCheckAll(checked) {
-      let checkboxes = this.getCheckboxes();
-      checkboxes.forEach((checkbox) => {
-        checkbox.setChecked(checked);
-      });
       if (checked) {
-        this.checked = this.data;
+        this.checked = Object.assign({}, this.data);
       } else {
         this.checked = [];
       }

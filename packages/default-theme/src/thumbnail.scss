@@ -2,6 +2,12 @@
 @import "./mixins/utils.scss";
 
 .gk-thumbnail {
+  .gk-thumbnail-header {
+    display: none;
+    line-height: 36px;
+    border-bottom: 1px solid $--table-border-color;
+  }
+
   .gk-thumbnail-list {
     padding: 10px;
     margin: 0;
@@ -76,4 +82,14 @@
   .gk-thumbnail-fit {
     @include fit-window;
   }
+
+  &.gk-thumbnail-with-header {
+    .gk-thumbnail-header {
+      display: block;
+    }
+    .gk-thumbnail-fit {
+      top: $--table-head-height;
+    }
+  }
+
 }

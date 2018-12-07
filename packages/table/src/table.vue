@@ -117,15 +117,6 @@
           return this.$children[0].$children[0];
         }
       },
-      getCheckboxes() {
-        let checkboxes = [];
-        this.$children.forEach((child) => {
-          if (child.$el.className.indexOf('gk-table-checkbox') > -1) {
-            checkboxes.push(child.$children[0]);
-          }
-        });
-        return checkboxes;
-      },
       setScrollbar() {
         if (!this.$refs.table) {
           return;

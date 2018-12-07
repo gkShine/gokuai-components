@@ -7,6 +7,9 @@ export default {
   enable: device.mobile || device.tablet,
 
   bind(el, binding) {
+    if (!binding.def.enable) {
+      return false;
+    }
     let hammer = new Hammer(el, {
       enable: binding.def.enable
     });
@@ -26,6 +29,9 @@ export default {
   },
 
   bindEl(el, event, callback) {
+    if (!this.enable) {
+      return false;
+    }
     let hammer = new Hammer(el, {
       enable: this.enable
     });

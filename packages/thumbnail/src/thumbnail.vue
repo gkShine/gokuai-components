@@ -1,5 +1,8 @@
 <template>
-  <section class="gk-thumbnail">
+  <section class="gk-thumbnail" :class="{'gk-thumbnail-with-header': checkbox}">
+    <div class="gk-thumbnail-header">
+      <gk-checkbox @change="handleCheckAll">{{gettext('all')}}</gk-checkbox>
+    </div>
     <template v-show="data.length">
       <ul ref="thumbnail" class="gk-thumbnail-list gk-scrollbar" @click="handleCancelSelect"
           @contextmenu="handleContextmenu(null, null, $event)"
@@ -37,6 +40,7 @@
 
 <script>
   import GkTableMixin from "gokuai-components/packages/table/src/table-mixin";
+  import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   import GkThumbnailItem from "gokuai-components/packages/thumbnail/src/thumbnail-item";
   import touch from 'gokuai-components/packages/touch/src/touch';
 
@@ -44,7 +48,7 @@
     name: "GkThumbnail",
     mixins: [GkTableMixin],
     directives: {touch},
-    components: {GkThumbnailItem},
+    components: {GkThumbnailItem, GkCheckbox},
     props: {
       'show-more': Boolean,
       'more-text': {
