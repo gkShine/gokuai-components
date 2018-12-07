@@ -39,6 +39,12 @@
         display: inline-block;
         vertical-align: middle;
 
+        .gk-special-button:hover,
+        .gk-special-button.gk-button-active {
+          background-color: #1378EB;
+          color: #ffffff;
+        }
+
         button {
           padding: 0;
           font-size: 16px;

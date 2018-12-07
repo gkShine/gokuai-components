@@ -20,7 +20,7 @@
 
         <gk-button-group plain  class="gk-finder-view-mode">
           <gk-button :border="false" v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
-                     @click.native="handleViewMode(view)" :icon="'gk-icon-'+view"></gk-button>
+                     @click.native="handleViewMode(view)" :icon="'gk-icon-'+view" class="gk-special-button"></gk-button>
         </gk-button-group>
       </div>
     </div>
