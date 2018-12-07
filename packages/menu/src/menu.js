@@ -106,7 +106,7 @@ export default {
         this.position = this.dom.getBoundingClientRect();
       }
       let {left, top} = this.getPosition(this.placement);
-      this.menu.style.left = left - 9 + 'px';
+      this.menu.style.left = left + 'px';
       this.menu.style.top = top + 'px';
 
       if (this.$refs.arrow) {
