@@ -74,6 +74,16 @@
     i[class^="gk-icon"] {
       cursor: pointer;
       margin-right: 5px;
+      line-height: 24px;
+    }
+
+    i[class^="gk-icon"]:hover {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background-color: #EF5350;
+      color: #ffffff;
+      border-radius: 50%;
     }
   }
   .uploader-state-pause {
