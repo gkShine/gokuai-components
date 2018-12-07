@@ -5,9 +5,9 @@
       <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
                      value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
-      <div ref="ops" class="gk-finder-show-ops" v-show="!preview">
+      <div ref="ops" class="gk-finder-show-ops" >
         <slot name="breadcrumb"></slot>
-        <gk-dropdown v-if="sortList" class="gk-finder-sort-block" @command="handleSort">
+        <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
             <span class="gk-finder-sort-button">
               <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-Path" style="vertical-align: middle"></i>
             </span>
@@ -18,7 +18,7 @@
           </gk-dropdown-menu>
         </gk-dropdown>
 
-        <gk-button-group plain  class="gk-finder-view-mode">
+        <gk-button-group plain  class="gk-finder-view-mode" v-show="!preview">
           <gk-button :border="false" v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
                      @click.native="handleViewMode(view)" :icon="'gk-icon-'+view" class="gk-special-button"></gk-button>
         </gk-button-group>
@@ -446,7 +446,7 @@
     },
     mounted() {
       this.$nextTick(() => {
-        this.opsWidth = this.$refs.ops.clientWidth + 'px';
+        this.opsWidth = (this.$refs.ops.clientWidth + 30) + 'px';
       });
       if (this.value && Object.keys(this.value).length) {
         this.openFile(this.value);
