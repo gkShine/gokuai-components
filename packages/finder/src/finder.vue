@@ -8,9 +8,9 @@
       <div ref="ops" class="gk-finder-show-ops" >
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
-            <span class="gk-finder-sort-button">
-              <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-Path" style="vertical-align: middle"></i>
-            </span>
+          <span class="gk-finder-sort-button">
+            <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-Path" style="vertical-align: middle"></i>
+          </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
                               :command="sort" :key="idx">{{sort.label}}

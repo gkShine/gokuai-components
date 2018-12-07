@@ -7,7 +7,9 @@
   .gk-table-header {
     border-spacing: 0;
     width: 100%;
-
+    border-bottom: 1px solid $--table-border-color;
+    position: relative;
+    z-index: 1;
 
     thead {
       tr {
