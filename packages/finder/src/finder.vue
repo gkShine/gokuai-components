@@ -277,7 +277,7 @@
         let getMenus = (buttons) => {
           let menus = [];
           buttons.map((button) => {
-            if (button.beforeShow && !button.beforeShow()) {
+            if (button.before && button.before() === false) {
               return;
             }
             let menu = button;
