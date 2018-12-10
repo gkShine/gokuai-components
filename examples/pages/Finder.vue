@@ -6,7 +6,8 @@
         <div class="demo-block" style="height: 768px;">
             <gk-finder checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading" :buttons="[{
             label: '下载',
-            command: 'download'
+            command: 'download',
+            beforeShow: () => false
           }, {
               label: '保存到库',
               command: 'saveto'

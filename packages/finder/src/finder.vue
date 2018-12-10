@@ -116,7 +116,7 @@
       </template>
     </div>
 
-    <gk-menu ref="contextmenu" v-if="buttons" :data="buttons" @command="commandFile"></gk-menu>
+    <gk-menu ref="contextmenu" v-if="contextMenus" :data="contextMenus" @command="commandFile"></gk-menu>
 
     <slot name="footer"></slot>
   </div>
@@ -216,6 +216,7 @@
         navList: this.initNavs(this.value),
         selectedIndex: [],
         fileList: [],
+        contextMenus: [],
         opsWidth: '150px'
       };
     },
@@ -271,6 +272,23 @@
     methods: {
       gettext(value) {
         return this.translate && this.translate[value] || value;
+      },
+      getContextMenus() {
+        let getMenus = (buttons) => {
+          let menus = [];
+          buttons.map((button) => {
+            if (button.beforeShow && !button.beforeShow()) {
+              return;
+            }
+            let menu = button;
+            if (button.children) {
+              menu.children = getMenus(button.children);
+            }
+            menus.push(menu);
+          });
+          return menus;
+        };
+        this.contextMenus = getMenus(this.buttons);
       },
       showMobileMenuItem(targetElement) {
         if (!this.itemButtonsDom) {
@@ -364,6 +382,7 @@
         if (this.beforeContextmenu && this.beforeContextmenu(files, event) === false) {
           return;
         }
+        this.getContextMenus();
         this.$refs.contextmenu.show(event);
         event.stopPropagation();
       },
