@@ -462,6 +462,9 @@
       },
       getSelected() {
         return this.$refs.table ? this.$refs.table.getSelected() : [];
+      },
+      enter(file) {
+        this.doubleClickItem(file);
       }
     },
     mounted() {
