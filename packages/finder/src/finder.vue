@@ -365,7 +365,7 @@
         this.$emit('checkAll', event);
       },
       doubleClickItem(file, event) {
-        if (event.target.className.indexOf('gk-finder-item-dropdown') > -1) {
+        if (event && event.target.className.indexOf('gk-finder-item-dropdown') > -1) {
           return;
         }
         if (this.beforeEnter && this.beforeEnter(file, event) === false) {
