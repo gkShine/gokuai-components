@@ -464,6 +464,13 @@
         return this.$refs.table ? this.$refs.table.getSelected() : [];
       },
       enter(file) {
+        if (file === undefined) {
+          let files = this.getSelected();
+          if (files.length !== 1) {
+            return false;
+          }
+          file = files[0];
+        }
         this.doubleClickItem(file);
       }
     },

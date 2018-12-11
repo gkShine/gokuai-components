@@ -2,7 +2,9 @@
 @import "./mixins/utils.scss";
 
 .gk-uploader-buttons {
+  zoom: 1;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .gk-uploader-dropdown {
