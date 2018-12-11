@@ -2,14 +2,16 @@
   <div class="gk-finder" :class="{'gk-mobile-finder': isMobile}">
     <slot name="header"></slot>
     <div class="gk-finder-toolbar">
-      <gk-breadcrumb :data="navList" id="fullpath" @navigator="clickBreadcrumb" label="filename"
+      <gk-breadcrumb :data="navList" id="fullpath" :allow-input="allowInput" @navigator="handleNavigator" label="filename"
                      value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
-      <div ref="ops" class="gk-finder-show-ops" >
+      <div ref="ops" class="gk-finder-show-ops">
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
           <span class="gk-finder-sort-button">
-            <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'" style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-caretdown" style="vertical-align: middle"></i>
+            <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'"
+               style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-caretdown"
+                                                                  style="vertical-align: middle"></i>
           </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -18,27 +20,44 @@
           </gk-dropdown-menu>
         </gk-dropdown>
 
-        <gk-button-group plain  class="gk-finder-view-mode" v-show="!preview">
-          <gk-button :border="false" v-for="(view,index) in viewList" size="mini" :key="index" :is-actived="viewMode === view"
+        <gk-button-group plain class="gk-finder-view-mode" v-show="!preview">
+          <gk-button :border="false" v-for="(view,index) in viewList" size="mini" :key="index"
+                     :is-actived="viewMode === view"
                      @click.native="handleViewMode(view)" :icon="'gk-icon-'+view" class="gk-special-button"></gk-button>
         </gk-button-group>
       </div>
     </div>
 
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
-      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" id="fullpath" :list="fileList" v-model="previewFile">
+      <gk-slide v-if="preview" fit toolbar :options="previewToolbar" id="fullpath" :list="fileList"
+                v-model="previewFile">
         <template slot-scope="scope">
           <gk-iframe v-if="getPreviewUrl" :src="getPreviewUrl(scope.item)"></gk-iframe>
         </template>
       </gk-slide>
 
       <template v-else>
-        <gk-thumbnail ref="table" shortcut scroll-on-check right-selected :checkbox="showCheckbox" fit
-                      v-if="viewMode === 'listgrid'" :show-more="showMore" :more-text="moreText"
-                      :loading="loading" :data="list"
-                      :border="0" :default-index="selectedIndex" @load-more="loadMore" @select="selectItem"
-                      @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                      @doubleClick="doubleClickItem" @contextmenu="contextItem" @tap="doubleClickItem">
+        <gk-thumbnail ref="table"
+                      shortcut
+                      scroll-on-check
+                      right-selected
+                      :checkbox="showCheckbox"
+                      fit
+                      v-if="viewMode === 'listgrid'"
+                      :show-more="showMore"
+                      :more-text="moreText"
+                      :loading="loading"
+                      :data="list"
+                      :border="0"
+                      :default-index="selectedIndex"
+                      @load-more="handleLoadMore"
+                      @tap="handleDoubleClick"
+                      @select="handleSelect"
+                      @selectAll="handleSelectAll"
+                      @check="handleCheck"
+                      @checkAll="handleCheckAll"
+                      @doubleClick="handleDoubleClick"
+                      @contextmenu="handleContextmenu">
           <template slot-scope="scope">
             <p>
               <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="64"
@@ -50,12 +69,26 @@
             <slot></slot>
           </div>
         </gk-thumbnail>
-        <gk-table ref="table" shortcut fit scroll-on-check right-selected show-header :loading="loading"
+        <gk-table ref="table"
+                  shortcut
+                  fit
+                  scroll-on-check
+                  right-selected
+                  show-header
+                  :loading="loading"
                   :data="list"
-                  :default-index="selectedIndex" :show-more="showMore" :more-text="moreText"
-                  @load-more="loadMore" @select="selectItem" @doubleClick="doubleClickItem"
-                  @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                  @contextmenu="contextItem" @tap="doubleClickItem" v-else-if="viewMode === 'list'">
+                  :default-index="selectedIndex"
+                  :show-more="showMore"
+                  :more-text="moreText"
+                  @load-more="handleLoadMore"
+                  @tap="handleDoubleClick"
+                  @select="handleSelect"
+                  @selectAll="handleSelectAll"
+                  @check="handleCheck"
+                  @checkAll="handleCheckAll"
+                  @doubleClick="handleDoubleClick"
+                  @contextmenu="handleContextmenu"
+                  v-else-if="viewMode === 'list'">
           <gk-table-column :checkbox="showCheckbox" :width="25" align="center"></gk-table-column>
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="scope">
@@ -75,10 +108,24 @@
             <slot></slot>
           </div>
         </gk-table>
-        <gk-table ref="table" shortcut fit scroll-on-check right-selected :loading="loading" :data="list"
-                  @select="selectItem" @selectAll="selectAllItem" @check="checkItem" @checkAll="checkAllItem"
-                  @doubleClick="doubleClickItem" @tap="doubleClickItem" @contextmenu="contextItem" :default-index="selectedIndex"
-                  :more-text="moreText" :show-more="showMore" @load-more="loadMore" v-else>
+        <gk-table ref="table"
+                  shortcut
+                  fit
+                  scroll-on-check
+                  right-selected
+                  :loading="loading"
+                  :data="list"
+                  :default-index="selectedIndex"
+                  :more-text="moreText"
+                  :show-more="showMore"
+                  @tap="handleDoubleClick"
+                  @select="handleSelect"
+                  @selectAll="handleSelectAll"
+                  @check="handleCheck"
+                  @checkAll="handleCheckAll"
+                  @doubleClick="handleDoubleClick"
+                  @contextmenu="handleContextmenu"
+                  @load-more="handleLoadMore" v-else>
           <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
           <gk-table-column :width="40" valign="top">
             <template slot-scope="scope">
@@ -98,15 +145,20 @@
                   </p>
                 </div>
                 <ul v-if="!isMobile && itemButtons">
-                  <li v-for="(button,index) in itemButtons" :key="index" @click="handleItemButton(button.command, scope.row, scope.index, $event)">{{button.label}}</li>
-                  <li v-if="buttons" @click="handleItemButton('more', scope.row, scope.index, $event)">{{gettext('more')}}</li>
+                  <li v-for="(button,index) in itemButtons" :key="index"
+                      @click="handleItemButton(button.command, scope.row, scope.index, $event)">{{button.label}}
+                  </li>
+                  <li v-if="buttons" @click="handleItemButton('more', scope.row, scope.index, $event)">
+                    {{gettext('more')}}
+                  </li>
                 </ul>
               </div>
             </template>
           </gk-table-column>
-          <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)" >
+          <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)">
             <template slot-scope="scope">
-              <i class="gk-icon-caretdown gk-finder-item-dropdown" v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event)"></i>
+              <i class="gk-icon-caretdown gk-finder-item-dropdown"
+                 v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
@@ -116,7 +168,7 @@
       </template>
     </div>
 
-    <gk-menu ref="contextmenu" v-if="contextMenus" :data="contextMenus" @command="commandFile"></gk-menu>
+    <gk-menu ref="contextmenu" v-if="contextMenus" :data="contextMenus" @command="handleCommand"></gk-menu>
 
     <slot name="footer"></slot>
   </div>
@@ -140,7 +192,7 @@
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import touch from 'gokuai-components/packages/touch/src/touch';
   import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
-  import { device } from 'device.js';
+  import {device} from 'device.js';
 
   const GkIframe = {
     props: {
@@ -189,6 +241,10 @@
       'default-sort': {
         type: String,
         default: ''
+      },
+      'allow-input': {
+        type: Boolean,
+        default: true
       },
       'show-more': Boolean,
       'more-text': String,
@@ -260,7 +316,7 @@
           let li = document.createElement('li');
           li.innerHTML = '<i class="gk-icon-ellipsisv"></i>' + this.gettext('more');
           li.addEventListener('click', (event) => {
-            this.contextItem(this.getSelected(), event);
+            this.handleContextmenu(this.getSelected(), event);
           });
           ul.appendChild(li);
         }
@@ -289,6 +345,19 @@
           return menus;
         };
         this.contextMenus = getMenus(this.buttons);
+      },
+      getSortIcon(key) {
+        let icon = '';
+        if (key === this.sort) {
+          icon = this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down';
+        }
+        return icon;
+      },
+      formatDate(value) {
+        return timeToDate(value * 1000);
+      },
+      formatSize(value, item) {
+        return item.dir ? '-' : bitSize(value);
       },
       showMobileMenuItem(targetElement) {
         if (!this.itemButtonsDom) {
@@ -323,48 +392,35 @@
             this.showMobileMenuItem(event.target.parentNode.parentNode);
           }
         } else {
-          this.contextItem([file], event);
+          this.handleContextmenu([file], event);
         }
       },
       handleItemButton(command, file, index, event) {
         if (command === 'more') {
           this.$refs.table.select(file, index);
-          this.contextItem([file], event);
+          this.handleContextmenu([file], event);
         } else {
           this.$emit('command', [file], command);
         }
-      },
-      getSortIcon(key) {
-        let icon = '';
-        if (key === this.sort) {
-          icon = this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down';
-        }
-        return icon;
-      },
-      formatDate(value) {
-        return timeToDate(value * 1000);
-      },
-      formatSize(value, item) {
-        return item.dir ? '-' : bitSize(value);
       },
       handleViewMode(mode) {
         this.selectedIndex = this.$refs.table.getSelectedIndex();
         this.viewMode = mode;
       },
-      selectItem(files, event) {
+      handleSelect(files, event) {
         this.$emit('select', files, event);
       },
-      selectAllItem(event) {
+      handleSelectAll(event) {
         this.$emit('selectAll', event);
       },
-      checkItem(files, event) {
+      handleCheck(files, event) {
         this.$refs.contextmenu.hide();
         this.$emit('check', files, event);
       },
-      checkAllItem(event) {
+      handleCheckAll(event) {
         this.$emit('checkAll', event);
       },
-      doubleClickItem(file, event) {
+      handleDoubleClick(file, event) {
         if (event && event.target.className.indexOf('gk-finder-item-dropdown') > -1) {
           return;
         }
@@ -376,7 +432,7 @@
         this.$emit('enter', file);
         this.openFile(file);
       },
-      contextItem(files, event) {
+      handleContextmenu(files, event) {
         if (!this.buttons || !this.buttons.length) {
           return;
         }
@@ -387,14 +443,28 @@
         this.$refs.contextmenu.show(event);
         event.stopPropagation();
       },
-      commandFile(command) {
+      handleCommand(command) {
         this.$emit('command', this.getSelected(), command);
       },
-      clickBreadcrumb(value, file, index) {
+      handleNavigator(value, file, index) {
         this.navList = this.navList.slice(0, index + 1);
-        this.selectItem(null, -1);
+        this.handleSelect(null, -1);
         this.$emit('input', file);
         this.$emit('navigator', value, file);
+      },
+      handleSort(command) {
+        if (this.sort === command.value) {
+          this.order = this.order === 'desc' ? 'asc' : 'desc';
+        }
+        this.sort = command.value;
+        this.sortLabel = command.label;
+        this.$emit('sort-change', this.sort, this.order);
+      },
+      handleLoadMore() {
+        if (this.list.length === this.total) {
+          return;
+        }
+        this.$emit('load-more', this.value);
       },
       loadSuccess() {
         this.fileList = [];
@@ -404,20 +474,6 @@
           }
         });
         this.preview = false;
-      },
-      loadMore() {
-        if (this.list.length === this.total) {
-          return;
-        }
-        this.$emit('load-more', this.value);
-      },
-      handleSort(command) {
-         if (this.sort === command.value) {
-         this.order = this.order === 'desc' ? 'asc' : 'desc';
-        }
-        this.sort = command.value;
-        this.sortLabel = command.label;
-        this.$emit('sort-change', this.sort, this.order);
       },
       changeFile(file) {
         this.updateNavs(file);
@@ -471,7 +527,7 @@
           }
           file = files[0];
         }
-        this.doubleClickItem(file);
+        this.handleDoubleClick(file);
       }
     },
     mounted() {

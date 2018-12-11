@@ -8,7 +8,7 @@
         <ul ref="list" class="gk-breadcrumb-list" :class="mode === 'full' ? 'gk-breadcrumb-full' : 'gk-breadcrumb-hidden'">
             <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in data">
                 <template v-if="idx < data.length - 1">
-                    <a href="javascript:void(0)" :title="item[label]" @click="handelClick(item, $event)">{{item[label]}}</a>
+                    <a href="javascript:void(0)" :title="item[label]" @click="handleClick(item, $event)">{{item[label]}}</a>
                     <i class="gk-icon-angleright"></i>
                 </template>
                 <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
@@ -23,7 +23,7 @@
                 </li>
                 <li :key="idx" class="gk-breadcrumb-item" >
                     <template v-if="idx < list.length - 1">
-                        <a href="javascript:void(0)" :title="item[label]" @click="handelClick(item, $event)">{{item[label]}}</a>
+                        <a href="javascript:void(0)" :title="item[label]" @click="handleClick(item, $event)">{{item[label]}}</a>
                         <i class="gk-icon-angleright"></i>
                     </template>
                     <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
@@ -31,7 +31,7 @@
             </template>
         </ul>
         <gk-menu ref="more" show-arrow>
-            <gk-menu-item v-for="(item, idx) in menu" :key="idx" @click.native="handelClick(item, $event)">{{item[label]}}</gk-menu-item>
+            <gk-menu-item v-for="(item, idx) in menu" :key="idx" @click.native="handleClick(item, $event)">{{item[label]}}</gk-menu-item>
         </gk-menu>
     </div>
 </template>
@@ -58,6 +58,7 @@
         type: String,
         default: 'value'
       },
+      'allow-input': Boolean,
       'show-nav': Boolean,
       id: String
     },
@@ -100,7 +101,7 @@
           this.list = _data;
         }, 100);
       },
-      handelClick(item, event) {
+      handleClick(item, event) {
         if (item[this.value] === this.current) {
           return;
         }
@@ -112,7 +113,7 @@
         if (this.input === this.current) {
           return;
         }
-        this.$emit('navigator', this.input, {[this.value]: this.input}, event);
+        this.$emit('navigator', this.input, null, event);
       },
       handlePrevNext(offset) {
         if (offset > 0) {
@@ -140,7 +141,7 @@
       changeMode(mode, event) {
         switch (mode) {
           case 'input':
-            if (Object.keys(this.$listeners).indexOf('navigator') > -1) {
+            if (this.allowInput && Object.keys(this.$listeners).indexOf('navigator') > -1) {
               this.mode = mode;
             }
             break;
