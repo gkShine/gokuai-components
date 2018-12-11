@@ -88,6 +88,9 @@ export default {
       });
       this.$emit('visible-change', true);
     },
+    hide() {
+      this.hideMenu();
+    },
     hideMenu() {
       this.visible = false;
       if (this.isMobile) {

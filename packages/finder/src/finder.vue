@@ -358,6 +358,7 @@
         this.$emit('selectAll', event);
       },
       checkItem(files, event) {
+        this.$refs.contextmenu.hide();
         this.$emit('check', files, event);
       },
       checkAllItem(event) {
