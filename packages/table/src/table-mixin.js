@@ -1,6 +1,6 @@
 import loading from "gokuai-components/packages/loading/src/loading";
 import scrollLoad from 'gokuai-components/packages/scroll-load/src/scroll-load';
-import {intersect, getSelected} from "gokuai-components/src/common/util";
+import {intersect, getSelected, debounce} from "gokuai-components/src/common/util";
 import touch from 'gokuai-components/packages/touch/src/touch';
 
 export default {
@@ -63,7 +63,7 @@ export default {
       clearTimeout(this.clickTimer);
       this.$emit('tap', item, event);
     },
-    handleSelect(item, index, event) {
+    handleSelect(item, index, event, callback) {
       if (Object.keys(this.$listeners).indexOf('tap') > -1 && touch.enable) {
         return false;
       }
@@ -102,6 +102,7 @@ export default {
         this.lastIndex = index;
         this.updateChecked();
         this.$emit('select', this.getSelected(), event);
+        callback && callback();
       }, 20);
     },
     handleCancelSelect(event) {
@@ -134,10 +135,15 @@ export default {
       if (Object.keys(this.$listeners).indexOf('contextmenu') === -1) {
         return;
       }
-      if (this.rightSelected && this.selected[index] === undefined) {
-        this.handleSelect(item, index, event);
+      let emit = () => this.$emit('contextmenu', this.getSelected(), event);
+      if (item === null) {
+        this.handleCancelSelect(event);
+        emit();
+      } else if (this.rightSelected && this.selected[index] === undefined) {
+        this.handleSelect(item, index, event, emit);
+      } else {
+        emit();
       }
-      this.$emit('contextmenu', this.getSelected(), event);
       event.stopPropagation();
       event.preventDefault();
     },

@@ -273,11 +273,11 @@
       gettext(value) {
         return this.translate && this.translate[value] || value;
       },
-      getContextMenus() {
+      getContextMenus(files) {
         let getMenus = (buttons) => {
           let menus = [];
           buttons.map((button) => {
-            if (button.before && button.before() === false) {
+            if (button.before && button.before(files) === false) {
               return;
             }
             let menu = button;
@@ -382,7 +382,7 @@
         if (this.beforeContextmenu && this.beforeContextmenu(files, event) === false) {
           return;
         }
-        this.getContextMenus();
+        this.getContextMenus(files);
         this.$refs.contextmenu.show(event);
         event.stopPropagation();
       },
