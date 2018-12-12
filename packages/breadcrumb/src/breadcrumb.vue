@@ -14,9 +14,9 @@
                 <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
             </li>
         </ul>
-      <gk-input ref="input" v-if="mode === 'input'" autofocus @click.native.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.enter="handleGoto" size="mini">
-        <template slot="prepend" v-if="data[0]">{{data[0][label]}}</template>
-      </gk-input>
+        <gk-input ref="input" v-if="mode === 'input'" autofocus @click.native.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.native.enter="handleGoto" size="mini">
+          <template slot="prepend" v-if="data[0]">{{data[0][label]}}</template>
+        </gk-input>
         <ul v-show="mode === 'normal'" class="gk-breadcrumb-list">
             <template v-for="(item, idx) in list">
                 <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item" >

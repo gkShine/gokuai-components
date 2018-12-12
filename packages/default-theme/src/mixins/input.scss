@@ -12,7 +12,8 @@
 
   .gk-input-group__prepend,
   .gk-input-group__append {
+    line-height: $size - 2 + px;
     padding: 0 $size/2 + px;
-    font-size: 14px;
+    font-size: $size/2 - 2 + px;
   }
 }
