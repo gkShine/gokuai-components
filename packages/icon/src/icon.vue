@@ -1,5 +1,5 @@
 <template>
-    <i :class="{['gk-icon-' + icon]: true, ['gk-icon--' + placement]: placement !== null}"></i>
+    <i :class="{['gk-icon-' + icon]: true, ['gk-icon--' + placement]: placement !== undefined}"></i>
 </template>
 
 <script>

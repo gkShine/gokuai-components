@@ -14,10 +14,6 @@
             }]" @command="fileCommand" :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]"
                        :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             >
-                <gk-button-group slot="breadcrumb" plain >
-                    <gk-button size="mini">上传</gk-button>
-                    <gk-button size="mini">下载</gk-button>
-                </gk-button-group>
               <div>
                 我是空空空的
               </div>

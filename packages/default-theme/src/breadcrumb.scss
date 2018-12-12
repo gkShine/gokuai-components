@@ -18,12 +18,13 @@
 
   .gk-breadcrumb-input {
     width: 100%;
-    margin: 0;
-    padding: 0 6px;
-    font-size: $--font-size;
-    color: $--font-color;
-    height: $--breadcrumb-button-size;
-    border: 1px solid $--button-border-color;
+    vertical-align: middle;
+
+    .gk-input-group__prepend {
+      max-width: 130px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .gk-breadcrumb-list {

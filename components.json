@@ -10,6 +10,7 @@
   "fileicon": "./packages/fileicon/index.js",
   "finder": "./packages/finder/index.js",
   "icon": "./packages/icon/index.js",
+  "input": "./packages/input/index.js",
   "loading": "./packages/loading/index.js",
   "menu": "./packages/menu/index.js",
   "menu-item": "./packages/menu-item/index.js",

@@ -44,3 +44,9 @@
 
   }
 </script>
+
+<style scoped lang="scss">
+  .gk-button {
+    margin-bottom: 5px;
+  }
+</style>

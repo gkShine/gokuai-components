@@ -46,6 +46,9 @@
         }
       },
       changeRoute() {
+        if (!this.isMobile) {
+          return;
+        }
         this.$nextTick(() => {
           this.titles = this.$el.querySelectorAll('.demo-title');
           this.blocks = this.$el.querySelectorAll('.demo-block');
@@ -142,10 +145,6 @@
     border-radius: 3px;
     transition: .2s;
     margin-bottom: 60px;
-
-    .gk-button {
-      margin-bottom: 5px;
-    }
   }
 
   .demo-block:hover {

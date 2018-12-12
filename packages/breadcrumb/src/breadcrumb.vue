@@ -14,7 +14,9 @@
                 <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
             </li>
         </ul>
-        <input ref="input" v-show="mode === 'input'" autofocus @click.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.enter="handleGoto" />
+      <gk-input ref="input" v-if="mode === 'input'" autofocus @click.native.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.enter="handleGoto" size="mini">
+        <template slot="prepend" v-if="data[0]">{{data[0][label]}}</template>
+      </gk-input>
         <ul v-show="mode === 'normal'" class="gk-breadcrumb-list">
             <template v-for="(item, idx) in list">
                 <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item" >
@@ -37,6 +39,7 @@
 </template>
 
 <script>
+  import GkInput from "gokuai-components/packages/input/src/input";
   import GkButton from "gokuai-components/packages/button/src/button";
   import GkButtonGroup from "gokuai-components/packages/button/src/button-group";
   import GkMenu from "gokuai-components/packages/menu/src/menu";
@@ -44,7 +47,7 @@
 
   export default {
     name: "GkBreadcrumb",
-    components: {GkMenuItem, GkMenu, GkButtonGroup, GkButton},
+    components: {GkMenuItem, GkMenu, GkButtonGroup, GkButton, GkInput},
     props: {
       data: {
         type: Array,
@@ -142,6 +145,7 @@
         switch (mode) {
           case 'input':
             if (this.allowInput && Object.keys(this.$listeners).indexOf('navigator') > -1) {
+              this.input = this.current;
               this.mode = mode;
             }
             break;

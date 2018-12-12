@@ -278,8 +278,7 @@
     },
     watch: {
       list: 'loadSuccess',
-      value: 'openFile',
-      previewFile: 'changeFile'
+      value: 'openFile'
     },
     computed: {
       viewList() {
@@ -447,9 +446,11 @@
         this.$emit('command', this.getSelected(), command);
       },
       handleNavigator(value, file, index) {
-        this.navList = this.navList.slice(0, index + 1);
-        this.handleSelect(null, -1);
-        this.$emit('input', file);
+        if (file !== null) {
+          this.navList = this.navList.slice(0, index + 1);
+          this.handleSelect(null, -1);
+          this.$emit('input', file);
+        }
         this.$emit('navigator', value, file);
       },
       handleSort(command) {
@@ -475,18 +476,16 @@
         });
         this.preview = false;
       },
-      changeFile(file) {
-        this.updateNavs(file);
-        this.$emit('input', file);
-      },
       openFile(file) {
         this.hideMobileMenuItem();
         if (!file.dir) {
           this.previewFile = file;
           this.preview = true;
+          this.$emit('input', file);
         } else {
           this.preview = false;
         }
+        this.updateNavs(file);
       },
       initNavs(file) {
         let navs = [];

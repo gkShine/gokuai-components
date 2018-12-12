@@ -1,0 +1,18 @@
+@mixin input-size($size) {
+  .gk-input__inner {
+    height: $size + px;
+    line-height: $size + px;
+  }
+
+  .gk-input__suffix,
+  .gk-input__prefix {
+    line-height: $size + px;
+    height: $size + px;
+  }
+
+  .gk-input-group__prepend,
+  .gk-input-group__append {
+    padding: 0 $size/2 + px;
+    font-size: 14px;
+  }
+}

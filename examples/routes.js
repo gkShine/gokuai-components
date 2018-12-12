@@ -9,6 +9,7 @@ import Menu from './pages/Menu.vue'
 import Thumbnail from './pages/Thumbnail.vue'
 import Dropdown from './pages/Dropdown.vue'
 import Slide from './pages/Slide.vue'
+import Input from './pages/Input.vue'
 
 let routes = [
   {
@@ -25,6 +26,11 @@ let routes = [
     path: '/button',
     component: Button,
     name: '按钮'
+  },
+  {
+    path: '/input',
+    component: Input,
+    name: '文本框'
   },
   {
     path: '/menu',
