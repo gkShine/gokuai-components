@@ -10,6 +10,8 @@
       border-radius: 2px;
       background-color: #FFFFFF;
       color: $--default-border-color;
+      vertical-align: middle;
+      margin-top: -2px;
 
       &:hover {
         color: $--primary-active-color;

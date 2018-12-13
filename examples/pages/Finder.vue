@@ -4,15 +4,7 @@
             文件管理器
         </h3>
         <div class="demo-block" style="height: 768px;">
-            <gk-finder checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading" :buttons="[{
-            label: '下载',
-            command: 'download',
-            before: () => false
-          }, {
-              label: '保存到库',
-              command: 'saveto'
-            }]" @command="fileCommand" :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]"
-                       :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
+            <gk-finder checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading" :buttons="buttons" @command="fileCommand" :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]" :translate="translate" :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText"
             >
               <div>
                 我是空空空的
@@ -38,6 +30,9 @@
         loading: false,
         locked: false,
         moreText: '加载中...',
+        translate: {
+          all: '全选'
+        },
         sort: 'filename asc',
         sortList: [
           {
@@ -57,6 +52,18 @@
     },
     watch: {
       'openFile': 'changeOpenFile'
+    },
+    computed: {
+      buttons() {
+        return [{
+          label: '下载',
+          command: 'download',
+          before: () => false
+        }, {
+          label: '保存到库',
+          command: 'saveto'
+        }];
+      }
     },
     methods: {
       getFiles(fullpath) {

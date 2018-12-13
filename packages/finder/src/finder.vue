@@ -48,6 +48,7 @@
                       :data="list"
                       :border="0"
                       :default-index="selectedIndex"
+                      :translate="translate"
                       @load-more="handleLoadMore"
                       @tap="handleDoubleClick"
                       @select="handleSelect"

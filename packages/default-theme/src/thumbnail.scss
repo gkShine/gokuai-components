@@ -6,6 +6,9 @@
     display: none;
     line-height: 36px;
     border-bottom: 1px solid $--table-border-color;
+    color: #8C95A4;
+    font-size: 14px;
+    font-weight: normal;
   }
 
   .gk-thumbnail-list {
@@ -53,7 +56,6 @@
 
       &.gk-thumbnail-active-item {
         background-color: #E5EFFA;
-        color: #FFFFFF;
       }
     }
 
