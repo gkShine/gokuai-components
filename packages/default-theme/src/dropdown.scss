@@ -1,0 +1,11 @@
+.gk-dropdown {
+  i.gk-icon--right {
+    transition: transform .3s;
+  }
+
+  &.gk-dropdown__opened {
+    i.gk-icon--right {
+      transform: rotate(180deg);
+    }
+  }
+}

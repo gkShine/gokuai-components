@@ -49,7 +49,13 @@ export default {
       return null;
     }
   },
+  watch: {
+    visible: 'updateDropdown'
+  },
   methods: {
+    updateDropdown(value) {
+      this.dropdown && (this.dropdown.opened = value);
+    },
     handleCommand(command) {
       this.$emit('command', command);
       this.dropdown && this.dropdown.$emit('command', command);
@@ -194,7 +200,7 @@ export default {
       }
     },
     windowResize() {
-      if (this.visible) {
+      if (!this.isMobile && this.visible) {
         clearTimeout(this.timer2);
         this.timer2 = setTimeout(() => {
           this.setPosition();

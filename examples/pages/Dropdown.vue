@@ -5,7 +5,7 @@
         </h3>
         <div class="demo-block" style="padding: 20px">
             <gk-dropdown style="display: inline-block">
-                <gk-button>点击出下拉</gk-button>
+                <gk-button>点击出下拉<gk-icon placement="right" icon="caretdown"/></gk-button>
                 <gk-dropdown-menu show-arrow slot="dropdown">
                     <gk-dropdown-item>下拉项一</gk-dropdown-item>
                     <gk-dropdown-item>下拉项二</gk-dropdown-item>
@@ -14,7 +14,7 @@
                 </gk-dropdown-menu>
             </gk-dropdown>
             <gk-dropdown style="display: inline-block">
-                <gk-button>划过出下拉</gk-button>
+                <gk-button>划过出下拉<gk-icon placement="right" icon="caretdown"/></gk-button>
                 <gk-dropdown-menu show-arrow slot="dropdown" trigger="hover">
                     <gk-dropdown-item>下拉项一</gk-dropdown-item>
                     <gk-dropdown-item>下拉项二</gk-dropdown-item>

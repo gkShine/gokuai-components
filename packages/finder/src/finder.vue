@@ -9,7 +9,7 @@
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
           <span class="gk-finder-sort-button">
-            <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'"></i>{{sortLabel}}<i class="gk-icon-caretdown"></i>
+            <gk-icon :icon="order === 'asc' ? 'arrowsdownline' : 'long-arrow-down'"/>{{sortLabel}}<gk-icon icon="caretdown" placement="right"/>
           </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -298,6 +298,7 @@
           return false;
         }
         let tr = document.createElement('tr');
+        tr.classList.add('gk-table-item-toolbar');
         let td = document.createElement('td');
         td.setAttribute('colspan', 4);
         let ul = document.createElement('ul');
@@ -361,11 +362,12 @@
         if (!this.itemButtonsDom) {
           return;
         }
+        let itemToolbar = this.$el.querySelector('.gk-table-item-toolbar');
+        itemToolbar && itemToolbar.remove();
         const parent = targetElement.parentNode;
         if (parent.lastChild === targetElement) {
           parent.appendChild(this.itemButtonsDom);
-        }
-        else {
+        } else {
           parent.insertBefore(this.itemButtonsDom, targetElement.nextSibling);
         }
       },
@@ -377,6 +379,8 @@
         if (openButtons) {
           openButtons.classList.remove('gk-icon-caretup');
         }
+        let activeItem = this.$el.querySelector('.gk-table-item-active');
+        activeItem && activeItem.classList.remove('gk-table-item-active');
         this.itemButtonsDom.remove();
       },
       handleItemDropdown(file, index, event) {

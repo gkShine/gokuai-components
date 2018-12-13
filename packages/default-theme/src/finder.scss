@@ -25,8 +25,7 @@
         .gk-finder-sort-button {
           font-size: 14px;
           line-height: 28px;
-          color: #222222;
-          padding: 0 9px;
+          padding: 0 10px;
 
           i {
             vertical-align: middle;
@@ -155,9 +154,12 @@
 
     &.gk-finder-view-listgrid {
       .gk-finder-filename {
-        overflow: hidden;
+        word-break: break-all;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
         margin-top: 6px;
       }
     }
@@ -174,51 +176,73 @@
 
       table {
         tr.gk-table-item {
+          td {
+            .gk-finder-item-dropdown {
+              padding: 5px;
+              transition: transform .3s;
+            }
+          }
+
+          .gk-finder-main-column {
+            span {
+              color: #9E9E9E;
+            }
+
+            & > div {
+              width: auto;
+
+              p {
+                white-space: normal;
+              }
+            }
+          }
+
           &.gk-table-item:hover,
           &.gk-table-item-active {
             td {
               background-color: transparent;
-              color: inherit;
+              border-color: $--table-border-color;
             }
 
-            .gk-finder-main-column {
-              span {
-                color: #999999;
+            & + tr {
+              td {
+                border-color: $--table-border-color;
               }
+            }
+          }
 
-              & > div {
-                width: auto;
-
-                p {
-                  white-space: normal;
-                }
-              }
+          &.gk-table-item-active {
+            .gk-finder-item-dropdown {
+              transform: rotate(180deg);
             }
           }
         }
       }
 
-      .gk-finder-item-buttons {
-        background-color: $--primary-color;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-around;
-        align-items: center;
-        padding: 0 10px;
+      tr.gk-table-item-toolbar {
+        td {
+          border: 0;
+          padding: 0;
 
-        & > li {
-          margin: 10px 5%;
-          color: $--font-reverse-color;
+          .gk-finder-item-buttons {
+            background-color: $--primary-color;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 10px;
 
-          i {
-            vertical-align: middle;
+            & > li {
+              margin: 10px 5%;
+              color: $--font-reverse-color;
+
+              i {
+                vertical-align: middle;
+              }
+            }
           }
         }
-      }
-
-      .gk-finder-item-dropdown {
-        padding: 5px;
       }
     }
   }
