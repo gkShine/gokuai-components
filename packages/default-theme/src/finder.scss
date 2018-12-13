@@ -27,6 +27,10 @@
           line-height: 28px;
           color: #222222;
           padding: 0 9px;
+
+          i {
+            vertical-align: middle;
+          }
         }
 
         .gk-finder-sort-button:hover {
@@ -64,7 +68,6 @@
     p {
       margin: 0;
       padding: 0;
-      color: #222222;
     }
 
     .gk-slide {
@@ -128,29 +131,24 @@
     &.gk-finder-view-listdetail {
       .gk-finder-filename-column {
         span {
-          color: #222222;
           font-size: 14px;
           margin-right: 10px;
           font-weight:400;
-        }
-      }
-
-      .gk-table-item-active {
-        .gk-finder-filename-column {
-          span {
-            color: #222222;
-          }
         }
       }
     }
 
     &.gk-finder-view-list {
       .gk-finder-filename-column {
-        img, i {
-          margin-right: 10px;
-          margin-top: -2px;
-          float: left;
-          margin-left: 5px;
+        display: table;
+
+        p {
+          display: table-cell;
+          padding: 0 5px;
+
+          img, i {
+            margin-top: -2px;
+          }
         }
       }
     }

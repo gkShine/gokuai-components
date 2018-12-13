@@ -9,9 +9,7 @@
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
           <span class="gk-finder-sort-button">
-            <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'"
-               style="vertical-align: middle"></i>{{sortLabel}}<i class="gk-icon-caretdown"
-                                                                  style="vertical-align: middle"></i>
+            <i :class="this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down'"></i>{{sortLabel}}<i class="gk-icon-caretdown"></i>
           </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -93,17 +91,17 @@
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="scope">
               <div class="gk-finder-filename-column">
-                <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="20"
-                             :folder="!!scope.row.dir"></gk-fileicon>
+                <p><gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="20"
+                             :folder="!!scope.row.dir"></gk-fileicon></p>
                 <p>{{scope.row.filename}}</p>
               </div>
             </template>
           </gk-table-column>
           <gk-table-column property="last_dateline" :label="gettext('last_dateline')" :formatter="formatDate"
-                           :width="180"></gk-table-column>
+                           width="20%"></gk-table-column>
           <gk-table-column property="filesize" :label="gettext('size')" :formatter="formatSize"
-                           :width="80"></gk-table-column>
-          <gk-table-column width="10%"></gk-table-column>
+                           width="8%"></gk-table-column>
+          <gk-table-column width="5%"></gk-table-column>
           <div slot="empty" class="gk-finder-empty">
             <slot></slot>
           </div>
