@@ -157,7 +157,7 @@
           <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)">
             <template slot-scope="scope">
               <i class="gk-icon-caretdown gk-finder-item-dropdown"
-                 v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event)"></i>
+                 v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event.srcEvent)"></i>
             </template>
           </gk-table-column>
           <div slot="empty" class="gk-finder-empty">
