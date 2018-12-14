@@ -1,5 +1,5 @@
 <template>
-  <div class="gk-finder" :class="{'gk-mobile-finder': isMobile}">
+  <div class="gk-finder" :class="{'gk-mobile-finder': isMobile, 'gk-ie-finder': isIE}">
     <slot name="header"></slot>
     <div class="gk-finder-toolbar">
       <gk-breadcrumb :data="navList" id="fullpath" :allow-input="allowInput" @navigator="handleNavigator" label="filename"
@@ -190,7 +190,7 @@
   import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import touch from 'gokuai-components/packages/touch/src/touch';
-  import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
+  import {timeToDate, bitSize, baseName, dirName, isIE} from "gokuai-components/src/common/util";
 
   const GkIframe = {
     props: {
@@ -261,6 +261,7 @@
     data() {
       let [sort, order] = this.defaultSort.split(' ');
       return {
+        isIE: !!isIE(),
         viewMode: this.views && this.views[0] || 'listdetail',
         sort: sort || '',
         sortLabel: '文件名',

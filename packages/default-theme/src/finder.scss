@@ -29,6 +29,7 @@
 
           i {
             vertical-align: middle;
+            top: 0;
           }
         }
 
@@ -52,6 +53,7 @@
         button {
           padding: 0;
           font-size: 16px;
+          line-height: $--breadcrumb-button-size;
           height: $--breadcrumb-button-size;
           width: $--breadcrumb-button-size;
         }
@@ -89,12 +91,13 @@
       & > ul {
         float: left;
         display: none;
-        line-height: 40px;
+        line-height: 38px;
         width: 50%;
         overflow: hidden;
         padding: 0 5%;
         text-align: right;
         white-space: nowrap;
+
         li {
           line-height: 24px;
           margin: 0 10px;
@@ -129,10 +132,13 @@
 
     &.gk-finder-view-listdetail {
       .gk-finder-filename-column {
+        line-height: 19px;
+
         span {
-          font-size: 14px;
+          color: $--second-font-color;
+          font-size: 12px;
           margin-right: 10px;
-          font-weight:400;
+          font-weight: 400;
         }
       }
     }
@@ -167,6 +173,19 @@
     }
   }
 
+  &.gk-ie-finder {
+    .gk-finder-view-listgrid {
+      .gk-thumbnail-item {
+        padding: 15px 10px;
+
+        .gk-finder-filename {
+          white-space: nowrap;
+          margin-top: 15px;
+        }
+      }
+    }
+  }
+
   &.gk-mobile-finder {
     .gk-finder-toolbar {
       display: none;
@@ -188,15 +207,16 @@
           }
 
           .gk-finder-main-column {
-            span {
-              color: $--second-font-color;
-            }
-
             & > div {
               width: auto;
 
               p {
                 white-space: normal;
+                font-size: 16px;
+
+                span {
+                  font-size: 13px;
+                }
               }
             }
           }

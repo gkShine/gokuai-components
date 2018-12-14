@@ -2,7 +2,7 @@
 @import "./mixins/button.scss";
 
 .gk-button {
-  outline: 0;
+  outline: none;
   cursor: pointer;
   text-align: center;
   transition: .1s;

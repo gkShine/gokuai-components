@@ -111,17 +111,6 @@
       margin-left: 300px;
       padding-right: 20px;
     }
-
-    &.touch {
-      .aside {
-
-      }
-
-      .container {
-        margin-left: 0;
-        padding-right: 0;
-      }
-    }
   }
 
   ul {
@@ -156,22 +145,27 @@
   }
 
   .touch:not(.windows) {
-    .demo-title {
-      width: 100%;
-      text-indent: 10px;
-      display: none;
-    }
+    .container {
+      margin-left: 0;
+      padding-right: 0;
 
-    .demo-block {
-      position: absolute;
-      border-radius: 0;
-      top: 60px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      display: none;
-      margin: 0;
-      height: auto !important;
+      .demo-title {
+        width: 100%;
+        text-indent: 10px;
+        display: none;
+      }
+
+      .demo-block {
+        position: absolute;
+        border-radius: 0;
+        top: 60px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: none;
+        margin: 0;
+        height: auto !important;
+      }
     }
 
     .mobile-menu-button {
