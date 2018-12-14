@@ -62,7 +62,9 @@
               <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="64"
                            :folder="!!scope.row.dir"></gk-fileicon>
             </p>
-            <p class="gk-finder-filename" :title="scope.row.filename">{{scope.row.filename}}</p>
+            <p class="gk-finder-filename" :title="scope.row.filename">
+              <span>{{scope.row.filename}}</span>
+            </p>
           </template>
           <div slot="empty" class="gk-finder-empty">
             <slot></slot>

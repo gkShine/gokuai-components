@@ -160,15 +160,19 @@
 
     &.gk-finder-view-listgrid {
       .gk-finder-filename {
-        word-break: break-all;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        /* autoprefixer: off */
-        -webkit-box-orient: vertical;
-        /* autoprefixer: on */
-        overflow: hidden;
         margin-top: 4px;
+        text-align: left;
+        display: inline-block;
+
+        span{
+          display:-webkit-box;
+          -webkit-line-clamp:2;
+          /* autoprefixer: off */
+          -webkit-box-orient: vertical;
+          /* autoprefixer: on */
+          overflow:hidden;
+          text-overflow:ellipsis;
+        }
       }
     }
   }
@@ -178,7 +182,7 @@
       .gk-thumbnail-item {
         padding: 15px 10px;
 
-        .gk-finder-filename {
+        .gk-finder-filename p {
           white-space: nowrap;
         }
       }
