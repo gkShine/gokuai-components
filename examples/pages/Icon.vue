@@ -58,12 +58,12 @@
           <span>gk-icon-ellipsisv</span>
         </span></li>
         <li><span>
-          <gk-icon icon="longarrowdown"></gk-icon>
-          <span>gk-icon-longarrowdown</span>
+          <gk-icon icon="long-arrow-down"></gk-icon>
+          <span>gk-icon-long-arrow-down</span>
         </span></li>
         <li><span>
-          <gk-icon icon="longarrowup"></gk-icon>
-          <span>gk-icon-longarrowup</span>
+          <gk-icon icon="long-arrow-up"></gk-icon>
+          <span>gk-icon-long-arrow-up</span>
         </span></li>
         <li><span>
           <gk-icon icon="sort"></gk-icon>
@@ -72,6 +72,10 @@
         <li><span>
           <gk-icon icon="angle-down"></gk-icon>
           <span>gk-icon-angle-down</span>
+        </span></li>
+        <li><span>
+          <gk-icon icon="angle-left"></gk-icon>
+          <span>gk-icon-angle-left</span>
         </span></li>
         <li><span>
           <gk-icon icon="times"></gk-icon>

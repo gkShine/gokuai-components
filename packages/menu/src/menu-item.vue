@@ -1,15 +1,16 @@
 <template>
   <li class="gk-menu-item" :class="{'gk-menu-item-disabled':disabled}" @click="handleClick" :aria-disabled="disabled">
-    <i v-if="icon" :class="icon"></i><span class="gk-menu-item-right" v-if="showRight"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><i
-        v-if="hasSub" class="gk-icon-caretright"></i></span><slot></slot>
+    <gk-icon v-if="icon" :icon="icon" /><span class="gk-menu-item-right" v-if="showRight"><slot name="after"></slot><em v-if="shortcut">{{shortcut}}</em><gk-icon v-if="hasSub" icon="caretright" /></span><slot></slot>
   </li>
 </template>
 
 <script>
   import {getOS} from "gokuai-components/src/common/util";
+  import GkIcon from "gokuai-components/packages/icon/src/icon";
 
   export default {
     name: "GkMenuItem",
+    components: {GkIcon},
     props: {
       divided: Boolean,
       disabled: Boolean,

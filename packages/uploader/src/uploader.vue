@@ -39,7 +39,7 @@
   import GkTableColumn from "gokuai-components/packages/table/src/table-column";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import {isIE, bitSize} from "gokuai-components/src/common/util";
-  import { device } from 'device.js';
+  import touch from "gokuai-components/packages/touch/src/touch";
 
   export default {
     name: "GkUploader",
@@ -85,7 +85,6 @@
         headLabel: this.headTpl.replace(':d', 0),
         list: [],
         relation: {},
-        isMobile: device.mobile,
         finishFiles: [],
         uploader: false,
         deleteButtons: [],
@@ -93,6 +92,9 @@
       }
     },
     computed: {
+      isMobile() {
+        return touch.device.mobile;
+      },
       showCheck() {
         return !this.auto;
       },

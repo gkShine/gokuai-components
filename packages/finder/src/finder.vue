@@ -9,7 +9,7 @@
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
           <span class="gk-finder-sort-button">
-            <gk-icon :icon="order === 'asc' ? 'arrowsdownline' : 'long-arrow-down'"/>{{sortLabel}}<gk-icon icon="caretdown" placement="right"/>
+            <gk-icon :icon="order === 'asc' ? 'long-arrow-up' : 'long-arrow-down'"/>{{sortLabel}}<gk-icon icon="caretdown" placement="right"/>
           </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -191,7 +191,6 @@
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import touch from 'gokuai-components/packages/touch/src/touch';
   import {timeToDate, bitSize, baseName, dirName} from "gokuai-components/src/common/util";
-  import {device} from 'device.js';
 
   const GkIframe = {
     props: {
@@ -288,7 +287,7 @@
         return views;
       },
       isMobile() {
-        return device.mobile || device.tablet;
+        return touch.enable;
       },
       showCheckbox() {
         return !this.isMobile && this.checkbox
@@ -348,7 +347,7 @@
       getSortIcon(key) {
         let icon = '';
         if (key === this.sort) {
-          icon = this.order === 'asc' ? 'gk-icon-arrowsdownline' : 'gk-icon-long-arrow-down';
+          icon = this.order === 'asc' ? 'long-arrow-up' : 'long-arrow-down';
         }
         return icon;
       },
@@ -364,6 +363,7 @@
         }
         let itemToolbar = this.$el.querySelector('.gk-table-item-toolbar');
         itemToolbar && itemToolbar.remove();
+        targetElement.classList.add('gk-table-item-active');
         const parent = targetElement.parentNode;
         if (parent.lastChild === targetElement) {
           parent.appendChild(this.itemButtonsDom);

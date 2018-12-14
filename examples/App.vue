@@ -30,7 +30,7 @@
     },
     computed: {
       isMobile() {
-        return this.$device.mobile || this.$device.tablet
+        return (this.$device.mobile || this.$device.tablet) && !this.$device.windows
       }
     },
     methods: {
@@ -155,7 +155,7 @@
     padding: 10px;
   }
 
-  .touch {
+  .touch:not(.windows) {
     .demo-title {
       width: 100%;
       text-indent: 10px;

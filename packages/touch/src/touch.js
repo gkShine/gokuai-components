@@ -4,7 +4,9 @@ import {device} from 'device.js';
 export default {
   name: 'gk-touch',
 
-  enable: device.mobile || device.tablet,
+  enable: (device.mobile || device.tablet) && !device.windows,
+
+  device: device,
 
   bind(el, binding) {
     if (!binding.def.enable) {
