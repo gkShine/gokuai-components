@@ -164,14 +164,15 @@
         text-align: left;
         display: inline-block;
 
-        span{
-          display:-webkit-box;
-          -webkit-line-clamp:2;
+        span {
+          word-break: break-all;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
           /* autoprefixer: off */
           -webkit-box-orient: vertical;
           /* autoprefixer: on */
-          overflow:hidden;
-          text-overflow:ellipsis;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }
