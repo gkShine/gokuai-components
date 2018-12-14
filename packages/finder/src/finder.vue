@@ -46,7 +46,7 @@
                       :more-text="moreText"
                       :loading="loading"
                       :data="list"
-                      :border="0"
+                      :border="false"
                       :default-index="selectedIndex"
                       :translate="translate"
                       @load-more="handleLoadMore"
@@ -364,7 +364,6 @@
         }
         let itemToolbar = this.$el.querySelector('.gk-table-item-toolbar');
         itemToolbar && itemToolbar.remove();
-        targetElement.classList.add('gk-table-item-active');
         const parent = targetElement.parentNode;
         if (parent.lastChild === targetElement) {
           parent.appendChild(this.itemButtonsDom);
@@ -376,22 +375,20 @@
         if (!this.itemButtonsDom) {
           return;
         }
-        const openButtons = this.$el.querySelector('.gk-icon-caretup');
+        const openButtons = this.$el.querySelector('.is-opened');
         if (openButtons) {
-          openButtons.classList.remove('gk-icon-caretup');
+          openButtons.classList.remove('is-opened');
         }
-        let activeItem = this.$el.querySelector('.gk-table-item-active');
-        activeItem && activeItem.classList.remove('gk-table-item-active');
         this.itemButtonsDom.remove();
       },
       handleItemDropdown(file, index, event) {
         this.$refs.table.select(file, index);
         if (this.itemButtons) {
-          if (event.target.className.indexOf('gk-icon-caretup') > -1) {
+          if (event.target.className.indexOf('is-opened') > -1) {
             this.hideMobileMenuItem();
           } else {
             this.hideMobileMenuItem();
-            event.target.classList.add('gk-icon-caretup');
+            event.target.classList.add('is-opened');
             this.showMobileMenuItem(event.target.parentNode.parentNode);
           }
         } else {

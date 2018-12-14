@@ -1,6 +1,6 @@
 <template>
   <div class="gk-input" :class="{
-    'gk-input--disabled': disabled,
+    'is-disabled': disabled,
     ['gk-input--' + size]: !!size,
     'gk-input--prefix': prefixIcon,
     'gk-input--suffix': suffixIcon,

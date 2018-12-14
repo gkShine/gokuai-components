@@ -37,9 +37,9 @@
       },
       computedClass() {
         let classList = {
-          'gk-button-plain': this.isPlain,
-          'gk-button-active': this.isActived,
-          'gk-button-noborder': !this.border
+          'is-plain': this.isPlain,
+          'is-active': this.isActived,
+          'is-noborder': !this.border
         };
         if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {
           classList['gk-button--' + this.size] = true;

@@ -35,13 +35,9 @@
     line-height: 1.4;
   }
 
-  &.gk-button-plain {
-    border-radius: 0;
-  }
-
   &:hover,
   &:focus,
-  &.gk-button-active {
+  &.is-active {
     color: #339add;
     border-color: $--default-hover-border-color;
     background-color: $--button-active-color;
@@ -68,7 +64,11 @@
     @include button-variant($--danger-color, $--danger-hover-color, $--danger-active-color);
   }
 
-  &.gk-button-noborder {
+  &.is-plain {
+    border-radius: 0;
+  }
+
+  &.is-noborder {
     border-color: transparent;
   }
 }

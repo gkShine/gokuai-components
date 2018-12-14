@@ -20,7 +20,7 @@
             v-for="(item, index) in data"
             :key="index"
             class="gk-table-item"
-            :class="{'gk-table-item-active':selected[index] !== undefined}"
+            :class="{'is-active':selected[index] !== undefined}"
             @click="handleSelect(item, index, $event)"
             @dblclick="handleDoubleClick(item, index, $event)"
             @contextmenu="handleContextmenu(item, index, $event)"

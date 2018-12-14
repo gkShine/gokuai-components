@@ -23,12 +23,13 @@
       position: relative;
       list-style: none;
       float: left;
-      border: 1px solid #f0f0f0;
+      border: 1px solid $--table-border-color;
       margin: 12px 6px;
       padding: 10px;
       text-align: center;
       color: $--font-color;
       font-size: $--font-size;
+      border-radius: 2px;
 
       img {
         max-width: 100%;
@@ -42,20 +43,31 @@
         top: 5px;
         display: none;
 
-        &.gk-checkbox-checked {
+        &.is-checked {
           display: inline;
         }
       }
 
+      &.is-noborder {
+        border-color: transparent;
+      }
+
       &:hover {
-        background-color: #F2F7FF;
+        background-color: $--thumbnail-hover-color;
+        border-color: $--thumbnail-hover-border-color;
+
         .gk-thumbnail-checkbox {
           display: inline;
         }
       }
 
-      &.gk-thumbnail-active-item {
-        background-color: #E5EFFA;
+      &.is-active {
+        background-color: $--thumbnail-active-color;
+        border-color: $--thumbnail-active-border-color;
+
+        .gk-thumbnail-checkbox {
+          display: inline;
+        }
       }
     }
 

@@ -1,5 +1,5 @@
 <template>
-  <label class="gk-checkbox" :class="{'gk-checkbox-checked':checked}">
+  <label class="gk-checkbox" :class="{'is-checked':checked}">
     <span aria-checked="mixed">
       <i :class="{'gk-icon-checkbox':!checked, 'gk-icon-checkcircle':checked}"></i>
       <slot></slot>

@@ -13,10 +13,6 @@ export default {
       type: String,
       default: 'click'
     },
-    adaptive: {
-      type: Boolean,
-      default: true
-    },
     placement: {
       type: String,
       default: 'bottom-start'
@@ -43,9 +39,6 @@ export default {
     }, list);
   },
   computed: {
-    isMobile() {
-      return this.adaptive && touch.device.mobile;
-    },
     dropdown() {
       let parent = this.$parent;
       if (parent && parent.$el.className.indexOf('gk-dropdown') > -1) {

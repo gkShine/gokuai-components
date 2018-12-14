@@ -41,11 +41,13 @@ $--breadcrumb-item-width: 100px !default;
 --------------------------*/
 $--table-head-height: 36px !default;
 $--table-head-font-color: #8C95A4 !default;
-$--table-hover-color: $--default-hover-color !default;
-$--table-active-color: $--primary-color !default;
+$--table-hover-color: #F2F7FF !default;
+$--table-active-color: #F2F7FF !default;
+$--table-border-color: #F0F0F0 !default;
+$--table-hover-border-color: #CCE8FF !default;
+$--table-active-border-color: #CCE8FF !default;
 $--table-head-background-color: #f0f0f0 !default;
 $--table-body-background-color: transparent !default;
-$--table-border-color: #F0F0F0 !default;
 $--table-more-font-size: 12px !default;
 $--table-more-height: 24px !default;
 $--table-more-font-color: #999 !default;
@@ -60,9 +62,11 @@ $--button-active-color: $--default-active-color !default;
 
 /* Thumbnail
 --------------------------*/
-$--thumbnail-background-color: #FFFFFF !default;
-$--thumbnail-hover-color: #e6f2ff !default;
-$--thumbnail-active-color: $--primary-color !default;
+$--thumbnail-hover-color: $--table-hover-color !default;
+$--thumbnail-active-color: $--table-active-color !default;
+$--thumbnail-border-color: $--table-border-color !default;
+$--thumbnail-hover-border-color: $--table-hover-border-color !default;
+$--thumbnail-active-border-color: $--table-active-border-color !default;
 
 /* Slide
 --------------------------*/

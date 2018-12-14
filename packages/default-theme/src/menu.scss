@@ -85,12 +85,12 @@
       color: #1378EB;
     }
 
-    &.gk-menu-item-active {
+    &.is-active {
       color: $--default-hover-color;
       background-color: $--menu-active-color;
     }
 
-    &.gk-menu-item-disabled {
+    &.is-disabled {
       color: $--menu-disabled-font-color;
       background: none;
     }

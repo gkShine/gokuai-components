@@ -22,8 +22,7 @@
             :property="property"
             :size="size"
             :is-checked="checked[index] !== undefined"
-            :class="{'gk-thumbnail-active-item':selected[index] !== undefined}"
-            :style="style"
+            :class="{'is-active':selected[index] !== undefined, 'is-noborder': !border}"
         ></gk-thumbnail-item>
       </ul>
       <div v-if="showMore" class="gk-thumbnail-more">
@@ -55,9 +54,12 @@
         type: String,
         default: 'loading...'
       },
+      border: {
+        type: Boolean,
+        default: true
+      },
       data: Array,
       property: String,
-      border: Number,
       checkbox: Boolean,
       size: {
         type: Object,
@@ -70,13 +72,6 @@
       return {
         touchEnable: touch.enable
       };
-    },
-    computed: {
-      style() {
-        return {
-          border: this.border + 'px'
-        };
-      }
     },
     methods: {
       getLineSize() {

@@ -102,17 +102,34 @@
           }
         }
 
-        &:hover,
-        &.gk-table-item-active {
+        &:hover {
           td {
-            background-color: #F2F7FF;
-            border-top-color: #CCE8FF;
-            border-bottom-color: #CCE8FF;
+            background-color: $--table-hover-color;
+            border-top-color: $--table-hover-border-color;
+            border-bottom-color: $--table-hover-border-color;
           }
 
           & + tr {
             td {
-              border-top-color: #CCE8FF;
+              border-top-color: $--table-hover-border-color;
+            }
+          }
+
+          .gk-checkbox {
+            display: inline;
+          }
+        }
+
+        &.is-active {
+          td {
+            background-color: $--table-active-color;
+            border-top-color: $--table-active-border-color;
+            border-bottom-color: $--table-active-border-color;
+          }
+
+          & + tr {
+            td {
+              border-top-color: $--table-active-border-color;
             }
           }
 
@@ -157,7 +174,7 @@
     .gk-checkbox {
       display: none;
 
-      &.gk-checkbox-checked {
+      &.is-checked {
         display: inline;
       }
     }

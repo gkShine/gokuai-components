@@ -1,16 +1,26 @@
 import "mdn-polyfills/Node.prototype.remove";
 import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
+import touch from "gokuai-components/packages/touch/src/touch";
 
 export default {
   components: {GkMenuItem},
   props: {
-    data: Array
+    data: Array,
+    adaptive: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
       menu: null,
       visible: false,
       timer: 0
+    }
+  },
+  computed: {
+    isMobile() {
+      return this.adaptive && touch.device.mobile;
     }
   },
   methods: {
@@ -104,10 +114,10 @@ export default {
             this.menu.style.display = 'none';
         }
     });
-    document.addEventListener('click', this.bodyClick);
+    !this.isMobile && document.addEventListener('click', this.bodyClick);
   },
   destroyed() {
     this.menu.remove();
-    document.removeEventListener('click', this.bodyClick);
+    !this.isMobile && document.removeEventListener('click', this.bodyClick);
   }
 }
