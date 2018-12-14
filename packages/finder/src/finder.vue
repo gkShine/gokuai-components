@@ -2,7 +2,7 @@
   <div class="gk-finder" :class="{'gk-mobile-finder': isMobile, 'gk-ie-finder': isIE}">
     <slot name="header"></slot>
     <div class="gk-finder-toolbar">
-      <gk-breadcrumb :data="navList" id="fullpath" :allow-input="allowInput" @navigator="handleNavigator" label="filename"
+      <gk-breadcrumb ref="breadcrumb" :data="navList" id="fullpath" :allow-input="allowInput" @navigator="handleNavigator" label="filename"
                      value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
       <div ref="ops" class="gk-finder-show-ops">
@@ -350,7 +350,7 @@
       getSortIcon(key) {
         let icon = '';
         if (key === this.sort) {
-          icon = this.order === 'asc' ? 'long-arrow-up' : 'long-arrow-down';
+          icon = this.order === 'asc' ? 'gk-icon-long-arrow-up' : 'gk-icon-long-arrow-down';
         }
         return icon;
       },
@@ -530,6 +530,9 @@
           file = files[0];
         }
         this.handleDoubleClick(file);
+      },
+      up() {
+        this.$refs.breadcrumb.toUp();
       }
     },
     mounted() {

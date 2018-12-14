@@ -1,41 +1,44 @@
 <template>
-    <div class="gk-breadcrumb">
-        <gk-button-group ref="ops" class="gk-breadcrumb-ops" v-if="showNav" plain>
-            <gk-button icon="gk-icon-angleleft" @click="handlePrevNext(-1)"></gk-button>
-            <gk-button icon="gk-icon-angleright" @click="handlePrevNext(+1)"></gk-button>
-        </gk-button-group>
+  <div class="gk-breadcrumb">
+    <gk-button-group ref="ops" class="gk-breadcrumb-ops" v-if="showNav" plain>
+      <gk-button icon="gk-icon-angleleft" @click="handlePrevNext(-1)"></gk-button>
+      <gk-button icon="gk-icon-angleright" @click="handlePrevNext(+1)"></gk-button>
+      <gk-button icon="gk-icon-long-arrow-up" @click="handleUp"></gk-button>
+    </gk-button-group>
 
-        <ul ref="list" class="gk-breadcrumb-list" :class="mode === 'full' ? 'gk-breadcrumb-full' : 'gk-breadcrumb-hidden'">
-            <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in data">
-                <template v-if="idx < data.length - 1">
-                    <a href="javascript:void(0)" :title="item[label]" @click="handleClick(item, $event)">{{item[label]}}</a>
-                    <i class="gk-icon-angleright"></i>
-                </template>
-                <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
-            </li>
-        </ul>
-        <gk-input ref="input" v-if="mode === 'input'" autofocus @click.native.stop.prevent v-model="input" class="gk-breadcrumb-input" @keyup.native.enter="handleGoto" size="mini">
-          <template slot="prepend" v-if="data[0]">{{data[0][label]}}</template>
-        </gk-input>
-        <ul v-show="mode === 'normal'" class="gk-breadcrumb-list">
-            <template v-for="(item, idx) in list">
-                <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item" >
-                    <a href="javascript:void(0)" @click="showMenu">...</a>
-                    <i class="gk-icon-angleright"></i>
-                </li>
-                <li :key="idx" class="gk-breadcrumb-item" >
-                    <template v-if="idx < list.length - 1">
-                        <a href="javascript:void(0)" :title="item[label]" @click="handleClick(item, $event)">{{item[label]}}</a>
-                        <i class="gk-icon-angleright"></i>
-                    </template>
-                    <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
-                </li>
-            </template>
-        </ul>
-        <gk-menu ref="more" show-arrow>
-            <gk-menu-item v-for="(item, idx) in menu" :key="idx" @click.native="handleClick(item, $event)">{{item[label]}}</gk-menu-item>
-        </gk-menu>
-    </div>
+    <ul ref="list" class="gk-breadcrumb-list" :class="mode === 'full' ? 'gk-breadcrumb-full' : 'gk-breadcrumb-hidden'">
+      <li :key="idx" class="gk-breadcrumb-item" v-for="(item, idx) in data">
+        <template v-if="idx < data.length - 1">
+          <a href="javascript:void(0)" :title="item[label]" @click="handleClick(item, $event)">{{item[label]}}</a>
+          <i class="gk-icon-angleright"></i>
+        </template>
+        <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
+      </li>
+    </ul>
+    <gk-input ref="input" v-if="mode === 'input'" autofocus @click.native.stop.prevent v-model="input"
+              class="gk-breadcrumb-input" @keyup.native.enter="handleGoto" size="mini">
+      <template slot="prepend" v-if="data[0]">{{data[0][label]}}</template>
+    </gk-input>
+    <ul v-show="mode === 'normal'" class="gk-breadcrumb-list">
+      <template v-for="(item, idx) in list">
+        <li :key="idx+100" v-if="menu.length && idx === 1" class="gk-breadcrumb-item">
+          <a href="javascript:void(0)" @click="showMenu">...</a>
+          <i class="gk-icon-angleright"></i>
+        </li>
+        <li :key="idx" class="gk-breadcrumb-item">
+          <template v-if="idx < list.length - 1">
+            <a href="javascript:void(0)" :title="item[label]" @click="handleClick(item, $event)">{{item[label]}}</a>
+            <i class="gk-icon-angleright"></i>
+          </template>
+          <span v-else :title="item[label]" @click="changeMode('input', $event)">{{item[label]}}</span>
+        </li>
+      </template>
+    </ul>
+    <gk-menu ref="more" show-arrow>
+      <gk-menu-item v-for="(item, idx) in menu" :key="idx" @click.native="handleClick(item, $event)">{{item[label]}}
+      </gk-menu-item>
+    </gk-menu>
+  </div>
 </template>
 
 <script>
@@ -125,6 +128,10 @@
           this.$emit('prev');
         }
       },
+      handleUp(event) {
+        let upItem = this.list[this.list.length - 2];
+        upItem && this.handleClick(upItem, event);
+      },
       findIndex(item) {
         if (this.id) {
           for (let i = 0; i < this.data.length; i++) {
@@ -168,6 +175,9 @@
       },
       documentClick() {
         this.mode === 'input' && (this.mode = 'normal');
+      },
+      toUp() {
+        this.handleUp();
       }
     },
     mounted() {
