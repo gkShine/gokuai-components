@@ -3,7 +3,7 @@
     <h3 class="demo-title">
       右键菜单
     </h3>
-    <div class="demo-block" style="height: 400px;" @contextmenu="handleRight">
+    <div class="demo-block" style="height: 400px;" @contextmenu.stop.prevent="handleRight">
 
     </div>
     <gk-menu ref="contextmenu" @command="handleCommand">
@@ -32,7 +32,6 @@
     methods: {
       handleRight(event) {
         this.$refs.contextmenu.show(event);
-        event.preventDefault();
       },
       handleCommand(value) {
         console.log(value)
