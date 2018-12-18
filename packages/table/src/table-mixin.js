@@ -56,12 +56,12 @@ export default {
     gettext(value) {
       return this.translate && this.translate[value] || value;
     },
-    handleTap(item, index, event) {
-      if (typeof this.beforeSelect === 'function' && !this.beforeSelect(item, index, event)) {
+    handleTap(index, event) {
+      if (typeof this.beforeSelect === 'function' && !this.beforeSelect(this.data[index], index, event)) {
         return false;
       }
       clearTimeout(this.clickTimer);
-      this.$emit('tap', item, event);
+      this.$emit('tap', this.data[index], event);
     },
     handleSelect(item, index, event, callback) {
       if (Object.keys(this.$listeners).indexOf('tap') > -1 && touch.enable) {

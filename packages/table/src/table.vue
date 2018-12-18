@@ -24,7 +24,7 @@
             @click="handleSelect(item, index, $event)"
             @dblclick="handleDoubleClick(item, index, $event)"
             @contextmenu="handleContextmenu(item, index, $event)"
-            v-touch:tap.stop.prevent="($event) => handleTap(item, index, $event)"
+            v-touch:tap.prevent="($event) => handleTap(index, $event)"
         >
           <gk-table-cell @check="handleCheck" :is-checked="checked[index] !== undefined"
                          :index="index" :data="item" :column="column"

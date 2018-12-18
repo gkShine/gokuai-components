@@ -14,7 +14,7 @@
             @dblclick.native="handleDoubleClick(item, index, $event)"
             @contextmenu.native="handleContextmenu(item, index, $event)"
             @change-checked="handleCheck(item, index, $event)"
-            v-touch:tap.stop.prevent="($event) => handleTap(item, index, $event)"
+            v-touch:tap.prevent="($event) => handleTap(index, $event)"
             v-for="(item, index) in data"
             :key="index"
             :data="item"

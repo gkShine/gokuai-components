@@ -12,6 +12,7 @@ export default {
     if (!binding.def.enable) {
       return false;
     }
+
     let hammer = new Hammer(el, {
       enable: binding.def.enable
     });
@@ -19,13 +20,8 @@ export default {
     hammer.on(binding.arg, (e) => {
       binding.value(e);
 
-      if (binding.modifiers.stop) {
-        e.srcEvent.stopPropagation();
-      }
-
       if (binding.modifiers.prevent) {
         e.preventDefault();
-        e.srcEvent.preventDefault();
       }
     });
   },
