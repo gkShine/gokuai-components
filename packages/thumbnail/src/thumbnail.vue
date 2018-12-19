@@ -78,7 +78,7 @@
         timer: 0,
         touchEnable: touch.enable,
         itemSize: this.size || this.sizeScope[0],
-        lockData: null
+        lockData: {}
       };
     },
     watch: {
@@ -109,9 +109,7 @@
           size: this.itemSize,
           count: this.data.length
         };
-        if (this.lockData === null) {
-          this.lockData = lockData;
-        } else if (JSON.stringify(lockData) !== JSON.stringify(this.lockData)) {
+        if (JSON.stringify(lockData) !== JSON.stringify(this.lockData)) {
           this.lockData = lockData;
           return true;
         } else {
@@ -178,7 +176,6 @@
       }
     },
     mounted() {
-      this.checkLock();
       if (this.adaptive) {
         this.$nextTick(() => {
           this.relocate();
