@@ -129,7 +129,7 @@
         }
       },
       handleUp(event) {
-        let upItem = this.list[this.list.length - 2];
+        let upItem = this.list[this.list.length - 1];
         upItem && this.handleClick(upItem, event);
       },
       findIndex(item) {

@@ -7,8 +7,9 @@ export default {
     render: Function,
     data: Object|String,
     property: String,
-    size: Object,
+    size: Object|Number,
     checkbox: Boolean,
+    'item-class': String|Object,
     'is-checked': Boolean
   },
   render(h) {
@@ -16,7 +17,8 @@ export default {
     if (this.render) {
       content = this.render({
         row: this.data,
-        index: this.index
+        index: this.index,
+        size: this.size
       });
     } else {
       let src = '';
@@ -31,11 +33,14 @@ export default {
         }
       });
     }
+    const computedClass = typeof this.itemClass === 'string' ? {[this.itemClass]:true} : this.itemClass || {};
     return h('li', {
       class: {
-        'gk-thumbnail-item': true
+        'gk-thumbnail-item': true,
+        ['gk-thumbnail-item--' + this.size]: typeof this.size === 'number',
+        ...computedClass
       },
-      style: {
+      style: this.size instanceof Object && {
         width: this.size.w + 'px',
         height: this.size.h + 'px'
       }

@@ -15,6 +15,7 @@ export default {
     'before-select': Function,
     'scroll-on-check': Boolean,
     'scroll-on-select': Boolean,
+    'item-class': String|Object,
     'default-index': Number | Array,
     'default-checked-index': {
       type: Number | Array,

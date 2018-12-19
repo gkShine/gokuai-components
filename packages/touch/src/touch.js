@@ -33,6 +33,11 @@ export default {
     let hammer = new Hammer(el, {
       enable: this.enable
     });
+    if (event.indexOf('pinch') > -1) {
+      hammer.get('pinch').set({enable: true});
+    } else if (event.indexOf('rotate') > -1) {
+      hammer.get('rotate').set({enable: true});
+    }
     hammer.on(event, callback);
   }
 };

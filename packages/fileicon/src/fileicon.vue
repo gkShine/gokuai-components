@@ -24,7 +24,7 @@
       }
     },
     watch: {
-      thumbnail: 'watchThumbnai'
+      thumbnail: 'watchThumbnail'
     },
     computed: {
       sizeCls() {
@@ -39,7 +39,7 @@
       }
     },
     methods: {
-      watchThumbnai(value) {
+      watchThumbnail(value) {
         this.showThumbnail = !!value;
       }
     }

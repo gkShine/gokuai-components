@@ -197,7 +197,7 @@ export default {
         this.wrapper.style.display = 'block';
       }
     },
-    windowResize() {
+    handleWindowResize() {
       if (!this.isMobile && this.visible) {
         clearTimeout(this.timer2);
         this.timer2 = setTimeout(() => {
@@ -218,11 +218,11 @@ export default {
     }
     if (this.dom) {
       this.bind();
-      window.addEventListener('resize', this.windowResize);
+      window.addEventListener('resize', this.handleWindowResize);
     }
   },
   destroyed() {
-    window.removeEventListener('resize', this.windowResize);
+    window.removeEventListener('resize', this.handleWindowResize);
     if (this.isMobile && this.wrapper !== null) {
       this.wrapper.remove();
     }

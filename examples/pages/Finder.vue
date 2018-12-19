@@ -1,16 +1,25 @@
 <template>
-    <div class="container">
-        <h3 class="demo-title">
-            文件管理器
-        </h3>
-        <div class="demo-block" style="height: 768px;">
-            <gk-finder ref="finder" checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList" :total="total" :loading="loading" :buttons="buttons" @command="fileCommand" :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]" :translate="translate" :default-sort="sort" :sort-list="sortList" @load-more="getMore" :show-more="locked" :more-text="moreText" >
-              <div>
-                我是空空空的
-              </div>
-            </gk-finder>
+  <div class="container">
+    <h3 class="demo-title">
+      文件管理器
+    </h3>
+    <div class="demo-block" style="height: 768px;">
+      <gk-finder ref="finder" checkbox v-if="Object.keys(root).length" v-model="openFile" :root="root" :list="fileList"
+                 :total="total" :loading="loading" :buttons="buttons" @command="fileCommand"
+                 :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]"
+                 :translate="translate" :default-sort="sort" :sort-list="sortList" @load-more="getMore"
+                 :show-more="locked" :more-text="moreText">
+        <div>
+          我是空空空的
         </div>
+      </gk-finder>
+      <gk-button-group>
+        <gk-button @click.native="$refs.finder.zoom('in')">放大</gk-button>
+        <gk-button @click.native="$refs.finder.zoom('out')">缩小</gk-button>
+        <gk-button @click.native="$refs.finder.zoom(128)">设置为128</gk-button>
+      </gk-button-group>
     </div>
+  </div>
 </template>
 
 <script>

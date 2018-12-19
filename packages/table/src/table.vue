@@ -20,7 +20,7 @@
             v-for="(item, index) in data"
             :key="index"
             class="gk-table-item"
-            :class="{'is-active':selected[index] !== undefined}"
+            :class="Object.assign(computedClass, {'is-active':selected[index] !== undefined})"
             @click="handleSelect(item, index, $event)"
             @dblclick="handleDoubleClick(item, index, $event)"
             @contextmenu="handleContextmenu(item, index, $event)"
@@ -89,6 +89,9 @@
           style.height = height + 'px';
         }
         return style;
+      },
+      computedClass() {
+        return typeof this.itemClass === 'string' ? {[this.itemClass]:true} : this.itemClass || {};
       },
       tableStyle() {
         let style = {};

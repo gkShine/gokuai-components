@@ -49,6 +49,7 @@
                       :border="false"
                       :default-index="selectedIndex"
                       :translate="translate"
+                      :size-scope="[128, 192, 256, 320]"
                       @load-more="handleLoadMore"
                       @tap="handleDoubleClick"
                       @select="handleSelect"
@@ -59,7 +60,7 @@
                       @contextmenu="handleContextmenu">
           <template slot-scope="scope">
             <p>
-              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="64"
+              <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="scope.size/2"
                            :folder="!!scope.row.dir"></gk-fileicon>
             </p>
             <p class="gk-finder-filename" :title="scope.row.filename">
@@ -520,6 +521,12 @@
       },
       getSelected() {
         return this.$refs.table ? this.$refs.table.getSelected() : [];
+      },
+      zoom(size) {
+        if (this.viewMode !== 'listgrid') {
+          return false;
+        }
+        this.$refs.table.zoom(size);
       },
       enter(file) {
         if (file === undefined) {
