@@ -28,7 +28,7 @@
 
     <div class="gk-finder-content" :class="'gk-finder-view-' + viewMode">
       <gk-slide v-if="preview" fit toolbar :options="previewToolbar" id="fullpath" :list="fileList"
-                v-model="previewFile">
+                v-model="previewFile" @change="handleSlideChange">
         <template slot-scope="scope">
           <gk-iframe v-if="getPreviewUrl" :src="getPreviewUrl(scope.item)"></gk-iframe>
         </template>
@@ -373,6 +373,9 @@
         } else {
           parent.insertBefore(this.itemButtonsDom, targetElement.nextSibling);
         }
+      },
+      handleSlideChange(file) {
+        this.$emit('change-preview', file);
       },
       hideMobileMenuItem() {
         if (!this.itemButtonsDom) {

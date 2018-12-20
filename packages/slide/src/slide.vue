@@ -124,6 +124,7 @@
         }
         this.selected = this.list[--this.selectedIndex];
         this.$emit('input', this.selected);
+        this.$emit('change', this.selected);
       },
       handleNext() {
         if (!this.list) {
@@ -134,6 +135,7 @@
         }
         this.selected = this.list[++this.selectedIndex];
         this.$emit('input', this.selected);
+        this.$emit('change', this.selected);
       },
       handleDocumentKeydown(event) {
         if (event.keyCode === 37) { //arrow left
