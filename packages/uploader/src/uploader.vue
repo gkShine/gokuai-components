@@ -1,34 +1,36 @@
 <template>
-    <section ref="uploader" class="gk-uploader" :class="{'gk-uploader-dialog': dialog, 'gk-uploader-fit': fit, 'gk-mobile-uploader': isMobile}"
-             :style="{display: hidden ? 'none' : 'block'}">
-        <div class="gk-uploader-head" v-if="dialog">
-            <h2>{{dialogTitle()}}</h2>
-            <div><i :class="'gk-icon-window-' + (mini ? 'maximize': 'minimize')" @click="mini = !mini"></i><i
-                    class="gk-icon-times" @click="hidden=true"></i></div>
+  <section ref="uploader" class="gk-uploader"
+           :class="{'gk-uploader-dialog': dialog, 'gk-uploader-fit': fit, 'gk-mobile-uploader': isMobile}"
+           :style="{display: hidden ? 'none' : 'block'}">
+    <div class="gk-uploader-head" v-if="dialog">
+      <h2>{{dialogTitle()}}</h2>
+      <div><i :class="'gk-icon-window-' + (mini ? 'maximize': 'minimize')" @click="mini = !mini"></i><i
+          class="gk-icon-times" @click="hidden=true"></i></div>
+    </div>
+    <div class="gk-uploader-body">
+      <gk-table :fit="fit || dialog" ref="table" :data="list" :show-header="showCheck" :show-checkbox="showCheck"
+                :height="height"
+                @check="updateHeadLabel" :before-select="() => false">
+        <gk-table-column :checkbox="showCheck" :width="25" align="center"></gk-table-column>
+        <gk-table-column property="name" :label="headLabel">
+          <template slot-scope="scope">
+            <div class="gk-uploader-filename-column" :title="scope.row.name">
+              <gk-fileicon :filename="scope.row.name" :size="24"></gk-fileicon>{{scope.row.name}}
+            </div>
+          </template>
+        </gk-table-column>
+        <gk-table-column property="size" :width="80" align="center" :formatter="formatSize"></gk-table-column>
+        <gk-table-column property="percent" :width="140" align="center" :formatter="formatState"></gk-table-column>
+        <gk-table-column property="state" :formatter="formatOption" align="center" class="gk-uploader-options"
+                         :width="40"></gk-table-column>
+        <div slot="empty" class="gk-uploader-empty">
+          <div ref="emptyContent" class="gk-uploader-empty-content" :style="emptyContentStyle">
+            <slot></slot>
+          </div>
         </div>
-        <div class="gk-uploader-body">
-            <gk-table :fit="fit || dialog" ref="table" :data="list" :show-header="showCheck" :show-checkbox="showCheck"
-                      :height="height"
-                      @check="updateHeadLabel" :before-select="() => false">
-                <gk-table-column :checkbox="showCheck" :width="20" align="center"></gk-table-column>
-                <gk-table-column property="name" :label="headLabel">
-                    <template slot-scope="scope">
-                        <gk-fileicon :filename="scope.row.name" :size="24"></gk-fileicon>
-                        {{scope.row.name}}
-                    </template>
-                </gk-table-column>
-                <gk-table-column property="size" width="5%" :formatter="formatSize"></gk-table-column>
-                <gk-table-column property="percent" width="15%" :formatter="formatState"></gk-table-column>
-                <gk-table-column property="state" :formatter="formatOption" align="center"
-                                 width="10%"></gk-table-column>
-                <div slot="empty" class="gk-uploader-empty">
-                    <div ref="emptyContent" class="gk-uploader-empty-content" :style="emptyContentStyle">
-                        <slot></slot>
-                    </div>
-                </div>
-            </gk-table>
-        </div>
-    </section>
+      </gk-table>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -213,7 +215,7 @@
           }, stateText);
         }
         if (data.percent > 0) {
-          return `${(data.percent * 100).toFixed(2)}% ${bitSize(data.speed, true)}/s`;
+          return `${(data.percent * 100).toFixed(2)}%(${bitSize(data.speed, true)}/s)`;
         }
         return '';
       },

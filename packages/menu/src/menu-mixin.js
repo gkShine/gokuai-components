@@ -114,10 +114,11 @@ export default {
             this.menu.style.display = 'none';
         }
     });
-    !this.isMobile && document.addEventListener('click', this.bodyClick);
+    //由于firefox的document上的`contextmenu`事件会执行`click`事件，因此改click事件为`mousedown`事件
+    !this.isMobile && document.addEventListener('mousedown', this.bodyClick);
   },
   destroyed() {
     this.menu.remove();
-    !this.isMobile && document.removeEventListener('click', this.bodyClick);
+    !this.isMobile && document.removeEventListener('mousedown', this.bodyClick);
   }
 }

@@ -50,11 +50,11 @@
       updateValue(value) {
         this.input = value;
       },
-      handleFocus() {
+      handleFocus(event) {
         this.isFocus = true;
         this.$emit('focus', event);
       },
-      handleBlur() {
+      handleBlur(event) {
         this.isFocus = false;
         this.$emit('blur', event);
       },

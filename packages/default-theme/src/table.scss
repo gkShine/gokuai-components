@@ -89,6 +89,7 @@
       font-size: $--font-size;
       border-spacing: 0;
       border: 0;
+      table-layout: fixed;
 
       tr.gk-table-item {
         td {

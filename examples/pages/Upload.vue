@@ -123,7 +123,7 @@
     methods: {
       checkSize({size}, error) {
         if (size > 2090774) {
-          return '超出大小[401]';
+          // return '超出大小[401]';
         }
         return true;
       },

@@ -72,20 +72,33 @@
 
   .gk-uploader-body {
     @include fit-window;
+    background-color: #FFFFFF;
 
-    i[class^="gk-icon"] {
-      cursor: pointer;
-      margin-right: 5px;
-      line-height: 24px;
+    .gk-uploader-filename-column {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      i, img {
+        margin-right: 3px;
+      }
     }
 
-    i[class^="gk-icon-times"]:hover {
-      width: 24px;
-      height: 24px;
-      display: inline-block;
-      background-color: #EF5350;
-      color: #ffffff;
-      border-radius: 50%;
+    .gk-uploader-options {
+      i[class^="gk-icon"] {
+        cursor: pointer;
+        margin-right: 5px;
+        line-height: 24px;
+      }
+
+      i[class^="gk-icon-times"]:hover {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        background-color: #EF5350;
+        color: #ffffff;
+        border-radius: 50%;
+      }
     }
   }
   .uploader-state-pause {
@@ -107,7 +120,7 @@
 
 .gk-uploader-dialog {
   position: absolute;
-  box-shadow: 0 0 12px 6px rgba(0, 0,0,0.09);
+  box-shadow: 0 0 12px 6px rgba(0, 0, 0, 0.09);
   border-radius: 5px 5px 0 0;
   display: none;
 

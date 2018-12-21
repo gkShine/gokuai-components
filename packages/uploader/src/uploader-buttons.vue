@@ -20,6 +20,7 @@
   import GkDropdown from "gokuai-components/packages/dropdown/src/dropdown";
   import GkDropdownMenu from "gokuai-components/packages/dropdown/src/dropdown-menu";
   import GkDropdownItem from "gokuai-components/packages/dropdown/src/dropdown-item";
+  import touch from 'gokuai-components/packages/touch/src/touch';
   import {isIE} from "gokuai-components/src/common/util";
 
   export default {
@@ -41,7 +42,7 @@
           list = Object.values(this.defaultButtons);
         } else {
           this.buttons.forEach((button) => {
-            if (button.type === 'folder' && isIE()) {
+            if (button.type === 'folder' && (isIE() || touch.enable)) {
               return;
             }
             list.push(Object.assign(this.defaultButtons[button.type], button));
@@ -62,7 +63,7 @@
             label: this.gettext('upload file')
           }
         };
-        if (!isIE()) {
+        if (!isIE() && !touch.enable) {
           buttons['folder'] = {
             type: 'folder',
             class: 'gk-uploader-folder',
