@@ -20,7 +20,7 @@
     color: #EEEEEE;
   }
 
-  @each $size in 16, 24, 26, 28, 32, 34, 40, 64 {
+  @each $size in 16, 24, 26, 28, 30, 32, 34, 36, 38, 40, 64 {
     &.gk-avatar-#{$size} {
       width: #{$size}px;
       height: #{$size}px;
