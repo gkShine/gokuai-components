@@ -1,5 +1,6 @@
 {
   "advanced-permissions": "./packages/advanced-permissions/index.js",
+  "avatar": "./packages/avatar/index.js",
   "breadcrumb": "./packages/breadcrumb/index.js",
   "button": "./packages/button/index.js",
   "button-group": "./packages/button-group/index.js",

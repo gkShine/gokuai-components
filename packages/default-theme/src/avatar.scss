@@ -1,0 +1,50 @@
+.gk-avatar {
+  text-align: center;
+  vertical-align: middle;
+  color: #fff;
+  display: inline-block;
+  position: relative;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+
+  & > span {
+    white-space: nowrap;
+    text-align: center;
+    display: block;
+  }
+
+  & > i {
+    color: #EEEEEE;
+  }
+
+  @each $size in 16, 24, 26, 28, 32, 34, 40, 64 {
+    &.gk-avatar-#{$size} {
+      width: #{$size}px;
+      height: #{$size}px;
+      line-height: #{$size}px;
+      & > span {
+        $font-size: $size / 64 * 26;
+        @if $font-size <= 10 {
+          font-size: 26px;
+          position: absolute;
+          left: 50%;
+          $scale: round($size / 64 * 1000) / 1000;
+          -webkit-transform: translate3d(-50%,0,0) scaleX($scale) scaleY($scale);
+        } @else {
+          font-size: round($font-size) * 1px;
+        }
+      }
+      & > i {
+        font-size: #{$size}px;
+      }
+    }
+  }
+
+  &.gk-avatar--circle {
+    border-radius: 100%;
+    overflow: hidden;
+  }
+}

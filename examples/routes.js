@@ -10,12 +10,18 @@ import Thumbnail from './pages/Thumbnail.vue'
 import Dropdown from './pages/Dropdown.vue'
 import Slide from './pages/Slide.vue'
 import Input from './pages/Input.vue'
+import Avatar from './pages/Avatar.vue'
 
 let routes = [
   {
     path: '/',
     component: Home,
     name: '介绍'
+  },
+  {
+    path: '/avatar',
+    component: Avatar,
+    name: '头像'
   },
   {
     path: '/icon',
