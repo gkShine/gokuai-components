@@ -329,6 +329,7 @@
           swf: swgimg,
           server: this.server,
           pick: picker,
+          duplicate: true,
           formData: this.formData || {},
           dnd: this.dnd === undefined ? undefined : this.dnd ? this.dnd : '.gk-uploader',
           disableGlobalDnd: this.dnd,
