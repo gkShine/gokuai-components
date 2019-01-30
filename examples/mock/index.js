@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { genFiles, rootFile, genData } from './data';
+import { genFiles, rootFile, genData, genGroups, genMembers } from './data';
 
 export default {
   bootstrap() {
@@ -48,6 +48,38 @@ export default {
           resolve([200, {
             total: total,
             list: mockFiles
+          }]);
+        }, 1000);
+      });
+    });
+
+    //获取部门列表（分页）
+    mock.onGet('/group/listpage').reply(config => {
+      let {page, id} = config.params;
+      let mockGroups = genGroups(50);
+      let total = mockGroups.length;
+      mockGroups = mockGroups.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            list: mockGroups
+          }]);
+        }, 1000);
+      });
+    });
+
+    //获取成员列表（分页）
+    mock.onGet('/member/listpage').reply(config => {
+      let {page, id} = config.params;
+      let mockMmembers = genGroups(150);
+      let total = mockMmembers.length;
+      mockMmembers = mockMmembers.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            list: mockMmembers
           }]);
         }, 1000);
       });

@@ -58,4 +58,30 @@ let genData = (length) => {
   }
   return data;
 };
-export {genFiles, rootFile, genData};
+
+let genGroups = (length) => {
+  let data = [];
+  for (let i = 0; i < length; i++) {
+    let dat = {
+      "id": Mock.Random.integer(1, 10000),
+      "name": Mock.Random.ctitle(3, 20),
+      "count": Mock.Random.integer(0, 500)
+    };
+    data.push(Mock.mock(dat));
+  }
+  return data;
+}
+
+let genMembers = (length) => {
+  let data = [];
+  for (let i = 0; i < length; i++) {
+    let dat = {
+      "id": Mock.Random.integer(1, 10000),
+      "member_name": Mock.Random.ctitle(3, 20),
+      "member_email": Mock.Random.email()
+    };
+    data.push(Mock.mock(dat));
+  }
+  return data;
+}
+export {genFiles, rootFile, genData, genGroups, genMembers};

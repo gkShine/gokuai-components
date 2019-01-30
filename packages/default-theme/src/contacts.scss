@@ -1,0 +1,49 @@
+@import "./common/var.scss";
+@import "./mixins/utils.scss";
+
+.gk-contacts {
+  @include fit-dom;
+
+  .gk-contacts-toolbar {
+    padding: 10px 0 10px 25px;
+    .gk-breadcrumb {
+      height: 28px;
+    }
+
+    .gk-contacts-show-ops {
+      float: right;
+      text-align: right;
+      margin-top: -28px;
+      margin-right: 15px;
+
+      .gk-contacts-sort-block {
+        display: inline-block;
+        vertical-align: middle;
+        width: 108px;
+        text-align: center;
+
+        .gk-contacts-sort-button {
+          font-size: 14px;
+          line-height: 28px;
+          padding: 0 10px;
+
+          i {
+            vertical-align: middle;
+            top: 0;
+          }
+        }
+
+        .gk-contacts-sort-button:hover {
+          cursor:pointer;
+          color: #1378EB;
+        }
+      }
+    }
+  }
+
+  .gk-contacts-content {
+    @include fit-window;
+    top: $--breadcrumb-button-size;
+    margin-top: 20px;
+  }
+}

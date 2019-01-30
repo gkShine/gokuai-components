@@ -11,6 +11,7 @@ import Dropdown from './pages/Dropdown.vue'
 import Slide from './pages/Slide.vue'
 import Input from './pages/Input.vue'
 import Avatar from './pages/Avatar.vue'
+import Contacts from './pages/Contacts.vue'
 
 let routes = [
   {
@@ -77,6 +78,11 @@ let routes = [
     path: '/finder',
     component: Finder,
     name: '文件管理器'
+  },
+  {
+    path: '/contacts',
+    component: Contacts,
+    name: '通讯录'
   },
   {
     path: '*',

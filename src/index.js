@@ -5,6 +5,7 @@ import Breadcrumb from '../packages/breadcrumb/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
 import Checkbox from '../packages/checkbox/index.js';
+import Contacts from '../packages/contacts/index.js';
 import Dropdown from '../packages/dropdown/index.js';
 import DropdownItem from '../packages/dropdown-item/index.js';
 import DropdownMenu from '../packages/dropdown-menu/index.js';
@@ -33,6 +34,7 @@ const components = [
   Button,
   ButtonGroup,
   Checkbox,
+  Contacts,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -74,6 +76,7 @@ module.exports = {
   Button,
   ButtonGroup,
   Checkbox,
+  Contacts,
   Dropdown,
   DropdownItem,
   DropdownMenu,
