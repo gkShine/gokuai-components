@@ -125,14 +125,17 @@
       full: Boolean,
       checkbox: Boolean,
       total: Number,
-      groups: Function|Array,
-      members: Function|Array,
+      groups: Array,
+      members: Array,
       buttons: Array,
       'item-buttons': Array,
       loading: Boolean,
       translate: Object,
+      lazy: Boolean,
       'before-enter': Function,
-      'before-contextmenu': Function
+      'before-contextmenu': Function,
+      'loadGroups': Function,
+      'loadMembers': Function
     },
     data() {
       let [sort, order] = this.defaultSort.split(' ');
@@ -150,11 +153,11 @@
     },
     watch: {
       groups: {
-        handler: '',
+        handler: 'updateList',
         immediate: true
       },
       members: {
-        handler: '',
+        handler: 'updateList',
         immediate: true
       }
     },

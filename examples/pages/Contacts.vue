@@ -8,19 +8,30 @@
           size="50"
           :groups="groups"
           :members="members"
+          lazy
+          :loadGroups="loadGroups"
+          :loadMember="loadMembers"
       ></gk-contacts>
     </div>
   </div>
 </template>
 
 <script>
-  import {getGroupList, getMemberList} from "../api";
+  import { getGroupList, getMemberList } from "../api";
 
   export default {
     data () {
       return {
         groups: [],
         members: []
+      }
+    },
+    methods: {
+      loadGroups (start, resolve) {
+
+      },
+      loadMembers (resolve) {
+
       }
     },
     mounted () {
