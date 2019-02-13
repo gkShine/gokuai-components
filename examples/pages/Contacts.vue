@@ -6,11 +6,14 @@
     <div class="demo-block" style="height: 768px;">
       <gk-contacts
           size="50"
-          :groups="groups"
-          :members="members"
-          lazy
-          :loadGroups="loadGroups"
-          :loadMember="loadMembers"
+          :mini="false"
+          :root="{'name': '盛大企业', 'id': 0}"
+          group-key="isGroup"
+          :data="data"
+          :props="props"
+          :default-sort="sort"
+          :sort-list="sortList"
+          :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]"
       ></gk-contacts>
     </div>
   </div>
@@ -22,30 +25,52 @@
   export default {
     data () {
       return {
-        groups: [],
-        members: []
+        props: {
+          group: {
+            label: 'name',
+            desc: 'count',
+            value: 'id'
+          },
+          member: {
+            label: 'member_name',
+            desc: 'member_email',
+            value: 'member_id'
+          }
+        },
+        data: [],
+        sort: 'name asc',
+        sortList: [
+          {
+            value: 'name',
+            label: '姓名'
+          },
+          {
+            value: 'age',
+            label: '年龄'
+          }
+        ]
       }
     },
     methods: {
-      loadGroups (start, resolve) {
-
-      },
-      loadMembers (resolve) {
-
+      loadData() {
+        let data = [];
+        getGroupList({
+          page: 1
+        }).then(res => {
+          data = res.list.map(group => {
+            group.isGroup = true;
+            return group;
+          });
+          getMemberList({
+            page: 1
+          }).then(res => {
+            this.data = data.concat(res.list)
+          })
+        })
       }
     },
     mounted () {
-      getGroupList({
-        page: 1
-      }).then(data => {
-        this.groups = data.list
-      })
-
-      getMemberList({
-        page: 1
-      }).then(data => {
-        this.groups = data.list
-      })
+      this.loadData()
     }
   }
 </script>

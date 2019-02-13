@@ -15,7 +15,8 @@
         <gk-table-column property="name" :label="headLabel">
           <template slot-scope="scope">
             <div class="gk-uploader-filename-column" :title="scope.row.name">
-              <gk-fileicon :filename="scope.row.name" :size="24"></gk-fileicon>{{scope.row.name}}
+              <gk-fileicon :filename="scope.row.name" :size="24"></gk-fileicon>
+              {{scope.row.name}}
             </div>
           </template>
         </gk-table-column>
@@ -40,12 +41,12 @@
   import GkTable from "gokuai-components/packages/table/src/table";
   import GkTableColumn from "gokuai-components/packages/table/src/table-column";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
-  import {isIE, bitSize} from "gokuai-components/src/common/util";
+  import { isIE, bitSize } from "gokuai-components/src/common/util";
   import touch from "gokuai-components/packages/touch/src/touch";
 
   export default {
     name: "GkUploader",
-    components: {GkTable, GkTableColumn, GkFileicon},
+    components: { GkTable, GkTableColumn, GkFileicon },
     props: {
       auto: {
         type: Boolean,
@@ -60,15 +61,15 @@
         type: Number,
         default: 400
       },
-      'head-tpl': {
+      headTpl: {
         type: String,
         default: 'selected :d'
       },
-      'empty-content-width': {
+      emptyContentWidth: {
         type: Number,
         default: 500
       },
-      'form-data': Object,
+      formData: Object,
       buttons: Array,
       options: Object,
       fit: Boolean,
@@ -76,11 +77,11 @@
       chunked: Boolean,
       dialog: Boolean,
       translate: Object,
-      'hide-delete': Boolean,
-      'before-check': Function,
-      'check-response': Function
+      hideDelete: Boolean,
+      beforeCheck: Function,
+      checkResponse: Function
     },
-    data() {
+    data () {
       return {
         mini: true,
         hidden: this.dialog,
@@ -94,13 +95,13 @@
       }
     },
     computed: {
-      isMobile() {
+      isMobile () {
         return touch.device.mobile;
       },
-      showCheck() {
+      showCheck () {
         return !this.auto;
       },
-      buttonList() {
+      buttonList () {
         let list = [];
         if (this.buttons === undefined) {
           list = Object.values(this.defaultButtons);
@@ -114,7 +115,7 @@
         }
         return list;
       },
-      defaultButtons() {
+      defaultButtons () {
         return {
           delete: {
             type: 'delete',
@@ -132,7 +133,7 @@
           }
         };
       },
-      states() {
+      states () {
         return {
           ready: 'ready',
           pause: 'pause',
@@ -154,19 +155,19 @@
       }
     },
     methods: {
-      gettext(value) {
+      gettext (value) {
         return this.translate && this.translate[value] || value;
       },
-      dialogTitle() {
+      dialogTitle () {
         if (this.finishFiles.length === this.list.length) {
           return this.gettext('Upload Finish');
         }
         return this.gettext('Uploading (:n/:t)').replace(':n', this.finishFiles.length).replace(':t', this.list.length);
       },
-      changeMini() {
+      changeMini () {
         this.$refs.uploader.style.height = this.mini ? 'auto' : this.height + 'px';
       },
-      changeList() {
+      changeList () {
         if (this.hideDelete) {
           this.deleteButtons.forEach((button) => {
             button.style.display = this.list.length ? 'inline-block' : 'none'
@@ -174,7 +175,7 @@
         }
         this.updateHeadLabel();
       },
-      checkFinish() {
+      checkFinish () {
         if (this.finishFiles.length === this.list.length) {
           this.$emit('finish');
           if (this.dialog) {
@@ -182,13 +183,13 @@
           }
         }
       },
-      updateData(data) {
+      updateData (data) {
         this.uploader.option('formData', data);
       },
-      formatSize(value) {
+      formatSize (value) {
         return bitSize(value);
       },
-      formatState(value, data) {
+      formatState (value, data) {
         let stateText = '';
         switch (data.state) {
           case this.states.ready:
@@ -219,7 +220,7 @@
         }
         return '';
       },
-      formatOption(value, data) {
+      formatOption (value, data) {
         let h = this.$createElement;
         let self = this;
         let icons = [];
@@ -230,7 +231,7 @@
               icons.push(h('i', {
                 'class': 'gk-icon-times',
                 on: {
-                  click() {
+                  click () {
                     self.removeFile(data.id);
                   }
                 }
@@ -241,7 +242,7 @@
             icons.push(h('i', {
               'class': 'gk-icon-playarrow',
               on: {
-                click() {
+                click () {
                   let file = self.uploader.getFile(data.id);
                   self.uploader.upload(file);
                   data.state = self.states.progress;
@@ -254,7 +255,7 @@
               icons.push(h('i', {
                 'class': 'gk-icon-pause',
                 on: {
-                  click() {
+                  click () {
                     self.uploader.stop(data.id);
                     data.state = self.states.pause;
                   }
@@ -267,7 +268,7 @@
             icons.push(h('i', {
               'class': 'gk-icon-redo',
               on: {
-                click() {
+                click () {
                   let file = self.uploader.getFile(data.id);
                   self.uploader.retry(file);
                   data.state = self.states.progress;
@@ -280,7 +281,7 @@
           icons.push(h('i', {
             'class': 'gk-icon-times',
             on: {
-              click() {
+              click () {
                 self.uploader.cancelFile(data.id);
                 Object.assign(data, {
                   state: self.states.cancel,
@@ -293,15 +294,15 @@
         }
         return icons;
       },
-      updateHeadLabel() {
+      updateHeadLabel () {
         setTimeout(() => {
           this.headLabel = this.headTpl.replace(':d', this.$refs.table.getCheckedIndex().length);
         }, 20);
       },
-      findList(id) {
+      findList (id) {
         return this.list[this.relation[id]];
       },
-      removeFile(id) {
+      removeFile (id) {
         let file = this.uploader.getFile(id);
         this.uploader.removeFile(file);
 
@@ -314,7 +315,7 @@
           this.relation[this.list[i].id] = i;
         }
       },
-      webUpload(picker) {
+      webUpload (picker) {
         let button = document.querySelector(picker.id);
         button && button.addEventListener('mouseenter', () => {
           this.uploader.refresh();
@@ -413,7 +414,7 @@
         this.uploader = uploader;
         return uploader;
       },
-      initDelete(selector) {
+      initDelete (selector) {
         this.deleteButtons = document.querySelectorAll(selector);
         this.deleteButtons.forEach((button) => {
           this.hideDelete && (button.style.display = 'none');
@@ -425,7 +426,7 @@
           };
         });
       },
-      updateEmptyStyle() {
+      updateEmptyStyle () {
         let position = this.$refs.emptyContent.getBoundingClientRect();
         if (this.emptyContentWidth > window.innerWidth) {
           this.emptyContentStyle = {
@@ -441,11 +442,11 @@
           };
         }
       },
-      upload() {
+      upload () {
         this.uploader.upload();
       }
     },
-    mounted() {
+    mounted () {
       this.updateEmptyStyle();
       if (this.picker !== undefined) {
         this.webUpload(this.picker);

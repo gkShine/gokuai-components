@@ -54,13 +54,13 @@
     components: {GkTableCell},
     props: {
       height: Number,
-      'show-more': Boolean,
-      'show-header': Boolean,
+      showMore: Boolean,
+      showHeader: Boolean,
       data: {
         type: Array,
         required: true
       },
-      'more-text': {
+      moreText: {
         type: String,
         default: 'loading...'
       }

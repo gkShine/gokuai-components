@@ -12,7 +12,7 @@
   export default {
     name: "GkCheckbox",
     props: {
-      'is-checked': Boolean,
+      isChecked: Boolean,
       value: Boolean
     },
     data() {

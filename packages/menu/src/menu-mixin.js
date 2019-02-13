@@ -62,7 +62,7 @@ export default {
     bind() {
       switch (this.trigger) {
         case 'click':
-          this.dom.onclick = (event) => {
+          this.dom.onmousedown = (event) => {
             if (this.visible) {
               this.hideMenu();
             } else {

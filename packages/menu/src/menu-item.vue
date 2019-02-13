@@ -13,7 +13,7 @@
     props: {
       divided: Boolean,
       disabled: Boolean,
-      command: String | Object | Array | Number,
+      command: [String, Object, Array, Number],
       icon: String,
       keymap: String
     },

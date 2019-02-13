@@ -2,17 +2,17 @@ import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
 
 export default {
   name: "GkThumbnailItem",
-  components: {GkCheckbox},
+  components: { GkCheckbox },
   props: {
     render: Function,
-    data: Object|String,
+    data: [Object, String],
     property: String,
-    size: Object|Number,
+    size: [Object, Number],
     checkbox: Boolean,
-    'item-class': String|Object,
-    'is-checked': Boolean
+    itemClass: [String, Object],
+    isChecked: Boolean
   },
-  render(h) {
+  render (h) {
     let content;
     if (this.render) {
       content = this.render({
@@ -33,7 +33,7 @@ export default {
         }
       });
     }
-    const computedClass = typeof this.itemClass === 'string' ? {[this.itemClass]:true} : this.itemClass || {};
+    const computedClass = typeof this.itemClass === 'string' ? { [this.itemClass]: true } : this.itemClass || {};
     return h('li', {
       class: {
         'gk-thumbnail-item': true,

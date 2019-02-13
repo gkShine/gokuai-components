@@ -14,7 +14,7 @@
       thumbnail: String,
       filename: String,
       size: {
-        type: Number|String,
+        type: [Number, String],
         default: 32
       }
     },

@@ -12,7 +12,7 @@
   export default {
     name: "GkButton",
     props: {
-      'is-actived': Boolean,
+      isActive: Boolean,
       border: {
         type: Boolean,
         default: true
@@ -34,11 +34,12 @@
           }
           parent = parent.$parent;
         }
+        return false;
       },
       computedClass() {
         let classList = {
           'is-plain': this.isPlain,
-          'is-active': this.isActived,
+          'is-active': this.isActive,
           'is-noborder': !this.border
         };
         if (['medium', 'small', 'mini'].indexOf(this.size) > -1) {

@@ -33,9 +33,9 @@
       readonly: Boolean,
       disabled: Boolean,
       placeholder: String,
-      'sync-color': Boolean,
-      'prefix-icon': String,
-      'suffix-icon': String
+      syncColor: Boolean,
+      prefixIcon: String,
+      suffixIcon: String
     },
     data() {
       return {

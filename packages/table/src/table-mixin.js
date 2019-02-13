@@ -10,22 +10,22 @@ export default {
     fit: Boolean,
     shortcut: Boolean,
     translate: Object,
-    'right-selected': Boolean,
-    'show-checkbox': Boolean,
-    'before-select': Function,
-    'scroll-on-check': Boolean,
-    'scroll-on-select': Boolean,
-    'item-class': String|Object,
-    'default-index': Number | Array,
-    'default-checked-index': {
+    rightSelected: Boolean,
+    showCheckbox: Boolean,
+    beforeSelect: Function,
+    scrollOnCheck: Boolean,
+    scrollOnSelect: Boolean,
+    itemClass: String | Object,
+    defaultIndex: Number | Array,
+    defaultCheckedIndex: {
       type: Number | Array,
       default: () => []
     },
-    'select-on-check': {
+    selectOnCheck: {
       type: Boolean,
       default: true
     },
-    'check-on-select': {
+    checkOnSelect: {
       type: Boolean,
       default: true
     }

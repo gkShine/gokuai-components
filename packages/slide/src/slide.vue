@@ -43,7 +43,7 @@
           return {};
         }
       },
-      value: Object | String,
+      value: [Object, String],
       id: String
     },
     computed: {

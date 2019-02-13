@@ -8,7 +8,7 @@ export default {
   components: {GkSubmenu},
   props: {
     target: String,
-    'show-arrow': Boolean,
+    showArrow: Boolean,
     trigger: {
       type: String,
       default: 'click'

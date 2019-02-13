@@ -51,8 +51,8 @@
     directives: {touch},
     components: {GkThumbnailItem, GkCheckbox},
     props: {
-      'show-more': Boolean,
-      'more-text': {
+      showMore: Boolean,
+      moreText: {
         type: String,
         default: 'loading...'
       },
@@ -67,8 +67,8 @@
         type: Boolean,
         default: touch.device.mobile
       },
-      size: Object | Number,
-      'size-scope': {
+      size: [Object, Number],
+      sizeScope: {
         type: Array,
         default: () => [128, 192, 256, 320, 384, 448, 512]
       }

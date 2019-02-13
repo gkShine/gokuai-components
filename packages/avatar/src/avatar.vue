@@ -14,11 +14,11 @@
       name: String,
       circle: Boolean,
       size: {
-        type: Number | String,
+        type: [Number, String],
         default: 40
       },
       id: {
-        type: Number | String,
+        type: [Number, String],
         default() {
           return Math.round(Math.random() * 6);
         }

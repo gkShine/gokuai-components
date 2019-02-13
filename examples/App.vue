@@ -3,13 +3,17 @@
     <gk-dropdown v-if="isMobile" class="mobile-menu-button">
       <gk-button><i class="fa fa-list-ul"></i></gk-button>
       <gk-dropdown-menu @command="handleCommand">
-        <gk-dropdown-item :command="route.path" :class="{'gk-menu-item-active':route.path === $route.path}" v-for="(route, index) in $router.options.routes" :key="index" v-if="!route.hidden" >{{route.name}}</gk-dropdown-item>
+        <template v-for="(route, index) in $router.options.routes" >
+          <gk-dropdown-item :command="route.path" :class="{'gk-menu-item-active':route.path === $route.path}" :key="index" v-if="!route.hidden" >{{route.name}}</gk-dropdown-item>
+        </template>
       </gk-dropdown-menu>
     </gk-dropdown>
     <ul class="aside" v-else>
-      <li :class="{'active':route.path === $route.path}" v-for="(route, index) in $router.options.routes" :key="index" v-if="!route.hidden">
-        <router-link :to="route.path">{{route.name}}</router-link>
-      </li>
+      <template v-for="(route, index) in $router.options.routes" >
+        <li :class="{'active':route.path === $route.path}" :key="index" v-if="!route.hidden">
+          <router-link :to="route.path">{{route.name}}</router-link>
+        </li>
+      </template>
     </ul>
     <router-view/>
     <gk-menu ref="menus" v-if="isMobile" @command="handleSwitch" :data="menus"></gk-menu>

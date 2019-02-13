@@ -1,15 +1,17 @@
 <template>
-  <div class="gk-contacts" :class="{'gk-mobile-contacts': isMobile, 'gk-ie-contacts': isIE}">
+  <div class="gk-contacts" :class="{'gk-mobile-contacts': isMobile}">
     <slot name="header"></slot>
     <div class="gk-contacts-toolbar">
-      <gk-breadcrumb ref="breadcrumb" :data="navList" id="fullpath" :allow-input="allowInput" @navigator="handleNavigator" label="filename"
-                     value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
+      <gk-breadcrumb ref="breadcrumb" :data="navList" id="id"
+                     @navigator="handleNavigator" label="name"
+                     value="id" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
       <div ref="ops" class="gk-contacts-show-ops">
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" class="gk-contacts-sort-block" @command="handleSort">
           <span class="gk-contacts-sort-button">
-            <gk-icon :icon="order === 'asc' ? 'long-arrow-up' : 'long-arrow-down'"/>{{sortLabel}}<gk-icon icon="caretdown" placement="right"/>
+            <gk-icon :icon="order === 'asc' ? 'long-arrow-up' : 'long-arrow-down'"/>{{sort.label}}<gk-icon
+              icon="caretdown" placement="right"/>
           </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -21,62 +23,67 @@
     </div>
 
     <div class="gk-contacts-content">
-        <gk-table ref="table"
-                  shortcut
-                  fit
-                  scroll-on-check
-                  right-selected
-                  :loading="loading"
-                  :data="list"
-                  :default-index="selectedIndex"
-                  :more-text="moreText"
-                  :show-more="showMore"
-                  @tap="handleDoubleClick"
-                  @select="handleSelect"
-                  @selectAll="handleSelectAll"
-                  @check="handleCheck"
-                  @checkAll="handleCheckAll"
-                  @doubleClick="handleDoubleClick"
-                  @contextmenu="handleContextmenu"
-                  @load-more="handleLoadMore">
-          <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
-          <gk-table-column :width="40" valign="top">
-            <template slot-scope="scope">
-
-            </template>
-          </gk-table-column>
-          <gk-table-column property="filename" :label="gettext('filename')">
-            <template slot-scope="scope">
-              <div class="gk-contacts-main-column">
-                <div class="gk-contacts-filename-column">
-                  <p>{{scope.row.filename}}</p>
-                  <p>
-                    <span>{{scope.row.last_member_name}}</span>
-                    <span>{{formatDate(scope.row.last_dateline)}}</span>
-                    <span v-if="scope.row.filesize">{{formatSize(scope.row.filesize, scope.row)}}</span>
-                  </p>
+      <gk-table ref="table"
+                shortcut
+                fit
+                scroll-on-check
+                right-selected
+                :loading="loading"
+                :data="data"
+                :default-index="selectedIndex"
+                :more-text="moreText"
+                :show-more="showMore"
+                @select="handleSelect"
+                @selectAll="handleSelectAll"
+                @check="handleCheck"
+                @checkAll="handleCheckAll"
+                @contextmenu="handleContextmenu"
+                @load-more="handleLoadMore">
+        <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
+        <gk-table-column property="itemname" :label="gettext('itemname')">
+          <template slot-scope="scope">
+            <div class="gk-contacts-main-column">
+              <div v-if="scope.row[groupKey]" class="gk-contacts-name" :class="{'is-mini': mini}">
+                <div>
+                  <gk-icon class="gk-contacts-gavatar" icon="group"/>
                 </div>
-                <ul v-if="!isMobile && itemButtons">
-                  <li v-for="(button,index) in itemButtons" :key="index"
-                      @click="handleItemButton(button.command, scope.row, scope.index, $event)">{{button.label}}
-                  </li>
-                  <li v-if="buttons" @click="handleItemButton('more', scope.row, scope.index, $event)">
-                    {{gettext('more')}}
-                  </li>
-                </ul>
+                <div>
+                  <p>{{scope.row[property.group.label]}}</p>
+                  <p class="gk-contacts-desc">{{scope.row[property.group.desc]}}{{gettext('个成员')}}</p>
+                </div>
               </div>
-            </template>
-          </gk-table-column>
-          <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)">
-            <template slot-scope="scope">
-              <i class="gk-icon-caretdown gk-contacts-item-dropdown"
-                 v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event.srcEvent)"></i>
-            </template>
-          </gk-table-column>
-          <div slot="empty" class="gk-contacts-empty">
-            <slot></slot>
-          </div>
-        </gk-table>
+              <div v-else class="gk-contacts-name">
+                <div>
+                  <gk-avatar class="gk-contacts-avatar" size="34" circle
+                             :name="scope.row[property.member.label]"></gk-avatar>
+                </div>
+                <div>
+                  <p>{{scope.row[property.member.label]}}</p>
+                  <p class="gk-contacts-desc">{{scope.row[property.member.desc]}}</p>
+                </div>
+              </div>
+              <ul v-if="!isMobile && itemButtons">
+                <li v-for="(button,index) in itemButtons" :key="index"
+                    @click="handleItemButton(button.command, scope.row, scope.index, $event)">{{button.label}}
+                </li>
+                <li v-if="buttons" @click="handleItemButton('more', scope.row, scope.index, $event)">
+                  {{gettext('more')}}
+                </li>
+              </ul>
+              <gk-icon v-if="!isMobile && scope.row[groupKey] && mini" icon="angleright"/>
+            </div>
+          </template>
+        </gk-table-column>
+        <gk-table-column width="8%" v-if="isMobile && (buttons || itemButtons)">
+          <template slot-scope="scope">
+            <i class="gk-icon-caretdown gk-contacts-item-dropdown"
+               v-touch:tap="($event) => handleItemDropdown(scope.row, scope.index, $event.srcEvent)"></i>
+          </template>
+        </gk-table-column>
+        <div slot="empty" class="gk-contacts-empty">
+          <slot></slot>
+        </div>
+      </gk-table>
     </div>
 
     <gk-menu ref="contextmenu" v-if="contextMenus" :data="contextMenus" @command="handleCommand"></gk-menu>
@@ -86,96 +93,98 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import GkBreadcrumb from "gokuai-components/packages/breadcrumb/src/breadcrumb";
-  import GkButton from "gokuai-components/packages/button/src/button";
-  import GkButtonGroup from "gokuai-components/packages/button/src/button-group";
   import GkTable from "gokuai-components/packages/table/src/table";
   import GkTableColumn from "gokuai-components/packages/table/src/table-column";
   import GkMenu from "gokuai-components/packages/menu/src/menu";
-  import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
   import GkDropdown from "gokuai-components/packages/dropdown/src/dropdown";
   import GkDropdownItem from "gokuai-components/packages/dropdown/src/dropdown-item";
   import GkDropdownMenu from "gokuai-components/packages/dropdown/src/dropdown-menu";
-  import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
-  import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
+  import GkAvatar from "gokuai-components/packages/avatar/src/avatar";
+  import GkIcon from "gokuai-components/packages/icon/src/icon";
   import touch from 'gokuai-components/packages/touch/src/touch';
-  import {timeToDate, bitSize, baseName, dirName, isIE} from "gokuai-components/src/common/util";
+  import { timeToDate, bitSize, baseName, dirName } from "gokuai-components/src/common/util";
 
   export default {
     name: 'GkContacts',
     components: {
-      GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu,
-      GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb
+      GkDropdown,
+      GkDropdownMenu,
+      GkDropdownItem,
+      GkMenu,
+      GkTableColumn,
+      GkTable,
+      GkBreadcrumb,
+      GkAvatar,
+      GkIcon
     },
-    directives: {touch},
+    directives: { touch },
     props: {
       value: Object,
       root: Object, //根分组
-      'sort-list': Array,
-      'default-sort': {
+      sortList: Array,
+      defaultSort: {
         type: String,
         default: ''
       },
-      'allow-input': {
-        type: Boolean,
-        default: true
-      },
-      'show-more': Boolean,
-      'more-text': String,
-      full: Boolean,
+      showMore: Boolean,
+      moreText: String,
+      mini: Boolean,
       checkbox: Boolean,
-      total: Number,
-      groups: Array,
-      members: Array,
       buttons: Array,
-      'item-buttons': Array,
+      itemButtons: Array,
       loading: Boolean,
       translate: Object,
-      lazy: Boolean,
-      'before-enter': Function,
-      'before-contextmenu': Function,
-      'loadGroups': Function,
-      'loadMembers': Function
+      beforeEnter: Function,
+      beforeContextmenu: Function,
+      props: Object,
+      groupKey: String,
+      data: Array,
+      total: Number
     },
-    data() {
-      let [sort, order] = this.defaultSort.split(' ');
+    data () {
+      const [sort, order] = this.defaultSort.split(' ');
       return {
-        isIE: !!isIE(),
-        sort: sort || '',
-        sortLabel: '文件名',
+        sort: _.find(this.sortList, {value: sort}) || {},
         order: order || '',
-        navList: [],
+        navList: this.root ? [this.root] : [],
         selectedIndex: [],
-        list: [],
         contextMenus: [],
-        opsWidth: '150px'
+        opsWidth: '150px',
+        groupCount: 0,
+        memberCount: 0
       };
     },
-    watch: {
-      groups: {
-        handler: 'updateList',
-        immediate: true
-      },
-      members: {
-        handler: 'updateList',
-        immediate: true
-      }
-    },
     computed: {
-      isMobile() {
+      property () {
+        return _.merge({
+          group: {
+            label: 'name',
+            desc: 'desc',
+            value: 'value'
+          },
+          member: {
+            label: 'name',
+            desc: 'desc',
+            value: 'value'
+          }
+        }, this.props)
+      },
+      isMobile () {
         return touch.enable;
       },
-      showCheckbox() {
+      showCheckbox () {
         return !this.isMobile && this.checkbox
       },
-      itemButtonsDom() {
+      itemButtonsDom () {
         if (!this.isMobile || !this.itemButtons) {
           return false;
         }
         let tr = document.createElement('tr');
         tr.classList.add('gk-table-item-toolbar');
         let td = document.createElement('td');
-        td.setAttribute('colspan', 4);
+        td.setAttribute('colspan', 3);
         let ul = document.createElement('ul');
         ul.classList.add('gk-contacts-item-buttons');
         this.itemButtons.map((button) => {
@@ -200,14 +209,14 @@
       }
     },
     methods: {
-      gettext(value) {
+      gettext (value) {
         return this.translate && this.translate[value] || value;
       },
-      getContextMenus(files) {
+      getContextMenus (items) {
         let getMenus = (buttons) => {
           let menus = [];
           buttons.map((button) => {
-            if (button.before && button.before(files) === false) {
+            if (button.before && button.before(items) === false) {
               return;
             }
             let menu = button;
@@ -220,20 +229,14 @@
         };
         this.contextMenus = getMenus(this.buttons);
       },
-      getSortIcon(key) {
+      getSortIcon (key) {
         let icon = '';
-        if (key === this.sort) {
+        if (key === this.sort.value) {
           icon = this.order === 'asc' ? 'gk-icon-long-arrow-up' : 'gk-icon-long-arrow-down';
         }
         return icon;
       },
-      formatDate(value) {
-        return timeToDate(value * 1000);
-      },
-      formatSize(value, item) {
-        return item.dir ? '-' : bitSize(value);
-      },
-      showMobileMenuItem(targetElement) {
+      showMobileMenuItem (targetElement) {
         if (!this.itemButtonsDom) {
           return;
         }
@@ -246,7 +249,7 @@
           parent.insertBefore(this.itemButtonsDom, targetElement.nextSibling);
         }
       },
-      hideMobileMenuItem() {
+      hideMobileMenuItem () {
         if (!this.itemButtonsDom) {
           return;
         }
@@ -256,8 +259,8 @@
         }
         this.itemButtonsDom.remove();
       },
-      handleItemDropdown(file, index, event) {
-        this.$refs.table.select(file, index);
+      handleItemDropdown (item, index, event) {
+        this.$refs.table.select(item, index);
         if (this.itemButtons) {
           if (event.target.className.indexOf('is-opened') > -1) {
             this.hideMobileMenuItem();
@@ -267,95 +270,99 @@
             this.showMobileMenuItem(event.target.parentNode.parentNode);
           }
         } else {
-          this.handleContextmenu([file], event);
+          this.handleContextmenu([item], event);
         }
       },
-      handleItemButton(command, file, index, event) {
+      handleItemButton (command, item, index, event) {
         if (command === 'more') {
-          this.$refs.table.select(file, index);
-          this.handleContextmenu([file], event);
+          this.$refs.table.select(item, index);
+          this.handleContextmenu([item], event);
         } else {
-          this.$emit('command', [file], command);
+          this.$emit('command', [item], command);
         }
       },
-      handleSelect(files, event) {
-        this.$emit('select', files, event);
-      },
-      handleSelectAll(event) {
-        this.$emit('selectAll', event);
-      },
-      handleCheck(files, event) {
-        this.$refs.contextmenu.hide();
-        this.$emit('check', files, event);
-      },
-      handleCheckAll(event) {
-        this.$emit('checkAll', event);
-      },
-      handleDoubleClick(file, event) {
+      handleSelect (items, event) {
+        if (items === null) {
+          return;
+        }
         if (event && event.target.className.indexOf('gk-contacts-item-dropdown') > -1) {
           return;
         }
-        if (this.beforeEnter && this.beforeEnter(file, event) === false) {
+        const item = items[0];
+        if (this.beforeEnter && this.beforeEnter(item, event) === false) {
           return;
         }
-        this.navList.push(file);
-        this.$emit('input', file);
-        this.$emit('enter', file);
+        if (item[this.groupKey]) {
+          this.navList.push(item);
+          this.$emit('selectGroup', item);
+        } else {
+          this.$emit('selectMember', item);
+        }
+        this.$emit('input', item);
       },
-      handleContextmenu(files, event) {
+      handleSelectAll (event) {
+        this.$emit('selectAll', event);
+      },
+      handleCheck (items, event) {
+        this.$refs.contextmenu.hide();
+        this.$emit('check', items, event);
+      },
+      handleCheckAll (event) {
+        this.$emit('checkAll', event);
+      },
+      handleContextmenu (items, event) {
         if (!this.buttons || !this.buttons.length) {
           return;
         }
-        if (this.beforeContextmenu && this.beforeContextmenu(files, event) === false) {
+        if (this.beforeContextmenu && this.beforeContextmenu(items, event) === false) {
           return;
         }
-        this.getContextMenus(files);
+        this.getContextMenus(items);
         this.$refs.contextmenu.show(event);
         event.stopPropagation();
       },
-      handleCommand(command) {
+      handleCommand (command) {
         this.$emit('command', this.getSelected(), command);
       },
-      handleNavigator(value, file, index) {
-        if (file !== null) {
+      handleNavigator (value, item, index) {
+        if (item !== null) {
           this.navList = this.navList.slice(0, index + 1);
           this.handleSelect(null, -1);
-          this.$emit('input', file);
+          this.$emit('input', item);
         }
-        this.$emit('navigator', value, file);
+        this.$emit('navigator', value, item);
       },
-      handleSort(command) {
-        if (this.sort === command.value) {
+      handleSort (command) {
+        if (this.sort.value === command.value) {
           this.order = this.order === 'desc' ? 'asc' : 'desc';
         }
-        this.sort = command.value;
-        this.sortLabel = command.label;
-        this.$emit('sort-change', this.sort, this.order);
+        this.sort = command
+        this.$emit('sort-change', this.sort.value, this.order);
       },
-      handleLoadMore() {
-        if (this.list.length === this.total) {
+      handleLoadMore () {
+        if (this.data.length === this.total) {
           return;
         }
         this.$emit('load-more', this.value);
       },
-      getSelected() {
+      getSelected () {
         return this.$refs.table ? this.$refs.table.getSelected() : [];
       },
-      enter(file) {
-        if (file === undefined) {
-          let files = this.getSelected();
-          if (files.length !== 1) {
+      enter (item) {
+        if (item === undefined) {
+          let items = this.getSelected();
+          if (items.length !== 1) {
             return false;
           }
-          file = files[0];
+          item = items[0];
         }
-        this.handleDoubleClick(file);
+        this.handleDoubleClick(item);
       },
-      up() {
+      up () {
         this.$refs.breadcrumb.toUp();
       }
     },
-    mounted() {
+    mounted () {
       this.$nextTick(() => {
         this.opsWidth = (this.$refs.ops.clientWidth + 30) + 'px';
       });

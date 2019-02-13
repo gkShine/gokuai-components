@@ -39,7 +39,10 @@
         locked: false,
         moreText: '加载中...',
         translate: {
-          all: '全选'
+          all: '全选',
+          filename: '文件名',
+          last_dateline: '最后修改',
+          size: '大小'
         },
         sort: 'filename asc',
         sortList: [
@@ -48,7 +51,7 @@
             label: '文件名'
           },
           {
-            value: 'last_dataline',
+            value: 'last_dateline',
             label: '最后修改'
           },
           {

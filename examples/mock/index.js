@@ -72,7 +72,7 @@ export default {
     //获取成员列表（分页）
     mock.onGet('/member/listpage').reply(config => {
       let {page, id} = config.params;
-      let mockMmembers = genGroups(150);
+      let mockMmembers = genMembers(150);
       let total = mockMmembers.length;
       mockMmembers = mockMmembers.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
       return new Promise((resolve, reject) => {

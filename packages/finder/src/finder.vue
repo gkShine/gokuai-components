@@ -2,14 +2,16 @@
   <div class="gk-finder" :class="{'gk-mobile-finder': isMobile, 'gk-ie-finder': isIE}">
     <slot name="header"></slot>
     <div class="gk-finder-toolbar">
-      <gk-breadcrumb ref="breadcrumb" :data="navList" id="fullpath" :allow-input="allowInput" @navigator="handleNavigator" label="filename"
+      <gk-breadcrumb ref="breadcrumb" :data="navList" id="fullpath" :allow-input="allowInput"
+                     @navigator="handleNavigator" label="filename"
                      value="fullpath" :style="{'margin-right': opsWidth}"></gk-breadcrumb>
 
       <div ref="ops" class="gk-finder-show-ops">
         <slot name="breadcrumb"></slot>
         <gk-dropdown v-if="sortList" v-show="!preview" class="gk-finder-sort-block" @command="handleSort">
           <span class="gk-finder-sort-button">
-            <gk-icon :icon="order === 'asc' ? 'long-arrow-up' : 'long-arrow-down'"/>{{sortLabel}}<gk-icon icon="caretdown" placement="right"/>
+            <gk-icon :icon="order === 'asc' ? 'long-arrow-up' : 'long-arrow-down'"/>{{sort.label}}<gk-icon
+              icon="caretdown" placement="right"/>
           </span>
           <gk-dropdown-menu slot="dropdown" show-arrow>
             <gk-dropdown-item :icon="getSortIcon(sort.value)" v-for="(sort, idx) in sortList"
@@ -20,7 +22,7 @@
 
         <gk-button-group plain class="gk-finder-view-mode" v-show="!preview">
           <gk-button :border="false" v-for="(view,index) in viewList" size="mini" :key="index"
-                     :is-actived="viewMode === view"
+                     :is-active="viewMode === view"
                      @click.native="handleViewMode(view)" :icon="'gk-icon-'+view" class="gk-special-button"></gk-button>
         </gk-button-group>
       </div>
@@ -95,8 +97,10 @@
           <gk-table-column property="filename" :label="gettext('filename')">
             <template slot-scope="scope">
               <div class="gk-finder-filename-column">
-                <p><gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="20"
-                             :folder="!!scope.row.dir"></gk-fileicon></p>
+                <p>
+                  <gk-fileicon :thumbnail="scope.row.thumbnail" :filename="scope.row.filename" :size="20"
+                               :folder="!!scope.row.dir"></gk-fileicon>
+                </p>
                 <p>{{scope.row.filename}}</p>
               </div>
             </template>
@@ -127,7 +131,8 @@
                   @checkAll="handleCheckAll"
                   @doubleClick="handleDoubleClick"
                   @contextmenu="handleContextmenu"
-                  @load-more="handleLoadMore" v-else>
+                  @load-more="handleLoadMore"
+                  v-else-if="viewMode === 'listdetail'">
           <gk-table-column :width="25" :checkbox="showCheckbox" align="center"></gk-table-column>
           <gk-table-column :width="40" valign="top">
             <template slot-scope="scope">
@@ -177,6 +182,7 @@
 </template>
 
 <script>
+  import _ from "lodash";
   import GkBreadcrumb from "gokuai-components/packages/breadcrumb/src/breadcrumb";
   import GkButton from "gokuai-components/packages/button/src/button";
   import GkButtonGroup from "gokuai-components/packages/button/src/button-group";
@@ -185,15 +191,12 @@
   import GkThumbnail from "gokuai-components/packages/thumbnail/src/thumbnail";
   import GkSlide from "gokuai-components/packages/slide/src/slide";
   import GkMenu from "gokuai-components/packages/menu/src/menu";
-  import GkMenuItem from "gokuai-components/packages/menu/src/menu-item";
   import GkDropdown from "gokuai-components/packages/dropdown/src/dropdown";
   import GkDropdownItem from "gokuai-components/packages/dropdown/src/dropdown-item";
   import GkDropdownMenu from "gokuai-components/packages/dropdown/src/dropdown-menu";
-  import GkSubmenu from "gokuai-components/packages/menu/src/submenu";
-  import GkCheckbox from "gokuai-components/packages/checkbox/src/checkbox";
   import GkFileicon from "gokuai-components/packages/fileicon/src/fileicon";
   import touch from 'gokuai-components/packages/touch/src/touch';
-  import {timeToDate, bitSize, baseName, dirName, isIE} from "gokuai-components/src/common/util";
+  import { timeToDate, bitSize, baseName, dirName, isIE } from "gokuai-components/src/common/util";
 
   const GkIframe = {
     props: {
@@ -202,7 +205,7 @@
     watch: {
       src: 'updateIframe'
     },
-    render(h) {
+    render (h) {
       return h('div', {
         style: {
           position: 'relative',
@@ -212,11 +215,11 @@
       });
     },
     methods: {
-      updateIframe() {
+      updateIframe () {
         this.$el.innerHTML = '<iframe src="' + this.src + '"></iframe>';
       }
     },
-    mounted() {
+    mounted () {
       this.updateIframe();
     }
   };
@@ -224,50 +227,49 @@
   export default {
     name: 'GkFinder',
     components: {
-      GkCheckbox, GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenuItem, GkMenu, GkSubmenu, GkSlide, GkThumbnail,
+      GkDropdown, GkDropdownMenu, GkDropdownItem, GkMenu, GkSlide, GkThumbnail,
       GkTableColumn, GkTable, GkButtonGroup, GkButton, GkBreadcrumb, GkFileicon, GkIframe
     },
-    directives: {touch},
+    directives: { touch },
     props: {
       list: { //当前文件列表
         type: Array,
         required: true
       },
       value: { //当前打开文件/文件夹
-        type: Object | null,
+        type: [Object, null],
         required: true
       },
       root: Object, //根文件夹或库
-      'sort-list': Array,
-      'default-sort': {
+      sortList: Array,
+      defaultSort: {
         type: String,
         default: ''
       },
-      'allow-input': {
+      allowInput: {
         type: Boolean,
         default: true
       },
-      'show-more': Boolean,
-      'more-text': String,
+      showMore: Boolean,
+      moreText: String,
       checkbox: Boolean,
       total: Number,
       buttons: Array,
-      'item-buttons': Array,
+      itemButtons: Array,
       loading: Boolean,
-      'preview-toolbar': Object,
+      previewToolbar: Object,
       translate: Object,
-      'get-preview-url': Function,
-      'before-enter': Function,
-      'before-contextmenu': Function,
+      getPreviewUrl: Function,
+      beforeEnter: Function,
+      beforeContextmenu: Function,
       views: Array
     },
-    data() {
+    data () {
       let [sort, order] = this.defaultSort.split(' ');
       return {
         isIE: !!isIE(),
         viewMode: this.views && this.views[0] || 'listdetail',
-        sort: sort || '',
-        sortLabel: '文件名',
+        sort: _.find(this.sortList, {value: sort}) || {},
         order: order || '',
         preview: false,
         previewFile: this.value,
@@ -283,20 +285,20 @@
       value: 'openFile'
     },
     computed: {
-      viewList() {
+      viewList () {
         let views = ['listdetail', 'list', 'listgrid'];
         if (this.views instanceof Array) {
           return views.filter(v => this.views.includes(v));
         }
         return views;
       },
-      isMobile() {
+      isMobile () {
         return touch.enable;
       },
-      showCheckbox() {
+      showCheckbox () {
         return !this.isMobile && this.checkbox
       },
-      itemButtonsDom() {
+      itemButtonsDom () {
         if (!this.isMobile || !this.itemButtons) {
           return false;
         }
@@ -328,10 +330,10 @@
       }
     },
     methods: {
-      gettext(value) {
+      gettext (value) {
         return this.translate && this.translate[value] || value;
       },
-      getContextMenus(files) {
+      getContextMenus (files) {
         let getMenus = (buttons) => {
           let menus = [];
           buttons.map((button) => {
@@ -348,20 +350,20 @@
         };
         this.contextMenus = getMenus(this.buttons);
       },
-      getSortIcon(key) {
+      getSortIcon (key) {
         let icon = '';
-        if (key === this.sort) {
+        if (key === this.sort.value) {
           icon = this.order === 'asc' ? 'gk-icon-long-arrow-up' : 'gk-icon-long-arrow-down';
         }
         return icon;
       },
-      formatDate(value) {
+      formatDate (value) {
         return timeToDate(value * 1000);
       },
-      formatSize(value, item) {
+      formatSize (value, item) {
         return item.dir ? '-' : bitSize(value);
       },
-      showMobileMenuItem(targetElement) {
+      showMobileMenuItem (targetElement) {
         if (!this.itemButtonsDom) {
           return;
         }
@@ -374,10 +376,10 @@
           parent.insertBefore(this.itemButtonsDom, targetElement.nextSibling);
         }
       },
-      handleSlideChange(file) {
+      handleSlideChange (file) {
         this.$emit('change-preview', file);
       },
-      hideMobileMenuItem() {
+      hideMobileMenuItem () {
         if (!this.itemButtonsDom) {
           return;
         }
@@ -387,7 +389,7 @@
         }
         this.itemButtonsDom.remove();
       },
-      handleItemDropdown(file, index, event) {
+      handleItemDropdown (file, index, event) {
         this.$refs.table.select(file, index);
         if (this.itemButtons) {
           if (event.target.className.indexOf('is-opened') > -1) {
@@ -401,7 +403,7 @@
           this.handleContextmenu([file], event);
         }
       },
-      handleItemButton(command, file, index, event) {
+      handleItemButton (command, file, index, event) {
         if (command === 'more') {
           this.$refs.table.select(file, index);
           this.handleContextmenu([file], event);
@@ -409,24 +411,30 @@
           this.$emit('command', [file], command);
         }
       },
-      handleViewMode(mode) {
+      handleViewMode (mode) {
+        if (this.viewMode === mode) {
+          return;
+        }
         this.selectedIndex = this.$refs.table.getSelectedIndex();
-        this.viewMode = mode;
+        this.viewMode = null;
+        this.$nextTick(() => {
+          this.viewMode = mode;
+        })
       },
-      handleSelect(files, event) {
+      handleSelect (files, event) {
         this.$emit('select', files, event);
       },
-      handleSelectAll(event) {
+      handleSelectAll (event) {
         this.$emit('selectAll', event);
       },
-      handleCheck(files, event) {
+      handleCheck (files, event) {
         this.$refs.contextmenu.hide();
         this.$emit('check', files, event);
       },
-      handleCheckAll(event) {
+      handleCheckAll (event) {
         this.$emit('checkAll', event);
       },
-      handleDoubleClick(file, event) {
+      handleDoubleClick (file, event) {
         if (event && event.target.className.indexOf('gk-finder-item-dropdown') > -1) {
           return;
         }
@@ -438,7 +446,7 @@
         this.$emit('enter', file);
         this.openFile(file);
       },
-      handleContextmenu(files, event) {
+      handleContextmenu (files, event) {
         if (!this.buttons || !this.buttons.length) {
           return;
         }
@@ -449,10 +457,10 @@
         this.$refs.contextmenu.show(event);
         event.stopPropagation();
       },
-      handleCommand(command) {
+      handleCommand (command) {
         this.$emit('command', this.getSelected(), command);
       },
-      handleNavigator(value, file, index) {
+      handleNavigator (value, file, index) {
         if (file !== null) {
           this.navList = this.navList.slice(0, index + 1);
           this.handleSelect(null, -1);
@@ -460,21 +468,20 @@
         }
         this.$emit('navigator', value, file);
       },
-      handleSort(command) {
-        if (this.sort === command.value) {
+      handleSort (command) {
+        if (this.sort.value === command.value) {
           this.order = this.order === 'desc' ? 'asc' : 'desc';
         }
-        this.sort = command.value;
-        this.sortLabel = command.label;
-        this.$emit('sort-change', this.sort, this.order);
+        this.sort = command;
+        this.$emit('sort-change', this.sort.value, this.order);
       },
-      handleLoadMore() {
+      handleLoadMore () {
         if (this.list.length === this.total) {
           return;
         }
         this.$emit('load-more', this.value);
       },
-      loadSuccess() {
+      loadSuccess () {
         this.fileList = [];
         this.list.forEach((file) => {
           if (!file.dir) {
@@ -483,7 +490,7 @@
         });
         this.preview = false;
       },
-      openFile(file) {
+      openFile (file) {
         this.hideMobileMenuItem();
         if (!file.dir) {
           this.previewFile = file;
@@ -494,7 +501,7 @@
         }
         this.updateNavs(file);
       },
-      initNavs(file) {
+      initNavs (file) {
         let navs = [];
 
         if (file && file.fullpath) {
@@ -513,7 +520,7 @@
         Object.keys(this.root).length && navs.unshift(this.root);
         return navs;
       },
-      updateNavs(file) {
+      updateNavs (file) {
         let navs = this.initNavs(file);
         if (file.fullpath) {
           navs.forEach((nav, index) => {
@@ -524,16 +531,16 @@
         }
         this.navList = navs;
       },
-      getSelected() {
+      getSelected () {
         return this.$refs.table ? this.$refs.table.getSelected() : [];
       },
-      zoom(size) {
+      zoom (size) {
         if (this.viewMode !== 'listgrid') {
           return false;
         }
         this.$refs.table.zoom(size);
       },
-      enter(file) {
+      enter (file) {
         if (file === undefined) {
           let files = this.getSelected();
           if (files.length !== 1) {
@@ -543,11 +550,11 @@
         }
         this.handleDoubleClick(file);
       },
-      up() {
+      up () {
         this.$refs.breadcrumb.toUp();
       }
     },
-    mounted() {
+    mounted () {
       this.$nextTick(() => {
         this.opsWidth = (this.$refs.ops.clientWidth + 30) + 'px';
       });

@@ -64,8 +64,8 @@
         type: String,
         default: 'value'
       },
-      'allow-input': Boolean,
-      'show-nav': Boolean,
+      allowInput: Boolean,
+      showNav: Boolean,
       id: String
     },
     data() {
