@@ -1,4 +1,5 @@
 import Home from './pages/Home.vue'
+import Tag from './pages/Tag.vue'
 import Finder from './pages/Finder.vue'
 import Upload from './pages/Upload.vue'
 import Fileicon from './pages/Fileicon.vue'
@@ -38,6 +39,11 @@ let routes = [
     path: '/input',
     component: Input,
     name: '文本框'
+  },
+  {
+    path: '/tag',
+    component: Tag,
+    name: '标签'
   },
   {
     path: '/menu',

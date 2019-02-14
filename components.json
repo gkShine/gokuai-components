@@ -22,6 +22,7 @@
   "submenu": "./packages/submenu/index.js",
   "table": "./packages/table/index.js",
   "table-column": "./packages/table-column/index.js",
+  "tag": "./packages/tag/index.js",
   "thumbnail": "./packages/thumbnail/index.js",
   "thumbnail-item": "./packages/thumbnail-item/index.js",
   "tooltip": "./packages/tooltip/index.js",

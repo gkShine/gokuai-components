@@ -34,7 +34,8 @@
           member: {
             label: 'member_name',
             desc: 'member_email',
-            value: 'member_id'
+            value: 'id',
+            tags: 'tags'
           }
         },
         data: [],

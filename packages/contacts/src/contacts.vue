@@ -48,8 +48,13 @@
                   <gk-icon class="gk-contacts-gavatar" icon="group"/>
                 </div>
                 <div>
-                  <p>{{scope.row[property.group.label]}}</p>
-                  <p class="gk-contacts-desc">{{scope.row[property.group.desc]}}{{gettext('个成员')}}</p>
+                  <p>
+                    {{scope.row[property.group.label]}}
+                    <span v-if="scope.row[property.group.tags]">
+                      <gk-tag size="mini" v-for="(tag, index) in scope.row[property.group.tags]" :key="index">{{tag}}</gk-tag>
+                    </span>
+                  </p>
+                  <p class="gk-contacts-desc">{{scope.row | getDesc(property.group.desc)}}{{gettext('个成员')}}</p>
                 </div>
               </div>
               <div v-else class="gk-contacts-name">
@@ -58,8 +63,13 @@
                              :name="scope.row[property.member.label]"></gk-avatar>
                 </div>
                 <div>
-                  <p>{{scope.row[property.member.label]}}</p>
-                  <p class="gk-contacts-desc">{{scope.row[property.member.desc]}}</p>
+                  <p>
+                    {{scope.row[property.member.label]}}
+                    <span v-if="scope.row[property.member.tags]">
+                      <gk-tag size="mini" v-for="(tag, index) in scope.row[property.member.tags]" :key="index">{{tag}}</gk-tag>
+                    </span>
+                  </p>
+                  <p class="gk-contacts-desc">{{scope.row | getDesc(property.member.desc)}}</p>
                 </div>
               </div>
               <ul v-if="!isMobile && itemButtons">
@@ -103,6 +113,7 @@
   import GkDropdownMenu from "gokuai-components/packages/dropdown/src/dropdown-menu";
   import GkAvatar from "gokuai-components/packages/avatar/src/avatar";
   import GkIcon from "gokuai-components/packages/icon/src/icon";
+  import GkTag from "gokuai-components/packages/tag/src/tag";
   import touch from 'gokuai-components/packages/touch/src/touch';
   import { timeToDate, bitSize, baseName, dirName } from "gokuai-components/src/common/util";
 
@@ -117,7 +128,8 @@
       GkTable,
       GkBreadcrumb,
       GkAvatar,
-      GkIcon
+      GkIcon,
+      GkTag
     },
     directives: { touch },
     props: {
@@ -162,12 +174,14 @@
           group: {
             label: 'name',
             desc: 'desc',
-            value: 'value'
+            value: 'value',
+            tags: 'tags'
           },
           member: {
             label: 'name',
             desc: 'desc',
-            value: 'value'
+            value: 'value',
+            tags: 'tags'
           }
         }, this.props)
       },
@@ -206,6 +220,14 @@
         td.appendChild(ul);
         tr.appendChild(td);
         return tr;
+      }
+    },
+    filters: {
+      getDesc (value, prop) {
+        const props = prop.split('|');
+        return props.map(p => {
+          return value[p] || undefined;
+        }).join(' ')
       }
     },
     methods: {

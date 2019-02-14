@@ -78,7 +78,8 @@ let genMembers = (length) => {
     let dat = {
       "id": Mock.Random.integer(1, 10000),
       "member_name": Mock.Random.ctitle(3, 20),
-      "member_email": Mock.Random.email()
+      "member_email": Mock.Random.email(),
+      "tags": Mock.Random.boolean() ? ['管理员'] : []
     };
     data.push(Mock.mock(dat));
   }

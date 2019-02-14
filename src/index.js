@@ -22,6 +22,7 @@ import Slide from '../packages/slide/index.js';
 import Submenu from '../packages/submenu/index.js';
 import Table from '../packages/table/index.js';
 import TableColumn from '../packages/table-column/index.js';
+import Tag from '../packages/tag/index.js';
 import Thumbnail from '../packages/thumbnail/index.js';
 import ThumbnailItem from '../packages/thumbnail-item/index.js';
 import Tooltip from '../packages/tooltip/index.js';
@@ -48,6 +49,7 @@ const components = [
   Submenu,
   Table,
   TableColumn,
+  Tag,
   Thumbnail,
   ThumbnailItem,
   Uploader,
@@ -90,6 +92,7 @@ module.exports = {
   Submenu,
   Table,
   TableColumn,
+  Tag,
   Thumbnail,
   ThumbnailItem,
   Uploader,
