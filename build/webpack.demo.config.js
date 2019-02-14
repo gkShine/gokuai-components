@@ -47,7 +47,6 @@ module.exports = merge(baseConfig, {
   },
   output: {
     path: utils.resolve('./demo'),
-    publicPath: './',
     filename: 'index.js',
     chunkFilename: '[id].js'
   },
@@ -57,7 +56,7 @@ module.exports = merge(baseConfig, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      filename: '../index.html',
       template: 'examples/index.html',
       inject: true
     }),
