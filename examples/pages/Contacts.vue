@@ -28,7 +28,7 @@
         props: {
           group: {
             label: 'name',
-            desc: 'count',
+            desc: 'count:[count]个成员',
             value: 'id'
           },
           member: {

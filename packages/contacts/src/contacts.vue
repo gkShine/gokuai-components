@@ -54,7 +54,7 @@
                       <gk-tag size="mini" v-for="(tag, index) in scope.row[property.group.tags]" :key="index">{{tag}}</gk-tag>
                     </span>
                   </p>
-                  <p class="gk-contacts-desc">{{scope.row | getDesc(property.group.desc)}}{{gettext('个成员')}}</p>
+                  <p class="gk-contacts-desc">{{scope.row | getDesc(property.group.desc)}}</p>
                 </div>
               </div>
               <div v-else class="gk-contacts-name">
@@ -226,7 +226,8 @@
       getDesc (value, prop) {
         const props = prop.split('|');
         return props.map(p => {
-          return value[p] || undefined;
+          const [key, label] = p.split(':');
+          return value[key] !== undefined ? (label ? label.replace('[' + key + ']', value[key]) : value[key]) : undefined;
         }).join(' ')
       }
     },
