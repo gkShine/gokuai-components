@@ -5,8 +5,9 @@
     </h3>
     <div class="demo-block" style="height: 768px;">
       <gk-contacts
+          :loading="loading"
           size="50"
-          :mini="false"
+          :mini="isMini"
           :root="{'name': '盛大企业', 'id': 0}"
           group-key="isGroup"
           :data="data"
@@ -14,7 +15,14 @@
           :default-sort="sort"
           :sort-list="sortList"
           :item-buttons="[{label: '下载', command: 'download'},{label: '下载', command: 'download'},{label: '下载', command: 'download'}]"
+          @selectGroup="handleSelectGroup"
+          @navigator="handleSelectGroup"
       ></gk-contacts>
+
+      <gk-button-group>
+        <gk-button @click.native="isMini = false">完整模式</gk-button>
+        <gk-button @click.native="isMini = true">精简模式</gk-button>
+      </gk-button-group>
     </div>
   </div>
 </template>
@@ -25,6 +33,8 @@
   export default {
     data () {
       return {
+        loading: false,
+        isMini: false,
         props: {
           group: {
             label: 'name',
@@ -55,6 +65,7 @@
     methods: {
       loadData() {
         let data = [];
+        this.loading = true;
         getGroupList({
           page: 1
         }).then(res => {
@@ -65,9 +76,13 @@
           getMemberList({
             page: 1
           }).then(res => {
-            this.data = data.concat(res.list)
+            this.data = data.concat(res.list);
+            this.loading = false
           })
         })
+      },
+      handleSelectGroup() {
+        this.loadData();
       }
     },
     mounted () {
