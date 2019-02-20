@@ -71,6 +71,10 @@
       padding: 0;
     }
 
+    .gk-loading {
+      display: none;
+    }
+
     .gk-slide {
       background-color: #FFFFFF;
     }
@@ -141,6 +145,10 @@
           font-weight: 400;
         }
       }
+      .gk-loading-wrapper {
+        background: #FFFFFF url("./images/finder.svg") repeat-y;
+        background-size: 512px 63px;
+      }
     }
 
     &.gk-finder-view-list {
@@ -155,6 +163,10 @@
             margin-top: -2px;
           }
         }
+      }
+      .gk-loading-wrapper {
+        background: #FFFFFF url("./images/finder_list.svg") repeat-y;
+        background-size: 512px 45px;
       }
     }
 
@@ -174,6 +186,10 @@
           text-overflow: ellipsis;
           text-align: center;
         }
+      }
+      .gk-loading-wrapper {
+        background: #FFFFFF url("./images/finder_grid.svg");
+        background-size: 140px 152px;
       }
     }
   }

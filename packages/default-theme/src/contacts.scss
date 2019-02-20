@@ -46,6 +46,10 @@
     top: $--breadcrumb-button-size;
     margin-top: 20px;
 
+    .gk-loading {
+      display: none;
+    }
+
     .gk-contacts-main-column {
       overflow: hidden;
       position: relative;
@@ -164,6 +168,11 @@
           display: block;
         }
       }
+    }
+
+    .gk-loading-wrapper {
+      background: #FFFFFF url("./images/contacts.svg") repeat-y;
+      background-size: 512px 61px;
     }
   }
 

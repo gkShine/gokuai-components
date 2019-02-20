@@ -28,4 +28,10 @@ gulp.task('copyicon', function() {
     .pipe(gulp.dest('./lib/icons'));
 });
 
-gulp.task('build', ['compile', 'copyfont', 'copyicon']);
+gulp.task('copyimage', function() {
+  return gulp.src('./src/images/**')
+    .pipe(cssmin())
+    .pipe(gulp.dest('./lib/images'));
+});
+
+gulp.task('build', ['compile', 'copyfont', 'copyicon', 'copyimage']);
