@@ -20,14 +20,14 @@ export default {
       if (this.options.bg !== false) {
         box.style.backgroundColor = this.options.bg;
       }
+      if (this.options.classes !== false) {
+        box.className += ' ' + this.options.classes;
+      }
       el.appendChild(box);
 
       let loading = document.createElement('div');
       loading.className = 'gk-loading';
-      loading.innerHTML =
-        '<svg style="styles" class="gk-loading-spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">'
-        + '<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>'
-        + '</svg>';
+      loading.innerHTML = `<svg style="styles" class="gk-loading-spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>`;
       box.appendChild(loading);
 
       if (this.options.text !== false) {
@@ -73,22 +73,23 @@ export default {
     self.static = self.exist = false;
     self.options = {
       bg: el.getAttribute('gk-loading-background') || false,
-      text: el.getAttribute('gk-loading-text') || false
+      text: el.getAttribute('gk-loading-text') || false,
+      classes: el.getAttribute('gk-loading-class') || false,
     };
   },
 
   update(el, binding) {
     let self = binding.def;
-    if (!self.init && binding.oldValue === binding.value) {
+    if (!self.init) {
+      return;
+    }
+    if (self.exist && binding.oldValue === binding.value) {
       return;
     }
     if (binding.value) {
       self.show(el);
     } else {
-      if (!self.exist) {
-        return;
-      }
-      self.hide(el);
+      self.exist && self.hide(el);
     }
   }
 };
