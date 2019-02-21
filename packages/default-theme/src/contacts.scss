@@ -46,7 +46,7 @@
     top: $--breadcrumb-button-size;
     margin-top: 20px;
 
-    .gk-loading {
+    .gk-content-loading > .gk-loading {
       display: none;
     }
 
@@ -170,7 +170,7 @@
       }
     }
 
-    .gk-loading-wrapper {
+    .gk-content-loading {
       background: #FFFFFF url("./images/contacts.svg") repeat-y;
       background-size: 512px 61px;
     }
@@ -256,6 +256,11 @@
             }
           }
         }
+      }
+
+      .gk-content-loading {
+        background: #FFFFFF url("./images/contacts_mobile.svg") repeat-y;
+        background-size: 375px 61px;
       }
     }
   }

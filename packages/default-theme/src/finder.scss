@@ -71,7 +71,7 @@
       padding: 0;
     }
 
-    .gk-loading {
+    .gk-content-loading > .gk-loading {
       display: none;
     }
 
@@ -145,7 +145,7 @@
           font-weight: 400;
         }
       }
-      .gk-loading-wrapper {
+      .gk-content-loading {
         background: #FFFFFF url("./images/finder.svg") repeat-y;
         background-size: 512px 63px;
       }
@@ -164,7 +164,7 @@
           }
         }
       }
-      .gk-loading-wrapper {
+      .gk-content-loading {
         background: #FFFFFF url("./images/finder_list.svg") repeat-y;
         background-size: 512px 45px;
       }
@@ -187,7 +187,7 @@
           text-align: center;
         }
       }
-      .gk-loading-wrapper {
+      .gk-content-loading {
         background: #FFFFFF url("./images/finder_grid.svg");
         background-size: 140px 152px;
       }
@@ -285,6 +285,20 @@
               }
             }
           }
+        }
+      }
+
+      &.gk-finder-view-listdetail {
+        .gk-content-loading {
+          background: #FFFFFF url("./images/finder_mobile.svg") repeat-y;
+          background-size: 375px 63px;
+        }
+      }
+
+      &.gk-finder-view-list {
+        .gk-content-loading {
+          background: #FFFFFF url("./images/finder_list_mobile.svg") repeat-y;
+          background-size: 375px 63px;
         }
       }
     }

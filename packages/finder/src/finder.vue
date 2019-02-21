@@ -47,6 +47,7 @@
                       :show-more="showMore"
                       :more-text="moreText"
                       :loading="loading"
+                      loading-class="gk-content-loading"
                       :data="list"
                       :border="false"
                       :default-index="selectedIndex"
@@ -80,6 +81,7 @@
                   right-selected
                   show-header
                   :loading="loading"
+                  loading-class="gk-content-loading"
                   :data="list"
                   :default-index="selectedIndex"
                   :show-more="showMore"
@@ -120,6 +122,7 @@
                   scroll-on-check
                   right-selected
                   :loading="loading"
+                  loading-class="gk-content-loading"
                   :data="list"
                   :default-index="selectedIndex"
                   :more-text="moreText"

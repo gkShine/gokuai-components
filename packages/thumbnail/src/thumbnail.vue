@@ -4,11 +4,14 @@
       <gk-checkbox @change="handleCheckAll">{{gettext('all')}}</gk-checkbox>
     </div>
     <template v-show="data.length">
-      <ul ref="thumbnail" class="gk-thumbnail-list gk-scrollbar" @click="handleCancelSelect"
+      <ul ref="thumbnail"
+          class="gk-thumbnail-list gk-scrollbar"
+          @click="handleCancelSelect"
           @contextmenu="handleContextmenu(null, null, $event)"
           :class="{'gk-thumbnail-fit': fit, 'gk-thumbnail-checkbox': showCheckbox, 'gk-no-scrollbar': touchEnable}"
+          v-scroll-load="loadMore"
           v-loading="loading"
-          v-scroll-load="loadMore">
+          :gk-loading-class="loadingClass">
         <gk-thumbnail-item
             :checkbox="checkbox"
             @click.native="handleSelect(item, index, $event)"
