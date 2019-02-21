@@ -46,6 +46,10 @@
     top: $--breadcrumb-button-size;
     margin-top: 20px;
 
+    .gk-content-loading > .gk-loading {
+      display: none;
+    }
+
     .gk-contacts-main-column {
       overflow: hidden;
       position: relative;
@@ -165,6 +169,11 @@
         }
       }
     }
+
+    .gk-content-loading {
+      background: #FFFFFF url("./images/contacts.svg") repeat-y;
+      background-size: 512px 61px;
+    }
   }
 
   &.gk-mobile-contacts {
@@ -247,6 +256,11 @@
             }
           }
         }
+      }
+
+      .gk-content-loading {
+        background: #FFFFFF url("./images/contacts_mobile.svg") repeat-y;
+        background-size: 375px 61px;
       }
     }
   }

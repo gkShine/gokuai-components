@@ -9,10 +9,14 @@
       </tr>
       </thead>
     </table>
-    <div @contextmenu="handleContextmenu(null, null, $event)"
+    <div ref="table"
          :style="computedStyle"
-         v-scroll-load="loadMore" v-loading="loading" ref="table"
-         class="gk-table-body gk-scrollbar" :class="{'gk-no-scrollbar': touchEnable}"
+         v-scroll-load="loadMore"
+         v-loading="loading"
+         :gk-loading-class="loadingClass"
+         class="gk-table-body gk-scrollbar"
+         :class="{'gk-no-scrollbar': touchEnable}"
+         @contextmenu="handleContextmenu(null, null, $event)"
          @click="handleCancelSelect()">
       <table v-if="data.length || loading">
         <tbody>
@@ -50,8 +54,8 @@
   export default {
     name: "GkTable",
     mixins: [GkTableMixin],
-    directives: {touch},
-    components: {GkTableCell},
+    directives: { touch },
+    components: { GkTableCell },
     props: {
       height: Number,
       showMore: Boolean,
@@ -65,7 +69,7 @@
         default: 'loading...'
       }
     },
-    data() {
+    data () {
       return {
         touchEnable: touch.enable,
         columns: [],
@@ -75,7 +79,7 @@
       }
     },
     computed: {
-      computedStyle() {
+      computedStyle () {
         let style = {};
         if (!this.$refs.thead) {
           return;
@@ -90,10 +94,10 @@
         }
         return style;
       },
-      computedClass() {
-        return typeof this.itemClass === 'string' ? {[this.itemClass]:true} : this.itemClass || {};
+      computedClass () {
+        return typeof this.itemClass === 'string' ? { [this.itemClass]: true } : this.itemClass || {};
       },
-      tableStyle() {
+      tableStyle () {
         let style = {};
         if (this.fit) {
           return style;
@@ -105,35 +109,35 @@
       }
     },
     methods: {
-      handleSort(property, order) {
+      handleSort (property, order) {
         this.$emit('sort-by', property, order);
       },
-      refreshCheckAllState() {
+      refreshCheckAllState () {
         let headCheckbox = this.getHeadCheckbox();
         if (headCheckbox !== undefined) {
           let checkedLen = Object.keys(this.checked).length;
           headCheckbox.setChecked(checkedLen > 0 && checkedLen === this.data.length);
         }
       },
-      getHeadCheckbox() {
+      getHeadCheckbox () {
         if (this.$refs.thead && this.$refs.thead.querySelector('th.gk-table-checkbox')) {
           return this.$children[0].$children[0];
         }
       },
-      setScrollbar() {
+      setScrollbar () {
         if (!this.$refs.table) {
           return;
         }
         let table = this.$refs.table;
         this.hasScrollbar = table.children[0].clientHeight > table.clientHeight;
       },
-      windowResize() {
+      windowResize () {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.setScrollbar();
         }, 5);
       },
-      documentKeyDown(e) {
+      documentKeyDown (e) {
         if (this.handleShortcut(e) === false) {
           return false;
         }
@@ -148,7 +152,7 @@
           e.preventDefault();
         }
       },
-      getColumns() {
+      getColumns () {
         let columns = [];
         this.$children.forEach((column) => {
           if (column.isTableColumn) {
@@ -165,18 +169,18 @@
         }
       }
     },
-    mounted() {
+    mounted () {
       this.getColumns();
       this.$nextTick(() => {
         this.setScrollbar();
       });
       window.addEventListener('resize', this.windowResize);
     },
-    updated() {
+    updated () {
       this.getColumns();
       this.setScrollbar();
     },
-    destroyed() {
+    destroyed () {
       window.removeEventListener('resize', this.windowResize);
     }
   }

@@ -69,7 +69,8 @@ module.exports = merge(baseConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'examples/index.html',
-      inject: true
+      inject: true,
+      collapseWhitespace: true
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",

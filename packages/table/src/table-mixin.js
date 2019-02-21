@@ -7,6 +7,7 @@ export default {
   directives: {loading, scrollLoad},
   props: {
     loading: Boolean,
+    loadingClass: String,
     fit: Boolean,
     shortcut: Boolean,
     translate: Object,

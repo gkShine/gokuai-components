@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
+var imagemin = require('gulp-imagemin');
 
 gulp.task('compile', function() {
   return gulp.src('./src/*.scss')
@@ -24,8 +25,14 @@ gulp.task('copyfont', function() {
 
 gulp.task('copyicon', function() {
   return gulp.src('./src/icons/**')
-    .pipe(cssmin())
+    .pipe(imagemin())
     .pipe(gulp.dest('./lib/icons'));
 });
 
-gulp.task('build', ['compile', 'copyfont', 'copyicon']);
+gulp.task('copyimage', function() {
+  return gulp.src('./src/images/**')
+    .pipe(imagemin())
+    .pipe(gulp.dest('./lib/images'));
+});
+
+gulp.task('build', ['compile', 'copyfont', 'copyicon', 'copyimage']);

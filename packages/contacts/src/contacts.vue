@@ -29,6 +29,7 @@
                 scroll-on-check
                 right-selected
                 :loading="loading"
+                loading-class="gk-content-loading"
                 :data="data"
                 :default-index="selectedIndex"
                 :more-text="moreText"
