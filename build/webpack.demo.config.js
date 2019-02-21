@@ -38,7 +38,7 @@ module.exports = merge(baseConfig, {
           loader: 'postcss-loader',
           options: {
             plugins: (loader) => [
-              require('autoprefixer')(), //CSS浏览器兼容
+              require('autoprefixer')({ remove: false }), //CSS浏览器兼容
             ]
           }
         }, "sass-loader"]
